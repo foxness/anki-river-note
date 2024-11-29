@@ -1,0 +1,249 @@
+* {
+    /* border: 0.05em dotted white; */
+    box-sizing: border-box;
+}
+
+.card {
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+
+    /* offsets scrollbar width, big brain stuff */
+    padding-left: calc(100vw - 100%);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: "Noto Sans JP", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
+    font-size: 22px;
+
+    /* centers wrapped text in long fields, dont remove */
+    text-align: center;
+}
+
+.expressionContainer {
+    position: relative;
+    font-size: 260%;
+}
+
+@media DISABLED {
+    /* uncomment for expression with furigana layout */
+
+    .expression {
+        display: flex;
+        align-items: flex-end;
+        height: 1.8em;
+    }
+
+    .expression rt {
+        user-select: none;
+        color: #37E3B2;
+    }
+}
+
+.expression a, .reading a {
+    color: inherit;
+}
+
+.expression a:hover, .reading a:hover {
+    box-shadow: inset 0 -.5em 0 0 #37E3B2 !important;
+    /* !important for minimalist anki */
+}
+
+.indicator {
+    position: absolute;
+
+    bottom: 0.5em;
+    left: -0.46em;
+    height: 0.27em;
+    width: 0.27em;
+
+    border-radius: 50%;
+    display: none;
+}
+
+.visibleIndicator {
+    display: block;
+}
+
+.indicatorNew {
+    background-color: yellow;
+}
+
+.indicatorPreview {
+    background-color: #37E3B2;
+}
+
+.hint {
+    margin: 0.2em auto;
+    max-width: 30em;
+    line-height: 145%;
+}
+
+.hint:empty {
+    display: none;
+}
+
+.context b,
+.hint b {
+    text-decoration-color: #37E3B2;
+    /* aquamarine-like */
+
+    font-weight: normal;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.125em;
+    text-underline-offset: 0.25em;
+}
+
+.divider {
+    width: 100%;
+}
+
+.divider hr {
+    opacity: 0.4;
+    margin: 0.4em 1.2em;
+    border-radius: 0.05em;
+    border: 0.05em solid white;
+}
+
+.reading {
+    /* display: none; */
+    margin-top: -0.1em;
+    font-size: 190%;
+    line-height: 145%;
+    color: #F8E1B5;
+}
+
+.meaning {
+    margin-top: 0.25em;
+    margin-bottom: 0.15em;
+    font-size: 130%;
+    font-weight: 500;
+    color: #3772ff;
+    /* dodgerblue-like */
+}
+
+.notes {
+    margin-top: 0;
+    margin-bottom: 0.3em;
+    text-align: left;
+    font-size: 100%;
+    /* color: lightseagreen; */
+}
+
+.notes:empty {
+    display: none;
+}
+
+.definitionLine {
+    line-height: 240%;
+    font-weight: 500;
+    color: white;
+}
+
+/* .definitionExpression:has(ruby) {
+    line-height: 180%;
+} */
+
+.definitionExpression {
+    margin-right: 0.06em;
+    font-size: 150%;
+    font-weight: normal;
+    color: lightseagreen;
+}
+
+.definitionExpression a {
+    color: inherit;
+}
+
+.definitionExpression a:hover {
+    box-shadow: inset 0 -.5em 0 0 white !important;
+    /* !important for minimalist anki */
+}
+
+.definitionExpression rt {
+    user-select: none;
+    font-size: 55%;
+    color: white;
+    /* color: lemonchiffon; */
+}
+
+.definitionReading {
+    font-size: 120%;
+    color: lemonchiffon;
+}
+
+.definitionMeaning {
+    color: mediumaquamarine;
+}
+
+.simpleNoteLine {
+    /* non-definition line, rare */
+    line-height: 240%;
+    color: lightslategray;
+}
+
+.notes:has(.definitionLine:last-child)~.image:not(:has(img)) {
+    /* fixes long distance between note definition and context if there's no image between them */
+    margin-bottom: -0.4em;
+}
+
+.image img {
+    min-height: 6em;
+    max-width: min(27em, 70vw);
+    max-height: min(16em, 100vh - 17em);
+    border-radius: 0.3em;
+    /* border: 0.08em solid black; */
+
+    /* WHEN font-size: 20px; */
+    /* max-width: min(33em, 70vw);
+    max-height: min(18.5em, 100vh - 17em); */
+}
+
+.context:not(:has(b)),
+.hint:not(:has(b)) {
+    color: orange !important;
+}
+
+.errorField,
+.errorField * {
+    color: orange !important;
+}
+
+.superError,
+.superError * {
+    color: #ff2b0f !important;
+}
+
+.audio {
+    display: none;
+    /* flex */
+    justify-content: center;
+}
+
+.handwritten {
+    font-family: "ackaisyo", "Noto Sans JP", sans-serif;
+}
+
+.contextInner {
+    line-height: 145%;
+}
+
+/* ------------------------ SPECIFIC SECTION ------------------------ */
+
+.context {
+    margin: 0.3em auto;
+    max-width: 25em;
+    font-size: 120%;
+    /* display: flex;
+    flex-direction: column;
+    gap: 0.1em; */
+}
+
+/* .context>div:last-child {
+    font-size: 80%;
+    color: #bbb;
+} */
