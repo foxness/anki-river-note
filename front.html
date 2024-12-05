@@ -36,9 +36,10 @@
         riverProbabilityKanaCardHandwritten = 0.8
         riverProbabilityNewKanjiCardHandwritten = 0.01
 
-        riverKanjiCardHandwrittenUseScale = true
-        riverKanjiCardHandwrittenProbability = 0.2 // unused when above is true
+        riverKanjiCardHandwrittenUseScale = false
+        riverKanjiCardHandwrittenProbability = 0.09
 
+        // unused
         riverNormalKanjiCardHandwrittenMinInterval = 0
         riverNormalKanjiCardHandwrittenMaxInterval = 120
         riverNormalKanjiCardHandwrittenMinProbability = 0.08
@@ -50,7 +51,9 @@
         riverBloodMoonProbabilityReadingHandwritten = 0.2
         riverBloodMoonProbabilityKanaCardHandwritten = 0.2
         riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.1
+        riverBloodMoonProbabilityKanjiCardHandwritten = riverKanjiCardHandwrittenProbability * 2
 
+        // unused
         riverBloodMoonKanjiCardHandwrittenMinInterval = 0
         riverBloodMoonKanjiCardHandwrittenMaxInterval = 120
         riverBloodMoonKanjiCardHandwrittenMinProbability = 0.2
@@ -68,7 +71,7 @@
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
 
-        riverPreviewProbabilityHandwritten = 0.2
+        riverPreviewProbabilityHandwritten = 0.1
     }
 
     function definePreviewVariables() {
@@ -181,8 +184,12 @@
             return riverProbabilityNewKanjiCardHandwritten
         }
 
-        if (riverIsBloodMoon || riverKanjiCardHandwrittenUseScale) {
+        if (riverKanjiCardHandwrittenUseScale) {
             return scaleHandwrittenKanjiCardProbability(cardInterval, riverIsBloodMoon)
+        }
+
+        if (riverIsBloodMoon) {
+            return riverBloodMoonProbabilityKanjiCardHandwritten
         }
 
         return riverKanjiCardHandwrittenProbability
