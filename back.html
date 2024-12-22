@@ -13,7 +13,7 @@
         <hr>
     </div>
 
-    <div class='reading pitch'>{{Reading}}</div>
+    <div class='reading'>{{Reading}}</div>
     <div class='meaning'>{{Meaning}}</div>
     <div class='notes'>{{Notes}}</div>
     <div class='image'>{{Image}}</div>
@@ -1013,25 +1013,16 @@
         return pattern
     }
 
-    function constructPitch() {
-        const kana = cardReading
-        const pitch = document.querySelector(".reading")
-        // const pitchTags = document.querySelector("#pitch-tags")
-        const pitchPositions = getPitchPositions()
-
-        if (!pitchPositions) {
-            return
-        }
-
-        const createPitchSpan = (pitchClass, pitchChar) => {
-            const pitchSpan = document.createElement("span")
-            const charSpan = document.createElement("span")
-            const lineSpan = document.createElement("span")
+    function constructPitchList(pitchPositions) {
+        let createPitchSpan = (pitchClass, pitchChar) => {
+            let pitchSpan = document.createElement('span')
+            let charSpan = document.createElement('span')
+            let lineSpan = document.createElement('span')
 
             pitchSpan.classList.add(pitchClass)
-            charSpan.classList.add("pitch-char")
+            charSpan.classList.add('pitch-char')
             charSpan.innerText = pitchChar
-            lineSpan.classList.add("pitch-line")
+            lineSpan.classList.add('pitch-line')
 
             pitchSpan.appendChild(charSpan)
             pitchSpan.appendChild(lineSpan)
@@ -1039,48 +1030,49 @@
             return pitchSpan
         }
 
-        pitch.innerHTML = ""
-        // pitchTags.innerHTML = ""
-        // pitchTags.style.display = "inline-block"
         let uniquePitchPositions = [...new Set(pitchPositions)]
-
-        const pitchList = document.createElement("ul")
-        const pitchTagList = document.createElement("ul")
+        let pitchList = document.createElement('ul')
 
         for (let pitchPosition of uniquePitchPositions) {
-            const pitchTag = document.createElement("li")
-            pitchTag.textContent = pitchPosition
+            let pattern = getPitchPattern(Number(pitchPosition))
 
-            const pattern = getPitchPattern(Number(pitchPosition))
-
-            const pitchItem = document.createElement("li")
-            pitchItem.classList.add("pitch-item")
+            let pitchItem = document.createElement('li')
+            pitchItem.classList.add('pitch-item')
             pitchItem.classList.add(getPitchType(Number(pitchPosition)))
 
-            for (let i = 0; i < kana.length; i++) {
-                if (pattern[i] === "0") {
-                    pitchItem.appendChild(createPitchSpan("pitch-low", kana[i]))
+            for (let i = 0; i < cardReading.length; i++) {
+                if (pattern[i] === '0') {
+                    pitchItem.appendChild(createPitchSpan('pitch-low', cardReading[i]))
                 }
-                else if (pattern[i] === "1") {
-                    pitchItem.appendChild(createPitchSpan("pitch-high", kana[i]))
+                else if (pattern[i] === '1') {
+                    pitchItem.appendChild(createPitchSpan('pitch-high', cardReading[i]))
                 }
-                else if (pattern[i] === "2") {
-                    pitchItem.appendChild(createPitchSpan("pitch-to-drop", kana[i]))
+                else if (pattern[i] === '2') {
+                    pitchItem.appendChild(createPitchSpan('pitch-to-drop', cardReading[i]))
                 }
                 else {
-                    console.error(
-                        "pattern[i] found undefined value. pattern is",
-                        pattern
-                    )
+                    console.error('pattern[i] found undefined value. pattern is', pattern)
                 }
             }
-
-            pitchTagList.appendChild(pitchTag)
+            
             pitchList.appendChild(pitchItem)
         }
 
-        pitch.appendChild(pitchList)
-        // pitchTags.appendChild(pitchTagList)
+        return pitchList
+    }
+
+    function addPitchToReading() {
+        let readingElement = document.querySelector(".reading")
+        let pitchPositions = getPitchPositions()
+        if (!pitchPositions) {
+            return
+        }
+
+        let pitchList = constructPitchList(pitchPositions)
+
+        readingElement.innerHTML = ""
+        readingElement.appendChild(pitchList)
+        readingElement.classList.add('pitch')
     }
 
     // ---------------- MAIN ----------------
@@ -1095,7 +1087,7 @@
         varyReadingKana()
         // addLinkToReading()
         // paintTargetWord()
-        constructPitch()
+        addPitchToReading()
 
         populateContext()
         populateHint()
