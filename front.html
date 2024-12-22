@@ -92,6 +92,7 @@
         cardMeaning = `{{Meaning}}`
         cardNotes = `{{Notes}}`
         cardTrueContext = `{{Context}}`
+        cardPitchPosition = `{{PitchPosition}}`
 
         // additional anki fields addon
         let cardType = `{{info-Type:}}`
@@ -123,6 +124,8 @@
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenReading = random() < getProbabilityReadingHandwritten()
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
+
+        riverVariedKanaReading = getVariedKanaReading()
     }
 
     function defineGlobalVariables() {
@@ -269,16 +272,18 @@
 
     // ---------------- VARIATION ----------------
 
-    function varyReadingKana() {
-        let switchedReading = translateKana(cardReading, riverIsHiraganaReading)
+    function getVariedKanaReading() {
+        return translateKana(cardReading, riverIsHiraganaReading)
+    }
 
+    function varyReadingKana() {
         let readingElement = document.querySelector('.reading')
-        readingElement.innerHTML = switchedReading
+        readingElement.innerHTML = riverVariedKanaReading
     }
 
     function varyJapaneseFont() {
         varyCardJapaneseFont()
-        varyReadingJapaneseFont()
+        // varyReadingJapaneseFont()
     }
 
     function varyCardJapaneseFont() {
@@ -851,6 +856,193 @@
         noteElement.innerHTML = highlightedNote
     }
 
+    // ---------------- PITCH ACCENT ----------------
+
+    function getPitchPositions() {
+        return cardPitchPosition.match(/^\d+|\d+\b|\d+(?=\w)/g)
+    }
+
+    function getPitchType(pitchPosition) {
+        let moraLength = cardReading.replace(/[ャュョァィゥゃゅょぁぃぅ]/g, '').length
+
+        if (pitchPosition === 0) {
+            return 'heiban'
+        } else if (pitchPosition === 1) {
+            return 'atamadaka'
+        } else if (pitchPosition === moraLength) {
+            return 'odaka'
+        } else if (pitchPosition === moraLength - 1) {
+            return 'kifuku' // not entirely correct but we're letting it slide
+        } else {
+            return 'nakadaka'
+        }
+    }
+    
+    function paintTargetWord() {
+        const pitchPositions = getPitchPositions()
+        if (!pitchPositions) {
+            return
+        }
+
+        const firstPosition = Number(pitchPositions[0])
+        let pitchType = getPitchType(firstPosition)
+
+        // let meaningElement = document.querySelector('.meaning')
+        // meaningElement.innerHTML += ' ' + pitchType
+
+        // const sentences = Array.from(
+        //     document.querySelectorAll(".sentence, .definition, .sentence-mobile"),
+        // )
+
+        // for (const sentence of sentences) {
+        //     for (const targetWord of sentence.getElementsByTagName("b")) {
+        //         targetWord.classList.add(getPitchType(pitchPosition))
+        //     }
+        // }
+
+        // const vocabElement = document.querySelector(".vocab")
+        // if (vocabElement !== null) {
+        //     vocabElement.classList.add(getPitchType(pitchPosition))
+        // }
+    }
+
+    function groupMoras(kana) {
+        let currentChar = ""
+        let nextChar = ""
+        const groupedMoras = []
+        const check = ["ャ", "ュ", "ョ", "ァ", "ィ", "ゥ", "ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ"]
+
+        for (let i = 0; i < kana.length; i++) {
+            currentChar = kana[i]
+            nextChar = i < kana.length - 1 && kana[i + 1]
+
+            if (check.includes(nextChar)) {
+                groupedMoras.push(currentChar + nextChar)
+                i += 1
+            } else {
+                groupedMoras.push(currentChar)
+            }
+        }
+
+        return groupedMoras
+    }
+
+    function getPitchPattern(pitchPosition) {
+        // 0 = low
+        // 1 = high
+        // 2 = high to low
+
+        const kana = cardReading
+        const moras = groupMoras(kana)
+        let pitchType = getPitchType(pitchPosition)
+        let pattern = []
+
+        if (pitchType === 'heiban') {
+            // 平板
+            pattern = [
+                ...Array(moras[0].length).fill("0"),
+                ...Array(kana.length - moras[0].length).fill("1"),
+            ]
+        } else if (pitchType === 'atamadaka') {
+            // 頭高
+            pattern = [
+                ...(moras[0].length === 2 ? ["1", "2"] : ["2"]),
+                ...Array(kana.length - moras[0].length).fill("0"),
+            ]
+        } else if (pitchType === 'odaka') {
+            // 尾高
+            pattern = [
+                ...Array(moras[0].length).fill("0"),
+                ...Array(kana.length - moras[0].length - 1).fill("1"),
+                "2",
+            ]
+        } else {
+            // 中高
+            let afterDrop = false
+            for (let i = 0; i < moras.length; i++) {
+                if (i === 0) {
+                    pattern = Array(moras[0].length).fill("0")
+                } else if (i + 1 === pitchPosition) {
+                    pattern =
+                        moras[i].length === 2
+                        ? [...pattern, "1", "2"]
+                        : [...pattern, "2"]
+                    afterDrop = true
+                } else if (afterDrop) {
+                    pattern = [...pattern, ...Array(moras[i].length).fill("0")]
+                } else {
+                    pattern = [...pattern, ...Array(moras[i].length).fill("1")]
+                }
+            }
+        }
+
+        return pattern
+    }
+
+    function constructPitchList(pitchPositions) {
+        let createPitchSpan = (pitchClass, pitchChar) => {
+            let pitchSpan = document.createElement('span')
+            let charSpan = document.createElement('span')
+            let lineSpan = document.createElement('span')
+
+            pitchSpan.classList.add(pitchClass)
+            charSpan.classList.add('pitch-char')
+            charSpan.innerText = pitchChar
+            lineSpan.classList.add('pitch-line')
+
+            pitchSpan.appendChild(charSpan)
+            pitchSpan.appendChild(lineSpan)
+
+            return pitchSpan
+        }
+
+        let uniquePitchPositions = [...new Set(pitchPositions)]
+        let pitchList = document.createElement('ul')
+
+        for (let pitchPosition of uniquePitchPositions) {
+            let pattern = getPitchPattern(Number(pitchPosition))
+
+            let pitchItem = document.createElement('li')
+            pitchItem.classList.add('pitch-item')
+            pitchItem.classList.add(getPitchType(Number(pitchPosition)))
+
+            for (let i = 0; i < riverVariedKanaReading.length; i++) {
+                let current = riverVariedKanaReading[i]
+
+                if (pattern[i] === '0') {
+                    pitchItem.appendChild(createPitchSpan('pitch-low', current))
+                }
+                else if (pattern[i] === '1') {
+                    pitchItem.appendChild(createPitchSpan('pitch-high', current))
+                }
+                else if (pattern[i] === '2') {
+                    pitchItem.appendChild(createPitchSpan('pitch-to-drop', current))
+                }
+                else {
+                    console.error('pattern[i] found undefined value. pattern is', pattern)
+                }
+            }
+            
+            pitchList.appendChild(pitchItem)
+        }
+
+        return pitchList
+    }
+
+    function addPitchToReading() {
+        let readingElement = document.querySelector(".reading")
+        let pitchPositions = getPitchPositions()
+        if (!pitchPositions) {
+            return
+        }
+
+        let pitchList = constructPitchList(pitchPositions)
+
+        readingElement.innerHTML = ""
+        readingElement.appendChild(pitchList)
+        readingElement.classList.add('pitch')
+    }
+
     // ---------------- MAIN ----------------
 
     function main() {
@@ -861,6 +1053,8 @@
 
         // populateReading()
         // varyReadingKana()
+        // paintTargetWord()
+        // addPitchToReading()
         // addLinkToReading()
 
         // populateContext()

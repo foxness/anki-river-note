@@ -16,7 +16,7 @@
     flex-direction: column;
     align-items: center;
 
-    font-family: "Noto Sans JP", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
     font-size: 22px;
 
     /* centers wrapped text in long fields, dont remove */
