@@ -232,6 +232,149 @@
     line-height: 145%;
 }
 
+/* ------------------------ PITCH ------------------------ */
+
+.pitch {
+    display: inline;
+}
+
+#pitch-tags {
+    color: var(--canvas);
+    font-family: var(--font-serif);
+    background-color: var(--fg);
+    display: none;
+    vertical-align: top;
+    padding: 1px 3px;
+    margin-right: -5px;
+}
+
+.mobile .nightMode #pitch-tags {
+    color: #000 !important;
+    background-color: #fff;
+}
+
+/* When multiple pitch */
+.pitch ul,
+#pitch-tags ul {
+    list-style: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.pitch li,
+#pitch-tags li {
+    display: inline;
+}
+
+.pitch ul>li:not(:last-child)::after,
+#pitch-tags ul>li:not(:last-child)::after {
+    content: "・";
+}
+
+.pitch ul>li:not(:last-child)::after {
+    color: var(--fg-color);
+}
+
+#pitch-tags ul>li:not(:last-child)::after {
+    color: var(--bg-color);
+}
+
+/* Pitch graphs css */
+.pitch-low {
+    position: relative;
+}
+
+.pitch-high {
+    position: relative;
+}
+
+.pitch-high>.pitch-line {
+    display: block;
+    position: absolute;
+    top: -0.001em;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-top-width: 0.1em;
+    border-top-style: solid;
+}
+
+.mobile .pitch-high>.pitch-line {
+    top: -0.1em;
+}
+
+.pitch-to-drop {
+    position: relative;
+    padding-right: 0.1em;
+    margin-right: 0.1em;
+}
+
+.pitch-to-drop>.pitch-line {
+    display: block;
+    position: absolute;
+    top: -0.001em;
+    left: 0;
+    right: 0;
+    border-top-width: 0.1em;
+    border-top-style: solid;
+    right: -0.1em;
+    height: 0.4em;
+    border-right-width: 0.1em;
+    border-right-style: solid;
+}
+
+.mobile .pitch-to-drop>.pitch-line {
+    top: -0.1em;
+}
+
+/* Pitch coloring */
+
+:root {
+    --dark-mode-heiban: #39bae6;
+    --dark-mode-atamadaka: #ec464f;
+    --dark-mode-nakadaka: #ff8f40;
+    --dark-mode-odaka: #6cbf43;
+    --dark-mode-kifuku: #af85f4;
+    --light-mode-heiban: #1aa0ce;
+    --light-mode-atamadaka: #e92a35;
+    --light-mode-nakadaka: #ff6b03;
+    --light-mode-odaka: #61ad3b;
+    --light-mode-kifuku: #7e53c4;
+
+    --heiban: var(--dark-mode-heiban, initial);
+    --atamadaka: var(--dark-mode-atamadaka, initial);
+    --nakadaka: var(--dark-mode-nakadaka, initial);
+    --odaka: var(--dark-mode-odaka, initial);
+    --kifuku: var(--dark-mode-kifuku, initial);
+
+    /* --heiban: var(--light-mode-heiban, initial);
+    --atamadaka: var(--light-mode-atamadaka, initial);
+    --nakadaka: var(--light-mode-nakadaka, initial);
+    --odaka: var(--light-mode-odaka, initial);
+    --kifuku: var(--light-mode-kifuku, initial); */
+}
+
+.heiban {
+    color: var(--heiban);
+}
+
+.atamadaka {
+    color: var(--atamadaka);
+}
+
+.nakadaka {
+    color: var(--nakadaka);
+}
+
+.odaka {
+    color: var(--odaka);
+}
+
+.kifuku {
+    color: var(--kifuku);
+}
+
 /* ------------------------ SPECIFIC SECTION ------------------------ */
 
 .context {
