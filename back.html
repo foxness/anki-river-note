@@ -140,6 +140,8 @@
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenReading = random() < getProbabilityReadingHandwritten()
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
+
+        riverVariedKanaReading = getVariedKanaReading()
     }
 
     function defineGlobalVariables() {
@@ -286,11 +288,13 @@
 
     // ---------------- VARIATION ----------------
 
-    function varyReadingKana() {
-        let switchedReading = translateKana(cardReading, riverIsHiraganaReading)
+    function getVariedKanaReading() {
+        return translateKana(cardReading, riverIsHiraganaReading)
+    }
 
+    function varyReadingKana() {
         let readingElement = document.querySelector('.reading')
-        readingElement.innerHTML = switchedReading
+        readingElement.innerHTML = riverVariedKanaReading
     }
 
     function varyJapaneseFont() {
@@ -1040,15 +1044,17 @@
             pitchItem.classList.add('pitch-item')
             pitchItem.classList.add(getPitchType(Number(pitchPosition)))
 
-            for (let i = 0; i < cardReading.length; i++) {
+            for (let i = 0; i < riverVariedKanaReading.length; i++) {
+                let current = riverVariedKanaReading[i]
+
                 if (pattern[i] === '0') {
-                    pitchItem.appendChild(createPitchSpan('pitch-low', cardReading[i]))
+                    pitchItem.appendChild(createPitchSpan('pitch-low', current))
                 }
                 else if (pattern[i] === '1') {
-                    pitchItem.appendChild(createPitchSpan('pitch-high', cardReading[i]))
+                    pitchItem.appendChild(createPitchSpan('pitch-high', current))
                 }
                 else if (pattern[i] === '2') {
-                    pitchItem.appendChild(createPitchSpan('pitch-to-drop', cardReading[i]))
+                    pitchItem.appendChild(createPitchSpan('pitch-to-drop', current))
                 }
                 else {
                     console.error('pattern[i] found undefined value. pattern is', pattern)
@@ -1085,9 +1091,9 @@
 
         // populateReading()
         varyReadingKana()
-        // addLinkToReading()
         // paintTargetWord()
         addPitchToReading()
+        addLinkToReading()
 
         populateContext()
         populateHint()
