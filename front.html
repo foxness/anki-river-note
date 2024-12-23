@@ -863,7 +863,7 @@
     }
 
     function getPitchType(pitchPosition) {
-        let moraLength = cardReading.replace(/[ャュョァィゥゃゅょぁぃぅ]/g, '').length
+        let moraLength = cardReading.replace(/[ャュョァィゥヮゃゅょぁぃぅゎ]/g, '').length
 
         if (pitchPosition === 0) {
             return 'heiban'
@@ -910,7 +910,7 @@
         let currentChar = ""
         let nextChar = ""
         const groupedMoras = []
-        const check = ["ャ", "ュ", "ョ", "ァ", "ィ", "ゥ", "ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ"]
+        const check = ["ャ", "ュ", "ョ", "ァ", "ィ", "ゥ", "ヮ", "ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ゎ"]
 
         for (let i = 0; i < kana.length; i++) {
             currentChar = kana[i]
