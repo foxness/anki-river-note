@@ -28,8 +28,12 @@
     --notes-definition-expression: lightseagreen;
     --notes-definition-reading: lemonchiffon;
     --notes-definition-meaning: mediumaquamarine;
-    --simple-note: lightslategray;
+    --notes-simple: lightslategray;
+    --definition-furigana: var(--fg-color);
+    --definition-expression-link: var(--fg-color);
     /* lightseagreen aquamarine */
+
+    --divider: var(--fg-color);
 
     --error-field: red;
     --super-error: #ff2c2c;
@@ -57,6 +61,7 @@
 
     font-family: "Noto Sans JP", "Hiragino Sans", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
     font-size: 22px;
+    color: var(--fg-color);
 
     /* centers wrapped text in long fields, dont remove */
     text-align: center;
@@ -144,7 +149,7 @@
     opacity: 0.4;
     margin: 0.4em 1.2em;
     border-radius: 0.05em;
-    border: 0.05em solid white;
+    border: 0.05em solid var(--divider);
 }
 
 .reading {
@@ -177,7 +182,6 @@
 .definitionLine {
     line-height: 240%;
     font-weight: 500;
-    color: white;
 }
 
 /* .definitionExpression:has(ruby) {
@@ -196,14 +200,14 @@
 }
 
 .definitionExpression a:hover {
-    box-shadow: inset 0 -.5em 0 0 white !important;
+    box-shadow: inset 0 -.5em 0 0 var(--definition-expression-link) !important;
     /* !important for minimalist anki */
 }
 
 .definitionExpression rt {
     user-select: none;
     font-size: 55%;
-    color: white;
+    color: var(--definition-furigana);
 }
 
 .definitionReading {
@@ -218,7 +222,7 @@
 .simpleNoteLine {
     /* non-definition line, rare */
     line-height: 240%;
-    color: var(--simple-note);
+    color: var(--notes-simple);
 }
 
 .notes:has(.definitionLine:last-child)~.image:not(:has(img)) {
