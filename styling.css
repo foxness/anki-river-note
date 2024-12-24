@@ -33,7 +33,7 @@
     --definition-expression-link: var(--fg-color);
     /* lightseagreen aquamarine */
 
-    --divider: var(--fg-color);
+    --divider: #7f7f7f;
 
     --error-field: red;
     --super-error: #ff2c2c;
@@ -155,9 +155,8 @@
 }
 
 .divider hr {
-    opacity: 0.4;
     margin: 0.4em 1.2em;
-    border-radius: 0.05em;
+    border-radius: 1em;
     border: 0.05em solid var(--divider);
 }
 
@@ -179,7 +178,7 @@
 
 .notes {
     margin-top: 0;
-    margin-bottom: 0.3em;
+    margin-bottom: 0;
     text-align: left;
     font-size: 100%;
 }
@@ -229,14 +228,8 @@
 }
 
 .simpleNoteLine {
-    /* non-definition line, rare */
     line-height: 240%;
     color: var(--notes-simple);
-}
-
-.notes:has(.definitionLine:last-child)~.image:not(:has(img)) {
-    /* fixes long distance between note definition and context if there's no image between them */
-    margin-bottom: -0.4em;
 }
 
 .image img {
@@ -249,6 +242,14 @@
     /* WHEN font-size: 20px; */
     /* max-width: min(33em, 70vw);
     max-height: min(18.5em, 100vh - 17em); */
+}
+
+.image:empty {
+    /* we become a grey line if no image :D */
+    background-color: var(--divider);
+    width: 20em;
+    height: 0.2em;
+    border-radius: 1em;
 }
 
 .audio {
