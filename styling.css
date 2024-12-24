@@ -123,7 +123,7 @@
 .hint {
     margin: 0.2em auto;
     max-width: 30em;
-    line-height: 145%;
+    line-height: 145%; /* for varying font */
 }
 
 .hint:empty {
@@ -161,10 +161,8 @@
 }
 
 .reading {
-    /* display: none; */
     margin-top: -0.1em;
-    font-size: 190%;
-    line-height: 145%;
+    font-size: 180%;
     color: var(--reading-color);
 }
 
@@ -191,10 +189,6 @@
     line-height: 240%;
     font-weight: 500;
 }
-
-/* .definitionExpression:has(ruby) {
-    line-height: 180%;
-} */
 
 .definitionExpression {
     margin-right: 0.06em;
@@ -263,7 +257,7 @@
 }
 
 .contextInner {
-    line-height: 145%;
+    line-height: 145%; /* for varying font */
 }
 
 /* ------------------------ ERROR ------------------------ */
