@@ -343,9 +343,9 @@
     border-top-style: solid;
 }
 
-.mobile .pitch-high>.pitch-line {
+/* .mobile .pitch-high>.pitch-line {
     top: -0.1em;
-}
+} */
 
 .pitch-to-drop {
     position: relative;
@@ -367,9 +367,9 @@
     border-right-style: solid;
 }
 
-.mobile .pitch-to-drop>.pitch-line {
+/* .mobile .pitch-to-drop>.pitch-line {
     top: -0.1em;
-}
+} */
 
 /* Pitch colors */
 
