@@ -18,6 +18,11 @@
     --nakadaka: var(--dark-mode-nakadaka, initial);
     --odaka: var(--dark-mode-odaka, initial);
     --kifuku: var(--dark-mode-kifuku, initial);
+
+    --green-accent: #37e3b2;
+    --new-accent: yellow;
+    --reading-color: #f8e1b5;
+    --meaning-color: #3772ff; /* dodgerblue-like */
 }
 
 /* ------------------------ MAIN ------------------------ */
@@ -63,7 +68,7 @@
 
     .expression rt {
         user-select: none;
-        color: #37E3B2;
+        color: var(--green-accent);
     }
 }
 
@@ -72,7 +77,7 @@
 }
 
 .expression a:hover, .reading a:hover {
-    box-shadow: inset 0 -.5em 0 0 #37E3B2 !important;
+    box-shadow: inset 0 -.5em 0 0 var(--green-accent) !important;
     /* !important for minimalist anki */
 }
 
@@ -93,11 +98,11 @@
 }
 
 .indicatorNew {
-    background-color: yellow;
+    background-color: var(--new-accent);
 }
 
 .indicatorPreview {
-    background-color: #37E3B2;
+    background-color: var(--green-accent);
 }
 
 .hint {
@@ -112,7 +117,7 @@
 
 .context b,
 .hint b {
-    text-decoration-color: #37E3B2;
+    text-decoration-color: var(--green-accent);
     /* aquamarine-like */
 
     font-weight: normal;
@@ -138,7 +143,7 @@
     margin-top: -0.1em;
     font-size: 190%;
     line-height: 145%;
-    color: #F8E1B5;
+    color: var(--reading-color);
 }
 
 .meaning {
@@ -146,8 +151,7 @@
     margin-bottom: 0.15em;
     font-size: 130%;
     font-weight: 500;
-    color: #3772ff;
-    /* dodgerblue-like */
+    color: var(--meaning-color);
 }
 
 .notes {
