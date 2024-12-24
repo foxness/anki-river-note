@@ -22,7 +22,7 @@
     --fg-color: #fcfcfc;
 
     --green-accent: #37e3b2;
-    --new-accent: yellow;
+    --new-accent: #3772ff;
     --reading-color: #f8e1b5;
     --meaning-color: #bccfff; /* #3772ff dodgerblue-like */
     --notes-definition-expression: lightseagreen;
@@ -31,7 +31,7 @@
     --notes-simple: lightslategray;
     --definition-furigana: var(--fg-color);
     --definition-expression-link: var(--fg-color);
-    /* lightseagreen aquamarine */
+    /* lightseagreen aquamarine yellow */
 
     --divider: #7f7f7f;
 
