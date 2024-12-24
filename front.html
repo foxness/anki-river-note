@@ -397,8 +397,8 @@
     // ---------------- LINK ADDING ----------------
 
     function makeDictionaryLinkElement(expression, rawContent) {
-        let link = `https://jisho.org/search/${expression}`
-        // let link = `https://jpdb.io/search?q=${expression}&lang=english`
+        // let link = `https://jisho.org/search/${expression}`
+        let link = `https://jpdb.io/search?q=${expression}`
 
         let linkElement = document.createElement('a')
         linkElement.setAttribute('href', link)
