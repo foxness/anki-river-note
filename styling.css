@@ -1,3 +1,27 @@
+
+/* ------------------------ VARIABLES ------------------------ */
+
+:root {
+    --dark-mode-heiban: #39bae6;
+    --dark-mode-atamadaka: #ec464f;
+    --dark-mode-nakadaka: #ff8f40;
+    --dark-mode-odaka: #6cbf43;
+    --dark-mode-kifuku: #af85f4;
+    --light-mode-heiban: #1aa0ce;
+    --light-mode-atamadaka: #e92a35;
+    --light-mode-nakadaka: #ff6b03;
+    --light-mode-odaka: #61ad3b;
+    --light-mode-kifuku: #7e53c4;
+
+    --heiban: var(--dark-mode-heiban, initial);
+    --atamadaka: var(--dark-mode-atamadaka, initial);
+    --nakadaka: var(--dark-mode-nakadaka, initial);
+    --odaka: var(--dark-mode-odaka, initial);
+    --kifuku: var(--dark-mode-kifuku, initial);
+}
+
+/* ------------------------ MAIN ------------------------ */
+
 * {
     /* border: 0.05em dotted white; */
     box-sizing: border-box;
@@ -203,21 +227,6 @@
     max-height: min(18.5em, 100vh - 17em); */
 }
 
-.context:not(:has(b)),
-.hint:not(:has(b)) {
-    color: orange !important;
-}
-
-.errorField,
-.errorField * {
-    color: orange !important;
-}
-
-.superError,
-.superError * {
-    color: #ff2b0f !important;
-}
-
 .audio {
     display: none;
     /* flex */
@@ -230,6 +239,23 @@
 
 .contextInner {
     line-height: 145%;
+}
+
+/* ------------------------ ERROR ------------------------ */
+
+.context:not(:has(b)),
+.hint:not(:has(b)) {
+    color: red !important;
+}
+
+.errorField,
+.errorField * {
+    color: red !important;
+}
+
+.superError,
+.superError * {
+    color: #ff2c2c !important;
 }
 
 /* ------------------------ PITCH ------------------------ */
@@ -253,7 +279,8 @@
     background-color: #fff;
 }
 
-/* When multiple pitch */
+/* Multiple pitches */
+
 .pitch ul,
 #pitch-tags ul {
     list-style: none;
@@ -280,7 +307,8 @@
     color: var(--bg-color);
 }
 
-/* Pitch graphs css */
+/* Pitch graphs */
+
 .pitch-low {
     position: relative;
 }
@@ -328,32 +356,7 @@
     top: -0.1em;
 }
 
-/* Pitch coloring */
-
-:root {
-    --dark-mode-heiban: #39bae6;
-    --dark-mode-atamadaka: #ec464f;
-    --dark-mode-nakadaka: #ff8f40;
-    --dark-mode-odaka: #6cbf43;
-    --dark-mode-kifuku: #af85f4;
-    --light-mode-heiban: #1aa0ce;
-    --light-mode-atamadaka: #e92a35;
-    --light-mode-nakadaka: #ff6b03;
-    --light-mode-odaka: #61ad3b;
-    --light-mode-kifuku: #7e53c4;
-
-    --heiban: var(--dark-mode-heiban, initial);
-    --atamadaka: var(--dark-mode-atamadaka, initial);
-    --nakadaka: var(--dark-mode-nakadaka, initial);
-    --odaka: var(--dark-mode-odaka, initial);
-    --kifuku: var(--dark-mode-kifuku, initial);
-
-    /* --heiban: var(--light-mode-heiban, initial);
-    --atamadaka: var(--light-mode-atamadaka, initial);
-    --nakadaka: var(--light-mode-nakadaka, initial);
-    --odaka: var(--light-mode-odaka, initial);
-    --kifuku: var(--light-mode-kifuku, initial); */
-}
+/* Pitch colors */
 
 .heiban {
     color: var(--heiban);
