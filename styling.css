@@ -24,7 +24,7 @@
     --green-accent: #37e3b2;
     --new-accent: yellow;
     --reading-color: #f8e1b5;
-    --meaning-color: var(--fg-color); /* #3772ff dodgerblue-like */
+    --meaning-color: #bccfff; /* #3772ff dodgerblue-like */
     --notes-definition-expression: lightseagreen;
     --notes-definition-reading: lemonchiffon;
     --notes-definition-meaning: mediumaquamarine;
@@ -170,7 +170,7 @@
     margin-top: 0.25em;
     margin-bottom: 0.15em;
     font-size: 130%;
-    /* font-weight: 500; */
+    font-weight: 500;
     color: var(--meaning-color);
 }
 
