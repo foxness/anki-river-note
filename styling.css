@@ -335,7 +335,7 @@
 .pitch-high>.pitch-line {
     display: block;
     position: absolute;
-    top: -0.001em;
+    top: 0.08em;
     left: 0;
     right: 0;
     height: 0;
@@ -356,7 +356,7 @@
 .pitch-to-drop>.pitch-line {
     display: block;
     position: absolute;
-    top: -0.001em;
+    top: 0.08em;
     left: 0;
     right: 0;
     border-top-width: 0.1em;
