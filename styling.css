@@ -19,10 +19,20 @@
     --odaka: var(--dark-mode-odaka, initial);
     --kifuku: var(--dark-mode-kifuku, initial);
 
+    --fg-color: #fcfcfc;
+
     --green-accent: #37e3b2;
     --new-accent: yellow;
     --reading-color: #f8e1b5;
     --meaning-color: #3772ff; /* dodgerblue-like */
+    --notes-definition-expression: lightseagreen;
+    --notes-definition-reading: lemonchiffon;
+    --notes-definition-meaning: mediumaquamarine;
+    --simple-note: lightslategray;
+    /* lightseagreen aquamarine */
+
+    --error-field: red;
+    --super-error: #ff2c2c;
 }
 
 /* ------------------------ MAIN ------------------------ */
@@ -118,7 +128,6 @@
 .context b,
 .hint b {
     text-decoration-color: var(--green-accent);
-    /* aquamarine-like */
 
     font-weight: normal;
     text-decoration-line: underline;
@@ -159,7 +168,6 @@
     margin-bottom: 0.3em;
     text-align: left;
     font-size: 100%;
-    /* color: lightseagreen; */
 }
 
 .notes:empty {
@@ -180,7 +188,7 @@
     margin-right: 0.06em;
     font-size: 150%;
     font-weight: normal;
-    color: lightseagreen;
+    color: var(--notes-definition-expression);
 }
 
 .definitionExpression a {
@@ -196,22 +204,21 @@
     user-select: none;
     font-size: 55%;
     color: white;
-    /* color: lemonchiffon; */
 }
 
 .definitionReading {
     font-size: 120%;
-    color: lemonchiffon;
+    color: var(--notes-definition-reading);
 }
 
 .definitionMeaning {
-    color: mediumaquamarine;
+    color: var(--notes-definition-meaning);
 }
 
 .simpleNoteLine {
     /* non-definition line, rare */
     line-height: 240%;
-    color: lightslategray;
+    color: var(--simple-note);
 }
 
 .notes:has(.definitionLine:last-child)~.image:not(:has(img)) {
@@ -249,17 +256,17 @@
 
 .context:not(:has(b)),
 .hint:not(:has(b)) {
-    color: red !important;
+    color: var(--error-field) !important;
 }
 
 .errorField,
 .errorField * {
-    color: red !important;
+    color: var(--error-field) !important;
 }
 
 .superError,
 .superError * {
-    color: #ff2c2c !important;
+    color: var(--super-error) !important;
 }
 
 /* ------------------------ PITCH ------------------------ */
@@ -268,7 +275,7 @@
     display: inline;
 }
 
-#pitch-tags {
+/* #pitch-tags {
     color: var(--canvas);
     font-family: var(--font-serif);
     background-color: var(--fg);
@@ -281,7 +288,7 @@
 .mobile .nightMode #pitch-tags {
     color: #000 !important;
     background-color: #fff;
-}
+} */
 
 /* Multiple pitches */
 
@@ -307,9 +314,9 @@
     color: var(--fg-color);
 }
 
-#pitch-tags ul>li:not(:last-child)::after {
+/* #pitch-tags ul>li:not(:last-child)::after {
     color: var(--bg-color);
-}
+} */
 
 /* Pitch graphs */
 
