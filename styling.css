@@ -130,8 +130,17 @@
     display: none;
 }
 
-.context b,
 .hint b {
+    text-decoration-color: var(--green-accent);
+
+    font-weight: normal;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.125em;
+    text-underline-offset: 0.25em;
+}
+
+.context b:not(.pitch-underline) {
     text-decoration-color: var(--green-accent);
 
     font-weight: normal;
@@ -391,6 +400,15 @@
 
 .kifuku {
     color: var(--kifuku);
+}
+
+.pitch-underline {
+    font-weight: normal;
+    
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.125em;
+    text-underline-offset: 0.25em;
 }
 
 /* ------------------------ SPECIFIC SECTION ------------------------ */

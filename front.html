@@ -598,7 +598,7 @@
         element.innerHTML = readingHighlighted
     }
 
-    function markExpression() {
+    function markContextExpression() {
         markExpressionInElement('hint')
         markExpressionInElement('context')
     }
@@ -878,32 +878,20 @@
         }
     }
     
-    function paintTargetWord() {
-        const pitchPositions = getPitchPositions()
+    function markPitchInContextExpression() {
+        let pitchPositions = getPitchPositions()
         if (!pitchPositions) {
             return
         }
 
-        const firstPosition = Number(pitchPositions[0])
+        let firstPosition = Number(pitchPositions[0])
         let pitchType = getPitchType(firstPosition)
 
-        // let meaningElement = document.querySelector('.meaning')
-        // meaningElement.innerHTML += ' ' + pitchType
-
-        // const sentences = Array.from(
-        //     document.querySelectorAll(".sentence, .definition, .sentence-mobile"),
-        // )
-
-        // for (const sentence of sentences) {
-        //     for (const targetWord of sentence.getElementsByTagName("b")) {
-        //         targetWord.classList.add(getPitchType(pitchPosition))
-        //     }
-        // }
-
-        // const vocabElement = document.querySelector(".vocab")
-        // if (vocabElement !== null) {
-        //     vocabElement.classList.add(getPitchType(pitchPosition))
-        // }
+        // dont add pitch to hint to not make it easy
+        let highlightedElements = document.querySelectorAll('.context b')
+        highlightedElements.forEach((element) => {
+            element.classList.add('pitch-underline', pitchType)
+        })
     }
 
     function groupMoras(kana) {
@@ -1053,13 +1041,13 @@
 
         // populateReading()
         // varyReadingKana()
-        // paintTargetWord()
         // addPitchToReading()
         // addLinkToReading()
 
         // populateContext()
         populateHint()
-        markExpression()
+        markContextExpression()
+        // markPitchInContextExpression()
 
         highlightErrorInExpression()
         // highlightErrorInReading()
