@@ -835,7 +835,12 @@
     // ---------------- PITCH ACCENT ----------------
 
     function getPitchPositions() {
-        return cardPitchPosition.match(/^\d+|\d+\b|\d+(?=\w)/g)
+        let positions = cardPitchPosition.match(/^\d+|\d+\b|\d+(?=\w)/g)
+        if (positions === null) {
+            return null
+        }
+
+        return positions.map(a => Number(a))
     }
 
     function getPitchType(pitchPosition) {
@@ -860,8 +865,7 @@
             return
         }
 
-        let firstPosition = Number(pitchPositions[0])
-        let pitchType = getPitchType(firstPosition)
+        let pitchType = getPitchType(pitchPositions[0])
 
         // dont add pitch to hint to not make it easy
         let highlightedElements = document.querySelectorAll('.context b')
@@ -892,50 +896,45 @@
     }
 
     function getPitchPattern(pitchPosition) {
-        // 0 = low
-        // 1 = high
-        // 2 = high to low
+        let low = '0'
+        let high = '1'
+        let drop = '2' // high to low
 
-        const kana = cardReading
-        const moras = groupMoras(kana)
+        let moras = groupMoras(cardReading)
         let pitchType = getPitchType(pitchPosition)
         let pattern = []
 
         if (pitchType === 'heiban') {
-            // 平板
             pattern = [
-                ...Array(moras[0].length).fill("0"),
-                ...Array(kana.length - moras[0].length).fill("1"),
+                ...Array(moras[0].length).fill(low),
+                ...Array(cardReading.length - moras[0].length).fill(high),
             ]
         } else if (pitchType === 'atamadaka') {
-            // 頭高
             pattern = [
-                ...(moras[0].length === 2 ? ["1", "2"] : ["2"]),
-                ...Array(kana.length - moras[0].length).fill("0"),
+                ...(moras[0].length === 2 ? [high, drop] : [drop]),
+                ...Array(cardReading.length - moras[0].length).fill(low),
             ]
         } else if (pitchType === 'odaka') {
-            // 尾高
             pattern = [
-                ...Array(moras[0].length).fill("0"),
-                ...Array(kana.length - moras[0].length - 1).fill("1"),
-                "2",
+                ...Array(moras[0].length).fill(low),
+                ...Array(cardReading.length - moras[0].length - 1).fill(high),
+                drop,
             ]
-        } else {
-            // 中高
+        } else { // nakadaka
             let afterDrop = false
             for (let i = 0; i < moras.length; i++) {
                 if (i === 0) {
-                    pattern = Array(moras[0].length).fill("0")
+                    pattern = Array(moras[0].length).fill(low)
                 } else if (i + 1 === pitchPosition) {
                     pattern =
                         moras[i].length === 2
-                        ? [...pattern, "1", "2"]
-                        : [...pattern, "2"]
+                        ? [...pattern, high, drop]
+                        : [...pattern, drop]
                     afterDrop = true
                 } else if (afterDrop) {
-                    pattern = [...pattern, ...Array(moras[i].length).fill("0")]
+                    pattern = [...pattern, ...Array(moras[i].length).fill(low)]
                 } else {
-                    pattern = [...pattern, ...Array(moras[i].length).fill("1")]
+                    pattern = [...pattern, ...Array(moras[i].length).fill(high)]
                 }
             }
         }
@@ -944,6 +943,10 @@
     }
 
     function constructPitchList(pitchPositions) {
+        let low = '0'
+        let high = '1'
+        let drop = '2' // high to low
+
         let createPitchSpan = (pitchClass, pitchChar) => {
             let pitchSpan = document.createElement('span')
             let charSpan = document.createElement('span')
@@ -964,27 +967,32 @@
         let pitchList = document.createElement('ul')
 
         for (let pitchPosition of uniquePitchPositions) {
-            let pattern = getPitchPattern(Number(pitchPosition))
+            let pattern = getPitchPattern(pitchPosition)
+            let pitchType = getPitchType(pitchPosition)
 
             let pitchItem = document.createElement('li')
-            pitchItem.classList.add('pitch-item')
-            pitchItem.classList.add(getPitchType(Number(pitchPosition)))
+            pitchItem.classList.add('pitch-item', pitchType)
 
             for (let i = 0; i < riverVariedKanaReading.length; i++) {
-                let current = riverVariedKanaReading[i]
+                let currentKana = riverVariedKanaReading[i]
 
-                if (pattern[i] === '0') {
-                    pitchItem.appendChild(createPitchSpan('pitch-low', current))
+                let className = null
+                if (pattern[i] === low) {
+                    className = 'pitch-low'
                 }
-                else if (pattern[i] === '1') {
-                    pitchItem.appendChild(createPitchSpan('pitch-high', current))
+                else if (pattern[i] === high) {
+                    className = 'pitch-high'
                 }
-                else if (pattern[i] === '2') {
-                    pitchItem.appendChild(createPitchSpan('pitch-to-drop', current))
+                else if (pattern[i] === drop) {
+                    className = 'pitch-to-drop'
+                } else {
+                    // console.error('pattern[i] found undefined value. pattern is', pattern)
+                    alert(`pattern[i] found undefined value. pattern is ${pattern}`)
+                    break
                 }
-                else {
-                    console.error('pattern[i] found undefined value. pattern is', pattern)
-                }
+
+                let currentPitchSpan = createPitchSpan(className, currentKana)
+                pitchItem.appendChild(currentPitchSpan)
             }
             
             pitchList.appendChild(pitchItem)
