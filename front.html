@@ -867,7 +867,7 @@
     }
 
     function getPitchType(pitchPosition) {
-        let moraLength = cardReading.replace(/[ャュョァィゥヮゃゅょぁぃぅゎ]/g, '').length
+        let moraLength = cardReading.replace(/[ャュョァィゥェォヮゃゅょぁぃぅぇぉゎ]/g, '').length
 
         if (pitchPosition === 0) {
             return 'heiban'
@@ -899,10 +899,10 @@
     }
 
     function groupMoras(kana) {
-        let currentChar = ""
-        let nextChar = ""
-        const groupedMoras = []
-        const check = ["ャ", "ュ", "ョ", "ァ", "ィ", "ゥ", "ヮ", "ゃ", "ゅ", "ょ", "ぁ", "ぃ", "ぅ", "ゎ"]
+        let currentChar = ''
+        let nextChar = ''
+        let groupedMoras = []
+        let check = 'ャュョァィゥェォヮゃゅょぁぃぅぇぉゎ'.split('')
 
         for (let i = 0; i < kana.length; i++) {
             currentChar = kana[i]
