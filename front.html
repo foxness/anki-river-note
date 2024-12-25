@@ -273,6 +273,10 @@
     // ---------------- VARIATION ----------------
 
     function getVariedKanaReading() {
+        if (cardReading.includes('ー')) { // katakana prolongation mark
+            return cardReading
+        }
+
         return translateKana(cardReading, riverIsHiraganaReading)
     }
 
