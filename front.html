@@ -58,9 +58,10 @@
         riverPreviewProbabilityHoliday = 0
         riverPreviewProbabilityHandwritten = 0.01
 
-        // --- BLUR ---
+        // --- KEYBINDS ---
 
-        riverBlurKey = 'j'
+        riverToggleBlurKey = 'j'
+        riverToggleHandwrittenKey = 'h'
     }
 
     function definePreviewVariables() {
@@ -134,7 +135,7 @@
         }
 
         addEventListener('keypress', (e) => {
-            if (e.key === riverBlurKey) {
+            if (e.key === riverToggleBlurKey) {
                 meaningElements.forEach(element => {
                     element.classList.toggle('blurry')
                 })
@@ -269,86 +270,63 @@
     }
 
     function varyCardJapaneseFont() {
-        let handwrittenClass = 'handwritten'
-        let isHandwritten = riverIsHandwrittenCard
-
         let fontElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading'
         let fontElements = document.querySelectorAll(fontElementSelector)
 
-        let makeHandwritten = () => {
+        let toggleHandwritten = () => {
             fontElements.forEach((element) => {
-                element.classList.add(handwrittenClass)
+                element.classList.toggle('handwritten')
             })
         }
 
-        let makeNotHandwritten = () => {
-            fontElements.forEach((element) => {
-                element.classList.remove(handwrittenClass)
-            })
+        if (riverIsHandwrittenCard) {
+            toggleHandwritten()
         }
 
-        if (isHandwritten) {
-            makeHandwritten()
-        }
+        // let elements = document.querySelectorAll('.image, .context')
+        // elements.forEach((element) => {
+        //     element.addEventListener('mouseenter', (e) => {
+        //         toggleHandwritten()
+        //     })
 
-        let elements = document.querySelectorAll('.image, .context')
-        elements.forEach((element) => {
-            element.addEventListener('mouseenter', (e) => {
-                if (isHandwritten) {
-                    makeNotHandwritten()
-                } else {
-                    makeHandwritten()
-                }
-            })
+        //     element.addEventListener('mouseleave', (e) => {
+        //         toggleHandwritten()
+        //     })
+        // })
 
-            element.addEventListener('mouseleave', (e) => {
-                if (isHandwritten) {
-                    makeHandwritten()
-                } else {
-                    makeNotHandwritten()
-                }
-            })
+        addEventListener('keypress', (e) => {
+            if (e.key === riverToggleHandwrittenKey) {
+                toggleHandwritten()
+            }
         })
     }
 
     function varyReadingJapaneseFont() {
-        let handwrittenClass = 'handwritten'
-        let isHandwritten = riverIsHandwrittenReading
-
         let readingElement = document.querySelector('.reading')
-        if (!readingElement) {
-            return
+
+        let toggleHandwritten = () => {
+            readingElement.classList.toggle('handwritten')
         }
 
-        let makeHandwritten = () => {
-            readingElement.classList.add(handwrittenClass)
+        if (riverIsHandwrittenReading) {
+            toggleHandwritten()
         }
 
-        let makeNotHandwritten = () => {
-            readingElement.classList.remove(handwrittenClass)
-        }
+        // let elements = document.querySelectorAll('.image, .context')
+        // elements.forEach((element) => {
+        //     element.addEventListener('mouseenter', (e) => {
+        //         toggleHandwritten()
+        //     })
 
-        if (isHandwritten) {
-            makeHandwritten()
-        }
+        //     element.addEventListener('mouseleave', (e) => {
+        //         toggleHandwritten()
+        //     })
+        // })
 
-        let elements = document.querySelectorAll('.image, .context')
-        elements.forEach((element) => {
-            element.addEventListener('mouseenter', (e) => {
-                if (isHandwritten) {
-                    makeNotHandwritten()
-                } else {
-                    makeHandwritten()
-                }
-            })
-
-            element.addEventListener('mouseleave', (e) => {
-                if (isHandwritten) {
-                    makeHandwritten()
-                } else {
-                    makeNotHandwritten()
-                }
-            })
+        addEventListener('keypress', (e) => {
+            if (e.key === riverToggleHandwrittenKey) {
+                toggleHandwritten()
+            }
         })
     }
 
