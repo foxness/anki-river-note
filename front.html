@@ -92,6 +92,7 @@
         cardReading = cardTrueReading === '' ? cardExpression : cardTrueReading
         cardContext = cardTrueContext === '' ? cardExpression : cardTrueContext
 
+        riverIsFrontOfCard = getIsFrontOfCard()
         riverIsKatakanaCard = getIsKatakanaCard(cardExpression)
         riverIsKanaCard = cardReading === cardExpression
     }
@@ -118,6 +119,11 @@
     }
 
     // ---------------- MISC ----------------
+
+    function getIsFrontOfCard() {
+        let dividerElement = document.querySelector('.divider')
+        return dividerElement === null
+    }
 
     function getIsPreview() {
         // let viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -987,8 +993,7 @@
 
     // ---------------- MAIN ----------------
 
-    function main() {
-        defineGlobalVariables()
+    function mainFront() {
         indicateCard()
         addLinkToExpression()
         fixCopypaste()
@@ -1012,15 +1017,45 @@
 
         // highlightNoteDefinitions()
         varyJapaneseFont()
-        
+    }
+
+    function mainBack() {
+        indicateCard()
+        addLinkToExpression()
+        fixCopypaste()
+
+        // populateReading()
+        varyReadingKana()
+        addPitchToReading()
+        addLinkToReading()
+
+        populateContext()
+        populateHint()
+        markContextExpression()
+        markPitchInContextExpression()
+
+        highlightErrorInExpression()
+        highlightErrorInReading()
+        highlightErrorInMeaning()
+        highlightErrorInNotes()
+        highlightErrorInContext()
+        highlightErrorInHint()
+
+        highlightNoteDefinitions()
+        varyJapaneseFont()
+    }
+
+    function main() {
+        defineGlobalVariables()
+
+        if (riverIsFrontOfCard) {
+            mainFront()
+        } else {
+            mainBack()
+        }
+
         hideRedWarning()
     }
 
-    new Promise(resolve => {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', resolve)
-        } else {
-            resolve()
-        }
-    }).then(main)
+    main()
 </script>
