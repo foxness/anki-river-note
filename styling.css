@@ -406,6 +406,16 @@
     text-underline-offset: 0.25em;
 }
 
+/* ------------------------ BLUR ------------------------ */
+
+.blurry {
+    filter: blur(0.3em);
+}
+
+.blurry:hover {
+    filter: none;
+}
+
 /* ------------------------ SPECIFIC SECTION ------------------------ */
 
 .context {

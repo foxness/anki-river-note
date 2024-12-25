@@ -73,6 +73,10 @@
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
         riverPreviewProbabilityHandwritten = 0.01
+
+        // --- BLUR ---
+
+        riverBlurKey = 'j'
     }
 
     function definePreviewVariables() {
@@ -100,7 +104,7 @@
 
         cardIsNew = cardType === '0'
         let cardIsLearning = cardType === '1'
-        // let cardIsReview = cardType === '2'
+        cardIsReview = cardType === '2'
         // let cardIsRelearning = cardType === '3'
 
         cardIsNewOrLearning = cardIsNew || cardIsLearning
@@ -135,6 +139,24 @@
     }
 
     // ---------------- MISC ----------------
+
+    function blurMeaning() {
+        let meaningElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+
+        if (cardIsReview) {
+            meaningElements.forEach(element => {
+                element.classList.add('blurry')
+            })
+        }
+
+        addEventListener('keypress', (e) => {
+            if (e.key === riverBlurKey) {
+                meaningElements.forEach(element => {
+                    element.classList.toggle('blurry')
+                })
+            }
+        })
+    }
 
     function getIsFrontOfCard() {
         let dividerElement = document.querySelector('.divider')
@@ -1040,6 +1062,7 @@
         highlightErrorInHint()
 
         // highlightNoteDefinitions()
+        // blurMeaning()
         varyJapaneseFont()
     }
 
@@ -1066,6 +1089,7 @@
         highlightErrorInHint()
 
         highlightNoteDefinitions()
+        blurMeaning()
         varyJapaneseFont()
     }
 
