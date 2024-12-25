@@ -35,15 +35,7 @@
         riverProbabilityReadingHandwritten = 0.5
         riverProbabilityKanaCardHandwritten = 0.5
         riverProbabilityNewKanjiCardHandwritten = 0.001
-
-        riverKanjiCardHandwrittenUseScale = false
-        riverKanjiCardHandwrittenProbability = 0.05
-
-        // unused
-        riverNormalKanjiCardHandwrittenMinInterval = 0
-        riverNormalKanjiCardHandwrittenMaxInterval = 120
-        riverNormalKanjiCardHandwrittenMinProbability = 0.08
-        riverNormalKanjiCardHandwrittenMaxProbability = 0.16
+        riverProbabilityKanjiCardHandwritten = 0.05
 
         // --- BLOOD MOON ---
 
@@ -51,13 +43,7 @@
         riverBloodMoonProbabilityReadingHandwritten = 0.9
         riverBloodMoonProbabilityKanaCardHandwritten = 0.9
         riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
-        riverBloodMoonProbabilityKanjiCardHandwritten = riverKanjiCardHandwrittenProbability * 2
-
-        // unused
-        riverBloodMoonKanjiCardHandwrittenMinInterval = 0
-        riverBloodMoonKanjiCardHandwrittenMaxInterval = 120
-        riverBloodMoonKanjiCardHandwrittenMinProbability = 0.2
-        riverBloodMoonKanjiCardHandwrittenMaxProbability = 0.3
+        riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
 
         // --- HOLIDAY ---
 
@@ -70,7 +56,6 @@
         riverUsePreview = true
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
-
         riverPreviewProbabilityHandwritten = 0.01
     }
 
@@ -96,15 +81,12 @@
 
         // additional anki fields addon
         let cardType = `{{info-Type:}}`
-        let cardTrueInterval = Number(`{{info-Ivl:}}`)
-        let cardLastIntervalBeforeFail = Number(`{{info-LastIntervalBeforeFailRiver:}}`)
 
         cardIsNew = cardType === '0'
         let cardIsLearning = cardType === '1'
-        // cardIsReview = cardType === '2'
-        let cardIsRelearning = cardType === '3'
+        // let cardIsReview = cardType === '2'
+        // let cardIsRelearning = cardType === '3'
 
-        cardInterval = cardIsRelearning ? cardLastIntervalBeforeFail : cardTrueInterval
         cardIsNewOrLearning = cardIsNew || cardIsLearning
 
         cardReading = cardTrueReading === '' ? cardExpression : cardTrueReading
@@ -187,43 +169,11 @@
             return riverProbabilityNewKanjiCardHandwritten
         }
 
-        if (riverKanjiCardHandwrittenUseScale) {
-            return scaleHandwrittenKanjiCardProbability(cardInterval, riverIsBloodMoon)
-        }
-
         if (riverIsBloodMoon) {
             return riverBloodMoonProbabilityKanjiCardHandwritten
         }
 
-        return riverKanjiCardHandwrittenProbability
-    }
-
-    function scaleHandwrittenKanjiCardProbability(interval, isBloodMoon) {
-        let minInterval = riverNormalKanjiCardHandwrittenMinInterval // in days
-        let maxInterval = riverNormalKanjiCardHandwrittenMaxInterval
-        let minProbability = riverNormalKanjiCardHandwrittenMinProbability
-        let maxProbability = riverNormalKanjiCardHandwrittenMaxProbability
-
-        if (isBloodMoon) {
-            minInterval = riverBloodMoonKanjiCardHandwrittenMinInterval
-            maxInterval = riverBloodMoonKanjiCardHandwrittenMaxInterval
-            minProbability = riverBloodMoonKanjiCardHandwrittenMinProbability
-            maxProbability = riverBloodMoonKanjiCardHandwrittenMaxProbability
-        }
-
-        return lerp(interval, minInterval, maxInterval, minProbability, maxProbability)
-    }
-
-    function lerp(value, minIn, maxIn, minOut, maxOut) {
-        let enableEase = true
-        let ease = (x) => 0.5 - 0.5 * Math.cos(Math.PI * x)
-
-        let scale = Math.min(1, Math.max(0, (value - minIn) / (maxIn - minIn)))
-        if (enableEase) {
-            scale = ease(scale)
-        }
-        
-        return minOut + scale * (maxOut - minOut)
+        return riverProbabilityKanjiCardHandwritten
     }
 
     function getRandom(context) {
