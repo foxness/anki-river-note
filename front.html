@@ -122,18 +122,24 @@
 
     // ---------------- MISC ----------------
 
-    function blurMeaning() {
+    function isJapanese(text) {
+        let regex = /[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/
+        return text.match(regex) !== null
+    }
+
+    function blurEnglishText() {
         let meaningElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        englishElements = Array.from(meaningElements).filter(element => !isJapanese(element.textContent))
 
         if (cardIsReview) {
-            meaningElements.forEach(element => {
+            englishElements.forEach(element => {
                 element.classList.add('blurry')
             })
         }
 
-        addEventListener('keypress', (e) => {
+        document.addEventListener('keypress', (e) => {
             if (e.key === riverToggleBlurKey) {
-                meaningElements.forEach(element => {
+                englishElements.forEach(element => {
                     element.classList.toggle('blurry')
                 })
             }
@@ -818,6 +824,10 @@
 
     // ---------------- PITCH ACCENT ----------------
 
+    function getSameMoraKana() {
+        return 'ャュョァィゥェォヮゃゅょぁぃぅぇぉゎ'
+    }
+
     function getPitchPositions() {
         let positions = cardPitchPosition.match(/^\d+|\d+\b|\d+(?=\w)/g)
         if (positions === null) {
@@ -828,7 +838,7 @@
     }
 
     function getPitchType(pitchPosition) {
-        let moraLength = cardReading.replace(/[ャュョァィゥェォヮゃゅょぁぃぅぇぉゎ]/g, '').length
+        let moraLength = cardReading.replace(new RegExp(`[${getSameMoraKana()}]`, 'g'), '').length
 
         if (pitchPosition === 0) {
             return 'heiban'
@@ -862,7 +872,7 @@
         let currentChar = ''
         let nextChar = ''
         let groupedMoras = []
-        let check = 'ャュョァィゥェォヮゃゅょぁぃぅぇぉゎ'.split('')
+        let check = getSameMoraKana().split('')
 
         for (let i = 0; i < kana.length; i++) {
             currentChar = kana[i]
@@ -1024,7 +1034,7 @@
         highlightErrorInHint()
 
         // highlightNoteDefinitions()
-        // blurMeaning()
+        // blurEnglishText()
         varyJapaneseFont()
     }
 
@@ -1051,7 +1061,7 @@
         highlightErrorInHint()
 
         highlightNoteDefinitions()
-        blurMeaning()
+        blurEnglishText()
         varyJapaneseFont()
     }
 
