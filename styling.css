@@ -33,7 +33,7 @@
     --definition-expression-link: var(--fg-color);
     /* lightseagreen aquamarine yellow */
 
-    --divider: #7f7f7f;
+    --divider: #727272;
 
     --error-field: red;
     --super-error: #ff2c2c;
@@ -151,13 +151,11 @@
 }
 
 .divider {
-    width: 100%;
-}
-
-.divider hr {
-    margin: 0.4em 1.2em;
+    width: calc(100% - 4em);
+    height: 0.12em;
+    background-color: var(--divider);
+    margin: 0.4em 0;
     border-radius: 1em;
-    border: 0.05em solid var(--divider);
 }
 
 .reading {
