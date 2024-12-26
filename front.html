@@ -303,6 +303,9 @@
 
     function varyReadingJapaneseFont() {
         let readingElement = document.querySelector('.reading')
+        if (!readingElement) {
+            return
+        }
 
         let toggleHandwritten = () => {
             readingElement.classList.toggle('handwritten')
