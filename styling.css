@@ -161,6 +161,7 @@
 .reading {
     margin-top: -0.1em;
     font-size: 180%;
+    font-weight: 600;
     color: var(--reading-color);
 }
 
@@ -334,14 +335,32 @@
     position: relative;
 }
 
+:root {
+    /* thin line */
+    /* --pitch-line-width: 0.1em;
+    --pitch-top-margin: 0.08em;
+    --pitch-drop-height: 0.4em;
+    --pitch-drop-margin: 0.1em;
+    --pitch-drop-padding: 0.1em;
+    --pitch-right: 0.1em; */
+
+    /* thick line */
+    --pitch-line-width: 0.14em;
+    --pitch-top-margin: 0;
+    --pitch-drop-height: 0.45em;
+    --pitch-drop-margin: 0.14em;
+    --pitch-drop-padding: 0.14em;
+    --pitch-right: 0.14em;
+}
+
 .pitch-high>.pitch-line {
     display: block;
     position: absolute;
-    top: 0.08em;
+    top: var(--pitch-top-margin);
     left: 0;
     right: 0;
     height: 0;
-    border-top-width: 0.1em;
+    border-top-width: var(--pitch-line-width);
     border-top-style: solid;
 }
 
@@ -351,21 +370,21 @@
 
 .pitch-to-drop {
     position: relative;
-    padding-right: 0.1em;
-    margin-right: 0.1em;
+    padding-right: var(--pitch-drop-padding);
+    margin-right: var(--pitch-drop-margin);
 }
 
 .pitch-to-drop>.pitch-line {
     display: block;
     position: absolute;
-    top: 0.08em;
+    top: var(--pitch-top-margin);
     left: 0;
     right: 0;
-    border-top-width: 0.1em;
+    border-top-width: var(--pitch-line-width);
     border-top-style: solid;
-    right: -0.1em;
-    height: 0.4em;
-    border-right-width: 0.1em;
+    right: calc(-1 * var(--pitch-right));
+    height: var(--pitch-drop-height);
+    border-right-width: var(--pitch-line-width);
     border-right-style: solid;
 }
 
