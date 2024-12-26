@@ -128,20 +128,22 @@
     }
 
     function blurEnglishText() {
-        let meaningElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
-        englishElements = Array.from(meaningElements).filter(element => !isJapanese(element.textContent))
+        let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        englishElements = Array.from(englishElements).filter(element => !isJapanese(element.textContent))
 
-        if (cardIsReview) {
+        let toggleBlur = () => {
             englishElements.forEach(element => {
-                element.classList.add('blurry')
+                element.classList.toggle('blurry')
             })
         }
 
-        document.addEventListener('keypress', (e) => {
+        if (cardIsReview) {
+            toggleBlur()
+        }
+
+        addEventListener('keypress', (e) => {
             if (e.key === riverToggleBlurKey) {
-                englishElements.forEach(element => {
-                    element.classList.toggle('blurry')
-                })
+                toggleBlur()
             }
         })
     }
