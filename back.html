@@ -74,10 +74,14 @@
         riverBlurMinBlur = 0 // em
         riverBlurMaxBlur = 0.1 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
 
+        // --- CYCLABLE FONTS ---
+
+        riverFonts = 'font-regular font-hiragino-mincho font-hiragino-sans font-handwritten'
+
         // --- KEYBINDS ---
 
         riverToggleBlurKey = 'j'
-        riverToggleHandwrittenKey = 'h'
+        riverCycleFontKey = 'h'
     }
 
     function definePreviewVariables() {
@@ -327,6 +331,7 @@
     }
 
     function varyJapaneseFont() {
+        tagJapaneseText()
         varyCardJapaneseFont()
         // varyReadingJapaneseFont()
     }
@@ -488,69 +493,99 @@
 
     // ---------------- FONT VARIATION ----------------
 
-    function varyCardJapaneseFont() {
-        let fontElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading'
-        let fontElements = document.querySelectorAll(fontElementSelector)
+    function getFonts() {
+        return riverFonts.split(' ')
+    }
 
-        let toggleHandwritten = () => {
-            fontElements.forEach((element) => {
-                element.classList.toggle('handwritten')
+    function cycleFont(element) {
+        let defaultFont = 'font-regular'
+        let fonts = getFonts()
+
+        let currentFont = defaultFont
+        for (const font of fonts) {
+            if (element.classList.contains(font)) {
+                currentFont = font
+                break
+            }
+        }
+
+        newFont = fonts[(fonts.indexOf(currentFont) + 1) % fonts.length]
+
+        element.classList.remove(currentFont)
+        element.classList.add(newFont)
+    }
+
+    function setFont(element, font) {
+        let fonts = getFonts()
+        element.classList.remove(...fonts)
+        element.classList.add(font)
+    }
+
+    function tagJapaneseText() {
+        // we tag these elements because they could be either english or japanese
+
+        let elements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        let japaneseElements = Array.from(elements).filter(element => getIsJapanese(element.textContent))
+
+        japaneseElements.forEach((element) => {
+            element.classList.add('japanese')
+        })
+    }
+
+    function varyCardJapaneseFont() {
+        let japaneseElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading, .japanese'
+        let elements = document.querySelectorAll(japaneseElementSelector)
+
+        elements.forEach((element) => {
+            setFont(element, 'font-regular')
+        })
+
+        if (riverIsHandwrittenCard) {
+            elements.forEach((element) => {
+                setFont(element, 'font-handwritten')
             })
         }
 
-        if (riverIsHandwrittenCard) {
-            toggleHandwritten()
-        }
-
-        // let elements = document.querySelectorAll('.image, .context')
-        // elements.forEach((element) => {
-        //     element.addEventListener('mouseenter', (e) => {
-        //         toggleHandwritten()
-        //     })
-
-        //     element.addEventListener('mouseleave', (e) => {
-        //         toggleHandwritten()
-        //     })
-        // })
-
         addEventListener('keypress', (e) => {
-            if (e.key === riverToggleHandwrittenKey) {
-                toggleHandwritten()
+            if (e.key === riverCycleFontKey) {
+                elements.forEach((element) => {
+                    cycleFont(element)
+                })
             }
         })
     }
 
-    function varyReadingJapaneseFont() {
-        let readingElement = document.querySelector('.reading')
-        if (!readingElement) {
-            return
-        }
+    // function varyReadingJapaneseFont() {
+    //     let readingElement = document.querySelector('.reading')
+    //     if (!readingElement) {
+    //         return
+    //     }
 
-        let toggleHandwritten = () => {
-            readingElement.classList.toggle('handwritten')
-        }
+    //     let toggleHandwritten = () => {
+    //         readingElement.classList.toggle('font-handwritten')
+    //     }
 
-        if (riverIsHandwrittenReading) {
-            toggleHandwritten()
-        }
+    //     if (riverIsHandwrittenReading) {
+    //         toggleHandwritten()
+    //     }
 
-        // let elements = document.querySelectorAll('.image, .context')
-        // elements.forEach((element) => {
-        //     element.addEventListener('mouseenter', (e) => {
-        //         toggleHandwritten()
-        //     })
+    //     // let elements = document.querySelectorAll('.image, .context')
+    //     // elements.forEach((element) => {
+    //     //     element.addEventListener('mouseenter', (e) => {
+    //     //         toggleHandwritten()
+    //     //     })
 
-        //     element.addEventListener('mouseleave', (e) => {
-        //         toggleHandwritten()
-        //     })
-        // })
+    //     //     element.addEventListener('mouseleave', (e) => {
+    //     //         toggleHandwritten()
+    //     //     })
+    //     // })
 
-        addEventListener('keypress', (e) => {
-            if (e.key === riverToggleHandwrittenKey) {
-                toggleHandwritten()
-            }
-        })
-    }
+    //     addEventListener('keypress', (e) => {
+    //         if (e.key === riverCycleFontKey) {
+    //             toggleHandwritten()
+    //         }
+    //     })
+    // }
 
     // ---------------- KANA VARIATION ----------------
 

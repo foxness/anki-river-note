@@ -42,7 +42,7 @@
     --kifuku: #af85f4;
 
     --heiban-fg: hsl(212, 100%, 90%);
-    --atamadaka-fg: hsl(1, 100%, 90%);
+    --atamadaka-fg: hsl(2, 100%, 94%);
     --nakadaka-fg: hsl(24, 100%, 90%);
     --odaka-fg: hsl(100, 100%, 90%);
     --kifuku-fg: hsl(261, 100%, 90%);
@@ -138,7 +138,6 @@
 .hint {
     margin: 0.2em auto;
     max-width: 30em;
-    line-height: 145%; /* for varying font */
 }
 
 .hint:empty {
@@ -265,14 +264,6 @@
     display: none;
     /* flex */
     justify-content: center;
-}
-
-.handwritten {
-    font-family: "ackaisyo", "Noto Sans JP", sans-serif;
-}
-
-.contextInner {
-    line-height: 145%; /* for varying font */
 }
 
 /* ------------------------ ERROR ------------------------ */
@@ -469,6 +460,55 @@
 
 .blurry:hover {
     filter: none;
+}
+
+/* ------------------------ FONTS ------------------------ */
+
+@font-face {
+    font-family: 'ACKaisyoRiver';
+    src: local('ackaisyo');
+    ascent-override: 93%;
+    descent-override: 6%;
+    line-gap-override: 45%;
+}
+
+.font-regular {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.font-handwritten {
+    font-family: 'ACKaisyoRiver', sans-serif;
+    /* font-family: 'Noto Sans JP', sans-serif; */
+}
+
+/* .font-banana {
+    font-family: 'ArmedBanana', sans-serif;
+} */
+
+.font-hiragino-sans {
+    font-family: sans-serif; /* Hiragino Sans */
+}
+
+.font-hiragino-mincho {
+    font-family: 'HiraginoMinchoProNRiver', serif; /* Hiragino Mincho ProN */
+}
+
+/* --- FONT NORMALIZING --- */
+
+.expression:is(.font-hiragino-sans, .font-hiragino-mincho) {
+    line-height: 100%;
+}
+
+:is(.hint, .contextInner):is(.font-hiragino-sans, .font-hiragino-mincho) {
+    line-height: 145%;
+}
+
+.definitionExpression:is(.font-hiragino-sans, .font-hiragino-mincho) {
+    line-height: 175%;
+}
+
+.definitionMeaning.japanese:is(.font-hiragino-sans, .font-hiragino-mincho) {
+    line-height: 100%;
 }
 
 /* ------------------------ SPECIFIC SECTION ------------------------ */
