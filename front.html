@@ -115,7 +115,11 @@
         let cardAgnosticRandom = getRandom('')
 
         riverIsBloodMoon = cardAgnosticRandom() < riverProbabilityBloodMoon
-        riverIsHoliday = riverIsBloodMoon ? false : (cardAgnosticRandom() < riverProbabilityHoliday)
+        riverIsHoliday = cardAgnosticRandom() < riverProbabilityHoliday
+
+        if (riverIsBloodMoon) {
+            riverIsHoliday = false
+        }
 
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenReading = random() < getProbabilityReadingHandwritten()
@@ -131,11 +135,235 @@
         defineRandomVariables()
     }
 
+    // ---------------- GENERAL ----------------
+
+    function indicateCard() {
+        let indicatorElement = document.querySelector('.indicator')
+
+        if (riverIsPreview) {
+            indicatorElement.classList.add('visibleIndicator', 'indicatorPreview')
+            return
+        }
+
+        if (cardIsNew) {
+            indicatorElement.classList.add('visibleIndicator', 'indicatorNew')
+            return
+        }
+    }
+
+    function addLinkToExpression() {
+        let useFurigana = false
+        let expressionElement = document.querySelector('.expression')
+
+        let rawExpression = useFurigana ? makeFuriganaExpression(cardExpression, cardReading) : null
+        let linkElement = makeDictionaryLinkElement(cardExpression, rawExpression)
+
+        expressionElement.replaceChildren(linkElement)
+    }
+
+    function fixCopypaste() {
+        let expressionElement = document.querySelector('.expression')
+        expressionElement.oncopy = (e) => {
+            e.clipboardData.setData('text/plain', cardExpression)
+            e.preventDefault()
+        }
+    }
+
+    function populateReading() {
+        let readingElement = document.querySelector('.reading')
+        if (readingElement.childNodes.length > 0) {
+            return
+        }
+
+        readingElement.innerHTML = cardExpression
+    }
+
+    function varyReadingKana() {
+        let readingElement = document.querySelector('.reading')
+        readingElement.innerHTML = riverVariedKanaReading
+    }
+
+    function addPitchToReading() {
+        let readingElement = document.querySelector(".reading")
+        let pitchPositions = getPitchPositions()
+        if (!pitchPositions) {
+            return
+        }
+
+        let pitchList = constructPitchList(pitchPositions)
+
+        readingElement.innerHTML = ""
+        readingElement.appendChild(pitchList)
+        readingElement.classList.add('pitch')
+    }
+
+    function addLinkToReading() {
+        let readingElement = document.querySelector('.reading')
+        let currentReading = readingElement.innerHTML
+        let linkElement = makeImmersionkitLinkElement(currentReading)
+
+        readingElement.replaceChildren(linkElement)
+    }
+
+    function populateContext() {
+        let contextInnerElement = document.querySelector('.contextInner')
+        if (contextInnerElement.childNodes.length > 0) {
+            return
+        }
+
+        contextInnerElement.innerHTML = cardExpression
+    }
+
+    function populateHint() {
+        let removeHintSymbol = '-'
+        let copyFromContextSymbol = 'c'
+
+        let hintElement = document.querySelector('.hint')
+
+        if (cardHint === removeHintSymbol) {
+            hintElement.innerHTML = ''
+            return
+        } else if (cardHint === copyFromContextSymbol) {
+            hintElement.innerHTML = cardContext
+            return
+        }
+
+        // if (hintElement.childNodes.length > 0) {
+        //     return
+        // }
+
+        // if (!riverIsKanaCard || riverIsKatakanaCard) {
+        //     return
+        // }
+
+        // hintElement.innerHTML = cardContext
+    }
+
+    function markContextExpression() {
+        markExpressionInElement('hint')
+        markExpressionInElement('context')
+    }
+
+    function markPitchInContextExpression() {
+        let pitchPositions = getPitchPositions()
+        if (!pitchPositions) {
+            return
+        }
+
+        let pitchType = getPitchType(pitchPositions[0])
+
+        // dont add pitch to hint to not make it easy
+        let highlightedElements = document.querySelectorAll('.context b')
+        highlightedElements.forEach((element) => {
+            element.classList.add('pitch-underline', pitchType)
+        })
+    }
+
+    function highlightErrorsInFields() {
+        highlightErrorInExpression()
+        highlightErrorInReading()
+        highlightErrorInMeaning()
+        highlightErrorInNotes()
+        highlightErrorInContext()
+        highlightErrorInHint()
+    }
+
+    function highlightNoteDefinitions() {
+        let removeMainDefinitionNote = true
+
+        let noteElement = document.querySelector('.notes')
+        if (noteElement.childNodes.length === 0) {
+            return
+        }
+
+        let dividerTag = '<br>'
+        let noteRaw = noteElement.innerHTML.replaceAll('&nbsp;', ' ').trim()
+        let lines = noteRaw.split(dividerTag)
+
+        let highlightedLines = lines.map(line => highlightNoteLine(line))
+        if (removeMainDefinitionNote) {
+            highlightedLines = highlightedLines.filter(line => !line.isMain)
+        }
+
+        highlightedLines = highlightedLines.map(line => line.highlighted)
+        let highlightedNote = highlightedLines.join(dividerTag)
+
+        noteElement.innerHTML = highlightedNote
+    }
+
+    function blurEnglishText() {
+        let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        englishElements = Array.from(englishElements).filter(element => !getIsJapanese(element.textContent))
+
+        setBlurAmount()
+
+        let toggleBlur = () => {
+            englishElements.forEach(element => {
+                element.classList.toggle('blurry')
+            })
+        }
+
+        if (cardIsReview) {
+            toggleBlur()
+        }
+
+        addEventListener('keypress', (e) => {
+            if (e.key === riverToggleBlurKey) {
+                toggleBlur()
+            }
+        })
+    }
+
+    function varyJapaneseFont() {
+        varyCardJapaneseFont()
+        // varyReadingJapaneseFont()
+    }
+
+    function hideRedWarning() {
+        let expressionElement = document.querySelector('.expression')
+        expressionElement.classList.remove('superError')
+    }
+
     // ---------------- MISC ----------------
 
-    function isJapanese(text) {
+    function getRandom(context) {
+        let getRandomSeed = () => {
+            // different seed every day for each card
+
+            let ankiNextDayHour = riverAnkiNextDayHour
+
+            let oneDayMs = 24 * 60 * 60 * 1000
+            let date = new Date()
+            let timeMs = date.getTime() - date.getTimezoneOffset() * 60 * 1000
+            let adjustedTimeMs = timeMs - ankiNextDayHour * 60 * 60 * 1000
+            let adjustedDay = Math.floor(adjustedTimeMs / oneDayMs)
+
+            let numberForToday = adjustedDay % 10000
+            let cardNumber = [...context].map(c => c.charCodeAt(0)).reduce((a, b) => a + b, 0) % 10000
+
+            return numberForToday + cardNumber
+        }
+
+        let seed = getRandomSeed()
+        return () => {
+            let x = Math.sin(seed++) * 10000
+            return x - Math.floor(x)
+        }
+    }
+
+    function getIsKana(char) {
+        // src: https://stackoverflow.com/a/43419070
+        return /[\u3040-\u30ff]/.test(char)
+    }
+
+    function getIsJapanese(text) {
         let regex = /[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/
         return text.match(regex) !== null
+    }
+
+    function getIsKatakanaCard(expression) {
+        let isKatakana = w => [...w].some(c => c.charCodeAt(0) >= 12449 && c.charCodeAt(0) <= 12534)
+        return isKatakana(expression)
     }
 
     function lerp(value, minIn, maxIn, minOut, maxOut) {
@@ -163,29 +391,6 @@
         root.style.setProperty('--blur-amount', `${blurAmount}em`)
     }
 
-    function blurEnglishText() {
-        let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
-        englishElements = Array.from(englishElements).filter(element => !isJapanese(element.textContent))
-
-        setBlurAmount()
-
-        let toggleBlur = () => {
-            englishElements.forEach(element => {
-                element.classList.toggle('blurry')
-            })
-        }
-
-        if (cardIsReview) {
-            toggleBlur()
-        }
-
-        addEventListener('keypress', (e) => {
-            if (e.key === riverToggleBlurKey) {
-                toggleBlur()
-            }
-        })
-    }
-
     function getIsFrontOfCard() {
         let dividerElement = document.querySelector('.divider')
         return dividerElement === null
@@ -199,6 +404,27 @@
         // preview viewport: (887, 829)
         return viewportHeight < 850
     }
+
+    function translateKana(source, toHiragana) {
+        let hira = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖゝゞ";
+        let kata = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヽヾ";
+
+        let getIndices = (word, kana) => {
+            return word.map(char => {
+                let i = kana.indexOf(char)
+                return i === -1 ? char : i
+            })
+        }
+
+        let word = [...source]
+        word = getIndices(word, hira)
+        word = getIndices(word, kata)
+
+        let targetKana = toHiragana ? hira : kata
+        return word.map(i => typeof i === 'number' ? targetKana[i] : i).join('')
+    }
+
+    // ---------------- RANDOMNESS ----------------
 
     function getProbabilityReadingHandwritten() {
         if (riverIsBloodMoon) {
@@ -248,69 +474,7 @@
         return riverProbabilityKanjiCardHandwritten
     }
 
-    function getRandom(context) {
-        let getRandomSeed = () => {
-            // different seed every day for each card
-
-            let ankiNextDayHour = riverAnkiNextDayHour
-
-            let oneDayMs = 24 * 60 * 60 * 1000
-            let date = new Date()
-            let timeMs = date.getTime() - date.getTimezoneOffset() * 60 * 1000
-            let adjustedTimeMs = timeMs - ankiNextDayHour * 60 * 60 * 1000
-            let adjustedDay = Math.floor(adjustedTimeMs / oneDayMs)
-
-            let numberForToday = adjustedDay % 10000
-            let cardNumber = [...context].map(c => c.charCodeAt(0)).reduce((a, b) => a + b, 0) % 10000
-
-            return numberForToday + cardNumber
-        }
-
-        let seed = getRandomSeed()
-        return () => {
-            let x = Math.sin(seed++) * 10000
-            return x - Math.floor(x)
-        }
-    }
-
-    function translateKana(source, toHiragana) {
-        let hira = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖゝゞ";
-        let kata = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヽヾ";
-
-        let getIndices = (word, kana) => {
-            return word.map(char => {
-                let i = kana.indexOf(char)
-                return i === -1 ? char : i
-            })
-        }
-
-        let word = [...source]
-        word = getIndices(word, hira)
-        word = getIndices(word, kata)
-
-        let targetKana = toHiragana ? hira : kata
-        return word.map(i => typeof i === 'number' ? targetKana[i] : i).join('')
-    }
-
-    // ---------------- VARIATION ----------------
-
-    function getVariedKanaReading() {
-        if (cardReading.includes('ー')) { // katakana prolongation mark
-            return cardReading
-        }
-
-        return translateKana(cardReading, riverIsHiraganaReading)
-    }
-
-    function varyReadingKana() {
-        let readingElement = document.querySelector('.reading')
-        readingElement.innerHTML = riverVariedKanaReading
-    }
-
-    function varyJapaneseFont() {
-        varyCardJapaneseFont()
-        // varyReadingJapaneseFont()
-    }
+    // ---------------- FONT VARIATION ----------------
 
     function varyCardJapaneseFont() {
         let fontElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading'
@@ -376,28 +540,14 @@
         })
     }
 
-    function indicateCard() {
-        let indicatorElement = document.querySelector('.indicator')
+    // ---------------- KANA VARIATION ----------------
 
-        if (riverIsPreview) {
-            indicatorElement.classList.add('visibleIndicator', 'indicatorPreview')
-            return
+    function getVariedKanaReading() {
+        if (cardReading.includes('ー')) { // katakana prolongation mark
+            return cardReading
         }
 
-        if (cardIsNew) {
-            indicatorElement.classList.add('visibleIndicator', 'indicatorNew')
-            return
-        }
-    }
-
-    function getIsKatakanaCard(expression) {
-        let isKatakana = w => [...w].some(c => c.charCodeAt(0) >= 12449 && c.charCodeAt(0) <= 12534)
-        return isKatakana(expression)
-    }
-
-    function hideRedWarning() {
-        let expressionElement = document.querySelector('.expression')
-        expressionElement.classList.remove('superError')
+        return translateKana(cardReading, riverIsHiraganaReading)
     }
 
     // ---------------- LINK ADDING ----------------
@@ -421,79 +571,6 @@
         linkElement.innerHTML = text
 
         return linkElement
-    }
-
-    function addLinkToExpression() {
-        let useFurigana = false
-        let expressionElement = document.querySelector('.expression')
-
-        let rawExpression = useFurigana ? makeFuriganaExpression(cardExpression, cardReading) : null
-        let linkElement = makeDictionaryLinkElement(cardExpression, rawExpression)
-
-        expressionElement.replaceChildren(linkElement)
-    }
-
-    function addLinkToReading() {
-        let readingElement = document.querySelector('.reading')
-        let currentReading = readingElement.innerHTML
-        let linkElement = makeImmersionkitLinkElement(currentReading)
-
-        readingElement.replaceChildren(linkElement)
-    }
-
-    // ---------------- COPYING ----------------
-
-    function fixCopypaste() {
-        let expressionElement = document.querySelector('.expression')
-        expressionElement.oncopy = (e) => {
-            e.clipboardData.setData('text/plain', cardExpression)
-            e.preventDefault()
-        }
-    }
-
-    // ---------------- FIELD POPULATION ----------------
-
-    function populateReading() {
-        let readingElement = document.querySelector('.reading')
-        if (readingElement.childNodes.length > 0) {
-            return
-        }
-
-        readingElement.innerHTML = cardExpression
-    }
-
-    function populateContext() {
-        let contextInnerElement = document.querySelector('.contextInner')
-        if (contextInnerElement.childNodes.length > 0) {
-            return
-        }
-
-        contextInnerElement.innerHTML = cardExpression
-    }
-
-    function populateHint() {
-        let removeHintSymbol = '-'
-        let copyFromContextSymbol = 'c'
-
-        let hintElement = document.querySelector('.hint')
-
-        if (cardHint === removeHintSymbol) {
-            hintElement.innerHTML = ''
-            return
-        } else if (cardHint === copyFromContextSymbol) {
-            hintElement.innerHTML = cardContext
-            return
-        }
-
-        // if (hintElement.childNodes.length > 0) {
-        //     return
-        // }
-
-        // if (!riverIsKanaCard || riverIsKatakanaCard) {
-        //     return
-        // }
-
-        // hintElement.innerHTML = cardContext
     }
 
     // ---------------- EXPRESSION MARKING ----------------
@@ -604,11 +681,6 @@
         element.innerHTML = readingHighlighted
     }
 
-    function markContextExpression() {
-        markExpressionInElement('hint')
-        markExpressionInElement('context')
-    }
-
     // ---------------- ERROR CHECKING ----------------
 
     function checkHasWhitespaceOrEntity(targetString) {
@@ -700,11 +772,6 @@
 
     // ---------------- NOTE DEFINITION HIGHLIGHTING ----------------
 
-    function checkIsKana(c) {
-        // src: https://stackoverflow.com/a/43419070
-        return /[\u3040-\u30ff]/.test(c)
-    }
-
     function splitIntoKanaGroups(expression) {
         let groups = []
         let chars = [...expression]
@@ -712,7 +779,7 @@
 
         for (let i = 0; i < chars.length; i++) {
             let char = chars[i]
-            let isKana = checkIsKana(char)
+            let isKana = getIsKana(char)
 
             if (i === 0) {
                 previousIsKana = isKana
@@ -733,7 +800,7 @@
     }
 
     function recognizeReading(kanaGroups, expression, reading) {
-        let rawRegex = kanaGroups.map(g => checkIsKana(g) ? g : '(.+)').join('')
+        let rawRegex = kanaGroups.map(g => getIsKana(g) ? g : '(.+)').join('')
         let furiganaRegex = new RegExp(rawRegex)
 
         let recognized = furiganaRegex.exec(reading)
@@ -742,7 +809,7 @@
         }
 
         let recognizedReadings = recognized.slice(1)
-        return kanaGroups.map(g => checkIsKana(g) ? [g] : [g, recognizedReadings.shift()])
+        return kanaGroups.map(g => getIsKana(g) ? [g] : [g, recognizedReadings.shift()])
     }
 
     function formatRecognized(recognizedGroups) {
@@ -839,29 +906,6 @@
         }
     }
 
-    function highlightNoteDefinitions() {
-        let removeMainDefinitionNote = true
-
-        let noteElement = document.querySelector('.notes')
-        if (noteElement.childNodes.length === 0) {
-            return
-        }
-
-        let dividerTag = '<br>'
-        let noteRaw = noteElement.innerHTML.replaceAll('&nbsp;', ' ').trim()
-        let lines = noteRaw.split(dividerTag)
-
-        let highlightedLines = lines.map(line => highlightNoteLine(line))
-        if (removeMainDefinitionNote) {
-            highlightedLines = highlightedLines.filter(line => !line.isMain)
-        }
-
-        highlightedLines = highlightedLines.map(line => line.highlighted)
-        let highlightedNote = highlightedLines.join(dividerTag)
-
-        noteElement.innerHTML = highlightedNote
-    }
-
     // ---------------- PITCH ACCENT ----------------
 
     function getSameMoraKana() {
@@ -891,21 +935,6 @@
         } else {
             return 'nakadaka'
         }
-    }
-    
-    function markPitchInContextExpression() {
-        let pitchPositions = getPitchPositions()
-        if (!pitchPositions) {
-            return
-        }
-
-        let pitchType = getPitchType(pitchPositions[0])
-
-        // dont add pitch to hint to not make it easy
-        let highlightedElements = document.querySelectorAll('.context b')
-        highlightedElements.forEach((element) => {
-            element.classList.add('pitch-underline', pitchType)
-        })
     }
 
     function groupMoras(kana) {
@@ -1035,20 +1064,6 @@
         return pitchList
     }
 
-    function addPitchToReading() {
-        let readingElement = document.querySelector(".reading")
-        let pitchPositions = getPitchPositions()
-        if (!pitchPositions) {
-            return
-        }
-
-        let pitchList = constructPitchList(pitchPositions)
-
-        readingElement.innerHTML = ""
-        readingElement.appendChild(pitchList)
-        readingElement.classList.add('pitch')
-    }
-
     // ---------------- MAIN ----------------
 
     function mainFront() {
@@ -1065,13 +1080,8 @@
         populateHint()
         markContextExpression()
         // markPitchInContextExpression()
-
-        highlightErrorInExpression()
-        // highlightErrorInReading()
-        // highlightErrorInMeaning()
-        // highlightErrorInNotes()
-        // highlightErrorInContext()
-        highlightErrorInHint()
+        
+        highlightErrorsInFields()
 
         // highlightNoteDefinitions()
         // blurEnglishText()
@@ -1093,12 +1103,7 @@
         markContextExpression()
         markPitchInContextExpression()
 
-        highlightErrorInExpression()
-        highlightErrorInReading()
-        highlightErrorInMeaning()
-        highlightErrorInNotes()
-        highlightErrorInContext()
-        highlightErrorInHint()
+        highlightErrorsInFields()
 
         highlightNoteDefinitions()
         blurEnglishText()
