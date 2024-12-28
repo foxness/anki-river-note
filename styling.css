@@ -2,45 +2,56 @@
 /* ------------------------ VARIABLES ------------------------ */
 
 :root {
-    --dark-mode-heiban: dodgerblue; /* #39bae6 */
-    --dark-mode-atamadaka: #ec464f;
-    --dark-mode-nakadaka: #ff8f40;
-    --dark-mode-odaka: #6cbf43;
-    --dark-mode-kifuku: #af85f4;
-    --light-mode-heiban: #1aa0ce;
-    --light-mode-atamadaka: #e92a35;
-    --light-mode-nakadaka: #ff6b03;
-    --light-mode-odaka: #61ad3b;
-    --light-mode-kifuku: #7e53c4;
 
-    --heiban: var(--dark-mode-heiban, initial);
-    --atamadaka: var(--dark-mode-atamadaka, initial);
-    --nakadaka: var(--dark-mode-nakadaka, initial);
-    --odaka: var(--dark-mode-odaka, initial);
-    --kifuku: var(--dark-mode-kifuku, initial);
+    /* --- GENERAL --- */
+
+    --text-max-width: 25em;
+    --blur-amount: 0.3em;
+
+    /* --- GENERAL COLORS --- */
 
     --fg-color: #fcfcfc;
-
     --green-accent: #37e3b2;
     --new-accent: #3772ff;
     --reading-color: #f8e1b5;
-    --meaning-color: #bccfff; /* #3772ff dodgerblue-like */
+    --meaning-color: #bccfff; /* dodgerblue-like */
     --notes-definition-expression: lightseagreen;
     --notes-definition-reading: lemonchiffon;
     --notes-definition-meaning: mediumaquamarine;
     --notes-simple: lightslategray;
     --definition-furigana: var(--fg-color);
     --definition-expression-link: var(--fg-color);
-    /* lightseagreen aquamarine yellow */
-
-    --text-max-width: 25em;
-
     --divider: #727272;
+
+    /* cool colors: aquamarine yellow */
+
+    /* --- ERROR COLORS --- */
 
     --error-field: red;
     --super-error: #ff2c2c;
 
-    --blur-amount: 0.3em;
+    /* --- PITCH COLORS --- */
+
+    /* https://oklch.com/#65.2,0.1901,253.21,100 */
+    /* https://ok-color-picker.netlify.app/#cfe5ff */
+
+    --heiban: dodgerblue; /* #39bae6 */
+    --atamadaka: #ec464f;
+    --nakadaka: #ff8f40;
+    --odaka: #6cbf43;
+    --kifuku: #af85f4;
+
+    --heiban-fg: hsl(212, 100%, 90%);
+    --atamadaka-fg: hsl(1, 100%, 90%);
+    --nakadaka-fg: hsl(24, 100%, 90%);
+    --odaka-fg: hsl(100, 100%, 90%);
+    --kifuku-fg: hsl(261, 100%, 90%);
+
+    /* --light-mode-heiban: #1aa0ce;
+    --light-mode-atamadaka: #e92a35;
+    --light-mode-nakadaka: #ff6b03;
+    --light-mode-odaka: #61ad3b;
+    --light-mode-kifuku: #7e53c4; */
 }
 
 /* ------------------------ MAIN ------------------------ */
@@ -426,6 +437,28 @@
     text-decoration-style: solid;
     text-decoration-thickness: 0.125em;
     text-underline-offset: 0.25em;
+}
+
+/* Meaning-pitch harmony */
+
+.container:has(.pitch-item.heiban:first-child) .meaning {
+    color: var(--heiban-fg);
+}
+
+.container:has(.pitch-item.atamadaka:first-child) .meaning {
+    color: var(--atamadaka-fg);
+}
+
+.container:has(.pitch-item.nakadaka:first-child) .meaning {
+    color: var(--nakadaka-fg);
+}
+
+.container:has(.pitch-item.odaka:first-child) .meaning {
+    color: var(--odaka-fg);
+}
+
+.container:has(.pitch-item.kifuku:first-child) .meaning {
+    color: var(--kifuku-fg);
 }
 
 /* ------------------------ BLUR ------------------------ */
