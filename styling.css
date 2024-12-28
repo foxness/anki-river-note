@@ -472,19 +472,19 @@
     line-gap-override: 45%;
 }
 
-.font-regular {
+.font-notosans {
     font-family: 'Noto Sans JP', sans-serif;
 }
 
-.font-handwritten {
+.font-ackaisyo {
     font-family: 'ACKaisyoRiver', sans-serif;
 }
 
-.font-hiragino-sans {
+.font-hiraginosans {
     font-family: 'Hiragino Sans', sans-serif;
 }
 
-.font-hiragino-mincho {
+.font-hiraginomincho {
     font-family: 'Hiragino Mincho ProN', serif;
 }
 
@@ -494,19 +494,19 @@
 
 /* --- FONT NORMALIZING --- */
 
-.expression:is(.font-hiragino-sans, .font-hiragino-mincho) {
+.expression:is(.font-hiraginosans, .font-hiraginomincho) {
     line-height: 100%;
 }
 
-:is(.hint, .contextInner):is(.font-hiragino-sans, .font-hiragino-mincho) {
+:is(.hint, .contextInner):is(.font-hiraginosans, .font-hiraginomincho) {
     line-height: 145%;
 }
 
-.definitionExpression:is(.font-hiragino-sans, .font-hiragino-mincho) {
+.definitionExpression:is(.font-hiraginosans, .font-hiraginomincho) {
     line-height: 175%;
 }
 
-.definitionMeaning.japanese:is(.font-hiragino-sans, .font-hiragino-mincho) {
+.definitionMeaning.japanese:is(.font-hiraginosans, .font-hiraginomincho) {
     line-height: 100%;
 }
 

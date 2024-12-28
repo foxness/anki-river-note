@@ -60,9 +60,17 @@
         riverBlurMinBlur = 0 // em
         riverBlurMaxBlur = 0.1 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
 
-        // --- CYCLABLE FONTS ---
+        // --- FONTS ---
 
-        riverFonts = 'font-regular font-hiragino-mincho font-hiragino-sans font-handwritten'
+        riverFonts = 'font-notosans font-hiraginomincho font-hiraginosans font-ackaisyo'
+
+        riverFontRegular = 'font-notosans'
+        riverFontHandwritten = 'font-ackaisyo'
+
+        riverFontProbabilities = [
+            ['font-hiraginosans', 0.25],
+            ['font-hiraginomincho', 0.5]
+        ]
 
         // --- KEYBINDS ---
 
@@ -119,14 +127,16 @@
         riverIsBloodMoon = cardAgnosticRandom() < riverProbabilityBloodMoon
         riverIsHoliday = cardAgnosticRandom() < riverProbabilityHoliday
 
-        if (riverIsBloodMoon) {
-            riverIsHoliday = false
-        }
+        riverCardFont = getTodaysFont(cardAgnosticRandom())
 
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
 
         riverVariedKanaReading = getVariedKanaReading()
+
+        if (riverIsBloodMoon) {
+            riverIsHoliday = false
+        }
     }
 
     function defineGlobalVariables() {
@@ -471,10 +481,9 @@
     }
 
     function cycleFont(element) {
-        let defaultFont = 'font-regular'
         let fonts = getFonts()
 
-        let currentFont = defaultFont
+        let currentFont = riverFontRegular
         for (const font of fonts) {
             if (element.classList.contains(font)) {
                 currentFont = font
@@ -505,19 +514,43 @@
         })
     }
 
+    function getTodaysFont(random) {
+        // every day has a new font cuz random is card-agnostic
+
+        if (riverFontProbabilities.length === 0) {
+            return riverFontRegular
+        }
+
+        let value = random
+        for (let i = 0; i < riverFontProbabilities.length; i++) {
+            let [currentFont, currentProbability] = riverFontProbabilities[i]
+
+            if (value < currentProbability) {
+                return currentFont
+            }
+
+            value -= currentProbability
+        }
+
+        return riverFontRegular
+    }
+
+    function getCurrentFont() {
+        if (riverIsHandwrittenCard) {
+            return riverFontHandwritten
+        }
+        
+        return riverCardFont
+    }
+
     function varyCardJapaneseFont() {
         let japaneseElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading, .japanese'
         let elements = document.querySelectorAll(japaneseElementSelector)
 
+        let font = getCurrentFont()
         elements.forEach((element) => {
-            setFont(element, 'font-regular')
+            setFont(element, font)
         })
-
-        if (riverIsHandwrittenCard) {
-            elements.forEach((element) => {
-                setFont(element, 'font-handwritten')
-            })
-        }
 
         addEventListener('keypress', (e) => {
             if (e.key === riverCycleFontKey) {
