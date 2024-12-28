@@ -25,26 +25,10 @@
     function defineConstants() {
         riverAnkiNextDayHour = 9
 
-        riverProbabilityReadingHiragana = 0.66
+        // --- KEYBINDS ---
 
-        // --- HANDWRITTEN ---
-
-        riverProbabilityKanaCardHandwritten = 0.5
-        riverProbabilityNewKanjiCardHandwritten = 0.001
-        riverProbabilityKanjiCardHandwritten = 0.03
-
-        // --- BLOOD MOON ---
-
-        riverProbabilityBloodMoon = 0.01
-        riverBloodMoonProbabilityKanaCardHandwritten = 0.9
-        riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
-        riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
-
-        // --- HOLIDAY ---
-
-        riverProbabilityHoliday = 0.01
-        riverHolidayProbabilityNewKanjiCardHandwritten = 0
-        riverHolidayProbabilityHandwritten = 0.01
+        riverToggleBlurKey = 'j'
+        riverCycleFontKey = 'h'
 
         // --- PREVIEW ---
 
@@ -52,13 +36,6 @@
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
         riverPreviewProbabilityHandwritten = 0.01
-
-        // --- ENGLISH TEXT BLUR ---
-
-        riverBlurMinInterval = 0 // days
-        riverBlurMaxInterval = 70
-        riverBlurMinBlur = 0 // em
-        riverBlurMaxBlur = 0.1 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
 
         // --- FONTS ---
 
@@ -72,10 +49,35 @@
             ['font-hiraginomincho', 0.5]
         ]
 
-        // --- KEYBINDS ---
+        // --- READING KANA ---
 
-        riverToggleBlurKey = 'j'
-        riverCycleFontKey = 'h'
+        riverProbabilityReadingHiragana = 0.66
+
+        // --- ENGLISH TEXT BLUR ---
+
+        riverBlurMinInterval = 0 // days
+        riverBlurMaxInterval = 70
+        riverBlurMinBlur = 0 // em
+        riverBlurMaxBlur = 0.1 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
+
+        // --- HANDWRITTEN ---
+
+        riverProbabilityKanaCardHandwritten = 0.2
+        riverProbabilityNewKanjiCardHandwritten = 0.001
+        riverProbabilityKanjiCardHandwritten = 0.04
+
+        // --- BLOOD MOON ---
+
+        riverProbabilityBloodMoon = 0.01
+        riverBloodMoonProbabilityKanaCardHandwritten = 0.6
+        riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
+        riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
+
+        // --- HOLIDAY ---
+
+        riverProbabilityHoliday = 0.01
+        riverHolidayProbabilityNewKanjiCardHandwritten = 0
+        riverHolidayProbabilityHandwritten = 0.01
     }
 
     function definePreviewVariables() {
