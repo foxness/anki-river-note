@@ -39,6 +39,8 @@
 
     --error-field: red;
     --super-error: #ff2c2c;
+
+    --blur-amount: 0.3em;
 }
 
 /* ------------------------ MAIN ------------------------ */
@@ -429,7 +431,7 @@
 /* ------------------------ BLUR ------------------------ */
 
 .blurry {
-    filter: blur(0.3em);
+    filter: blur(var(--blur-amount));
 }
 
 .blurry:hover {

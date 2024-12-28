@@ -67,6 +67,13 @@
         riverPreviewProbabilityHoliday = 0
         riverPreviewProbabilityHandwritten = 0.01
 
+        // --- ENGLISH TEXT BLUR ---
+
+        riverBlurMinInterval = 0 // days
+        riverBlurMaxInterval = 70
+        riverBlurMinBlur = 0 // em
+        riverBlurMaxBlur = 0.1 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
+
         // --- KEYBINDS ---
 
         riverToggleBlurKey = 'j'
@@ -95,6 +102,10 @@
 
         // additional anki fields addon
         let cardType = `{{info-Type:}}`
+
+        // only use this variable when (cardIsReview == true)
+        // because after grading it wrong it immediately gets a new shorter interval
+        cardInterval = Number(`{{info-Ivl:}}`)
 
         cardIsNew = cardType === '0'
         let cardIsLearning = cardType === '1'
@@ -139,9 +150,36 @@
         return text.match(regex) !== null
     }
 
+    function lerp(value, minIn, maxIn, minOut, maxOut) {
+        let enableEase = true
+        let ease = (x) => 0.5 - 0.5 * Math.cos(Math.PI * x)
+
+        let scale = Math.min(1, Math.max(0, (value - minIn) / (maxIn - minIn)))
+        if (enableEase) {
+            scale = ease(scale)
+        }
+        
+        return minOut + scale * (maxOut - minOut)
+    }
+
+    function setBlurAmount() {
+        let blurAmount = lerp(
+            cardInterval,
+            riverBlurMinInterval,
+            riverBlurMaxInterval,
+            riverBlurMinBlur,
+            riverBlurMaxBlur
+        )
+
+        let root = document.documentElement
+        root.style.setProperty('--blur-amount', `${blurAmount}em`)
+    }
+
     function blurEnglishText() {
         let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
         englishElements = Array.from(englishElements).filter(element => !isJapanese(element.textContent))
+
+        setBlurAmount()
 
         let toggleBlur = () => {
             englishElements.forEach(element => {
