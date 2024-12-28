@@ -510,6 +510,10 @@
     line-height: 100%;
 }
 
+.meaning:is(.font-hiraginosans, .font-hiraginomincho) {
+    line-height: 143%;
+}
+
 /* ------------------------ SPECIFIC SECTION ------------------------ */
 
 .context {
