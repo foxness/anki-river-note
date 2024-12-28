@@ -29,7 +29,6 @@
 
         // --- HANDWRITTEN ---
 
-        riverProbabilityReadingHandwritten = 0.5
         riverProbabilityKanaCardHandwritten = 0.5
         riverProbabilityNewKanjiCardHandwritten = 0.001
         riverProbabilityKanjiCardHandwritten = 0.03
@@ -37,7 +36,6 @@
         // --- BLOOD MOON ---
 
         riverProbabilityBloodMoon = 0.01
-        riverBloodMoonProbabilityReadingHandwritten = 0.9
         riverBloodMoonProbabilityKanaCardHandwritten = 0.9
         riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
         riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
@@ -126,7 +124,6 @@
         }
 
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
-        riverIsHandwrittenReading = random() < getProbabilityReadingHandwritten()
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
 
         riverVariedKanaReading = getVariedKanaReading()
@@ -431,18 +428,6 @@
 
     // ---------------- RANDOMNESS ----------------
 
-    function getProbabilityReadingHandwritten() {
-        if (riverIsBloodMoon) {
-            return riverBloodMoonProbabilityReadingHandwritten
-        }
-
-        if (riverIsHoliday) {
-            return riverHolidayProbabilityHandwritten
-        }
-
-        return riverProbabilityReadingHandwritten
-    }
-
     function getProbabilityCardHandwritten() {
         if (riverIsPreview) {
             return riverPreviewProbabilityHandwritten
@@ -542,38 +527,6 @@
             }
         })
     }
-
-    // function varyReadingJapaneseFont() {
-    //     let readingElement = document.querySelector('.reading')
-    //     if (!readingElement) {
-    //         return
-    //     }
-
-    //     let toggleHandwritten = () => {
-    //         readingElement.classList.toggle('font-handwritten')
-    //     }
-
-    //     if (riverIsHandwrittenReading) {
-    //         toggleHandwritten()
-    //     }
-
-    //     // let elements = document.querySelectorAll('.image, .context')
-    //     // elements.forEach((element) => {
-    //     //     element.addEventListener('mouseenter', (e) => {
-    //     //         toggleHandwritten()
-    //     //     })
-
-    //     //     element.addEventListener('mouseleave', (e) => {
-    //     //         toggleHandwritten()
-    //     //     })
-    //     // })
-
-    //     addEventListener('keypress', (e) => {
-    //         if (e.key === riverCycleFontKey) {
-    //             toggleHandwritten()
-    //         }
-    //     })
-    // }
 
     // ---------------- KANA VARIATION ----------------
 
