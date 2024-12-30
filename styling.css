@@ -10,20 +10,30 @@
 
     /* --- GENERAL COLORS --- */
 
-    --fg-color: #fcfcfc;
-    --green-accent: #37e3b2;
-    --new-accent: #3772ff;
-    --reading-color: #f8e1b5;
-    --meaning-color: #bccfff; /* dodgerblue-like */
-    --notes-definition-expression: lightseagreen;
-    --notes-definition-reading: lemonchiffon;
-    --notes-definition-meaning: mediumaquamarine;
-    --notes-simple: lightslategray;
-    --definition-furigana: var(--fg-color);
-    --definition-expression-link: var(--fg-color);
+    --foreground: #fcfcfc;
+    --default-reading: #f8e1b5;
+    --default-meaning: #bccfff; /* dodgerblue-like */
     --divider: #727272;
 
     /* cool colors: aquamarine yellow 27a6dd */
+
+    /* --- ACCENT COLORS --- */
+
+    --primary-accent: #37e3b2;
+    --secondary-accent: var(--foreground);
+
+    /* --- INDICATOR COLORS --- */
+
+    --indicator-new: #3772ff;
+    --indicator-preview: var(--primary-accent);
+
+    /* --- NOTE COLORS --- */
+
+    --notes-simple: lightslategray;
+    --notes-definition-expression: lightseagreen;
+    --notes-definition-reading: lemonchiffon;
+    --notes-definition-meaning: mediumaquamarine;
+    --notes-definition-furigana: var(--secondary-accent);
 
     /* --- ERROR COLORS --- */
 
@@ -41,11 +51,11 @@
     --odaka: #6cbf43;
     --kifuku: #af85f4;
 
-    --heiban-fg: hsl(212, 100%, 90%);
-    --atamadaka-fg: hsl(2, 100%, 94%);
-    --nakadaka-fg: hsl(24, 100%, 90%);
-    --odaka-fg: hsl(100, 100%, 90%);
-    --kifuku-fg: hsl(261, 100%, 90%);
+    --heiban-foreground: hsl(212, 100%, 90%);
+    --atamadaka-foreground: hsl(2, 100%, 94%);
+    --nakadaka-foreground: hsl(24, 100%, 90%);
+    --odaka-foreground: hsl(100, 100%, 90%);
+    --kifuku-foreground: hsl(261, 100%, 90%);
 
     /* --light-mode-heiban: #1aa0ce;
     --light-mode-atamadaka: #e92a35;
@@ -76,7 +86,7 @@
 
     font-family: "Noto Sans JP", "Hiragino Sans", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
     font-size: 22px;
-    color: var(--fg-color);
+    color: var(--foreground);
 
     /* centers wrapped text in long fields, dont remove */
     text-align: center;
@@ -98,7 +108,7 @@
 
     .expression rt {
         user-select: none;
-        color: var(--green-accent);
+        color: var(--primary-accent);
     }
 }
 
@@ -107,7 +117,7 @@
 }
 
 .expression a:hover, .reading a:hover {
-    box-shadow: inset 0 -.5em 0 0 var(--green-accent) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--primary-accent) !important;
     /* !important for minimalist anki */
 }
 
@@ -128,11 +138,11 @@
 }
 
 .indicatorNew {
-    background-color: var(--new-accent);
+    background-color: var(--indicator-new);
 }
 
 .indicatorPreview {
-    background-color: var(--green-accent);
+    background-color: var(--indicator-preview);
 }
 
 .hint {
@@ -145,7 +155,7 @@
 }
 
 .hint b {
-    text-decoration-color: var(--green-accent);
+    text-decoration-color: var(--primary-accent);
 
     font-weight: normal;
     text-decoration-line: underline;
@@ -155,7 +165,7 @@
 }
 
 .context b:not(.pitch-underline) {
-    text-decoration-color: var(--green-accent);
+    text-decoration-color: var(--primary-accent);
 
     font-weight: normal;
     text-decoration-line: underline;
@@ -176,7 +186,7 @@
     margin-top: -0.1em;
     font-size: 180%;
     font-weight: 600;
-    color: var(--reading-color);
+    color: var(--default-reading);
 }
 
 .meaning {
@@ -185,7 +195,7 @@
     max-width: var(--text-max-width);
     font-size: 130%;
     /* font-weight: 500; */
-    color: var(--meaning-color);
+    color: var(--default-meaning);
 }
 
 .notes {
@@ -216,14 +226,14 @@
 }
 
 .definitionExpression a:hover {
-    box-shadow: inset 0 -.5em 0 0 var(--definition-expression-link) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
     /* !important for minimalist anki */
 }
 
 .definitionExpression rt {
     user-select: none;
     font-size: 55%;
-    color: var(--definition-furigana);
+    color: var(--notes-definition-furigana);
 }
 
 .definitionReading {
@@ -325,7 +335,7 @@
 }
 
 .pitch ul>li:not(:last-child)::after {
-    color: var(--fg-color);
+    color: var(--foreground);
 }
 
 /* #pitch-tags ul>li:not(:last-child)::after {
@@ -433,23 +443,23 @@
 /* Meaning-pitch harmony */
 
 .container:has(.pitch-item.heiban:first-child) .meaning {
-    color: var(--heiban-fg);
+    color: var(--heiban-foreground);
 }
 
 .container:has(.pitch-item.atamadaka:first-child) .meaning {
-    color: var(--atamadaka-fg);
+    color: var(--atamadaka-foreground);
 }
 
 .container:has(.pitch-item.nakadaka:first-child) .meaning {
-    color: var(--nakadaka-fg);
+    color: var(--nakadaka-foreground);
 }
 
 .container:has(.pitch-item.odaka:first-child) .meaning {
-    color: var(--odaka-fg);
+    color: var(--odaka-foreground);
 }
 
 .container:has(.pitch-item.kifuku:first-child) .meaning {
-    color: var(--kifuku-fg);
+    color: var(--kifuku-foreground);
 }
 
 /* ------------------------ BLUR ------------------------ */
