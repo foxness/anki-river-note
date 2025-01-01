@@ -218,10 +218,18 @@
 
     function addLinkToReading() {
         let readingElement = document.querySelector('.reading')
-        let currentReading = readingElement.innerHTML
-        let linkElement = makeImmersionkitLinkElement(currentReading)
+        let currentInner = readingElement.innerHTML
+        let linkElement = makeImmersionkitLinkElement(currentInner)
 
         readingElement.replaceChildren(linkElement)
+    }
+
+    function addLinkToImage() {
+        let imageElement = document.querySelector('.image')
+        let currentInner = imageElement.innerHTML
+        let linkElement = makeGoogleImagesLinkElement(currentInner)
+
+        imageElement.replaceChildren(linkElement)
     }
 
     function populateContext() {
@@ -585,25 +593,29 @@
 
     // ---------------- LINK ADDING ----------------
 
-    function makeDictionaryLinkElement(expression, rawContent) {
-        // let link = `https://jisho.org/search/${expression}`
-        let link = `https://jpdb.io/search?q=${expression}`
-
+    function makeLinkElement(link, inner) {
         let linkElement = document.createElement('a')
         linkElement.setAttribute('href', link)
-        linkElement.innerHTML = rawContent ?? expression
+        linkElement.innerHTML = inner
 
         return linkElement
     }
 
-    function makeImmersionkitLinkElement(text) {
+    function makeDictionaryLinkElement(expression, rawContent) {
+        // let link = `https://jisho.org/search/${expression}`
+        let link = `https://jpdb.io/search?q=${expression}`
+
+        return makeLinkElement(link, rawContent ?? expression)
+    }
+
+    function makeImmersionkitLinkElement(inner) {
         let link = `https://www.immersionkit.com/dictionary?keyword=${cardExpression}`
+        return makeLinkElement(link, inner)
+    }
 
-        let linkElement = document.createElement('a')
-        linkElement.setAttribute('href', link)
-        linkElement.innerHTML = text
-
-        return linkElement
+    function makeGoogleImagesLinkElement(inner) {
+        let link = `https://www.google.com/search?q=${cardExpression}&udm=2`
+        return makeLinkElement(link, inner)
     }
 
     // ---------------- EXPRESSION MARKING ----------------
@@ -1113,6 +1125,7 @@
         // varyReadingKana()
         // addPitchToReading()
         // addLinkToReading()
+        // addLinkToImage()
 
         // populateContext()
         populateHint()
@@ -1135,6 +1148,7 @@
         varyReadingKana()
         addPitchToReading()
         addLinkToReading()
+        addLinkToImage()
 
         populateContext()
         populateHint()
