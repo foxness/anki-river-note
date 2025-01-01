@@ -97,6 +97,10 @@
     font-size: 260%;
 }
 
+.expression {
+    line-height: 1em;
+}
+
 @media DISABLED {
     /* uncomment for expression with furigana layout */
 
@@ -151,8 +155,20 @@
 }
 
 .hint {
-    margin: 0.2em auto;
     max-width: 30em;
+    line-height: 1.45em;
+}
+
+.hint {
+    --font-variation: 0em;
+
+    --standard-top-margin: 0.2em;
+    --total-margin: 0.4em;
+
+    --top-margin: calc(var(--standard-top-margin) + var(--font-variation));
+    
+    margin-top: var(--top-margin);
+    margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
 
 .hint:empty {
@@ -195,12 +211,23 @@
 }
 
 .meaning {
-    margin-top: 0.25em;
-    margin-bottom: 0.15em;
     max-width: var(--text-max-width);
     font-size: 130%;
+    line-height: 1.45em;
     /* font-weight: 500; */
     color: var(--default-meaning);
+}
+
+.meaning {
+    --font-variation: 0em;
+
+    --standard-top-margin: 0.25em;
+    --total-margin: 0.4em;
+
+    --top-margin: calc(var(--standard-top-margin) + var(--font-variation));
+
+    margin-top: var(--top-margin);
+    margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
 
 .notes {
@@ -273,6 +300,24 @@
     width: 20em;
     height: 0.2em;
     border-radius: 1em;
+}
+
+.context {
+    max-width: var(--text-max-width);
+    font-size: 120%;
+    line-height: 1.45em;
+}
+
+.context {
+    --font-variation: 0em;
+
+    --standard-top-margin: 0.3em;
+    --total-margin: 0.6em;
+
+    --top-margin: calc(var(--standard-top-margin) + var(--font-variation));
+    
+    margin-top: var(--top-margin);
+    margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
 
 .audio {
@@ -514,13 +559,7 @@
 
 /* --- FONT NORMALIZING --- */
 
-.expression:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
-    line-height: 100%;
-}
-
-:is(.hint, .contextInner):is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
-    line-height: 145%;
-}
+/* -- HIRAGINO -- */
 
 .definitionExpression:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 175%;
@@ -530,29 +569,12 @@
     line-height: 100%;
 }
 
-.meaning:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
-    line-height: 143%;
+:is(.hint, .meaning, .context):is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
+    --font-variation: 0.08em;
 }
 
-.context:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
-    --top-margin: 0.36em;
-    --total-margin: 0.6em;
-    margin-top: var(--top-margin);
-    margin-bottom: calc(var(--total-margin) - var(--top-margin));
+/* -- ACKAISYO -- */
+
+:is(.hint, .meaning, .context).font-ackaisyo {
+    --font-variation: -0.03em;
 }
-
-/* ------------------------ SPECIFIC SECTION ------------------------ */
-
-.context {
-    margin: 0.3em auto;
-    max-width: var(--text-max-width);
-    font-size: 120%;
-    /* display: flex;
-    flex-direction: column;
-    gap: 0.1em; */
-}
-
-/* .context>div:last-child {
-    font-size: 80%;
-    color: #bbb;
-} */
