@@ -614,7 +614,9 @@
     }
 
     function makeGoogleImagesLinkElement(inner) {
-        let link = `https://www.google.com/search?q=${cardExpression}&udm=2`
+        // let link = `https://www.google.com/search?q=${cardExpression}&udm=2`
+        let link = `https://www.google.com/search?q=${cardExpression}&udm=2&lr=lang_ja`
+        
         return makeLinkElement(link, inner)
     }
 
