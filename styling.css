@@ -162,7 +162,7 @@
 .hint b {
     text-decoration-color: var(--primary-accent);
 
-    font-weight: normal;
+    font-weight: inherit;
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-thickness: 0.125em;
@@ -172,7 +172,7 @@
 .context b:not(.pitch-underline) {
     text-decoration-color: var(--primary-accent);
 
-    font-weight: normal;
+    font-weight: inherit;
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-thickness: 0.125em;
@@ -437,7 +437,7 @@
 }
 
 .pitch-underline {
-    font-weight: normal;
+    font-weight: inherit;
     
     text-decoration-line: underline;
     text-decoration-style: solid;
@@ -503,30 +503,42 @@
     font-family: 'Hiragino Mincho ProN', serif;
 }
 
+.font-hiraginominchobold {
+    font-family: 'Hiragino Mincho ProN', serif;
+    font-weight: 600;
+}
+
 /* .font-banana {
     font-family: 'ArmedBanana', sans-serif;
 } */
 
 /* --- FONT NORMALIZING --- */
 
-.expression:is(.font-hiraginosans, .font-hiraginomincho) {
+.expression:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 100%;
 }
 
-:is(.hint, .contextInner):is(.font-hiraginosans, .font-hiraginomincho) {
+:is(.hint, .contextInner):is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 145%;
 }
 
-.definitionExpression:is(.font-hiraginosans, .font-hiraginomincho) {
+.definitionExpression:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 175%;
 }
 
-.definitionMeaning.japanese:is(.font-hiraginosans, .font-hiraginomincho) {
+.definitionMeaning.japanese:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 100%;
 }
 
-.meaning:is(.font-hiraginosans, .font-hiraginomincho) {
+.meaning:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     line-height: 143%;
+}
+
+.context:is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
+    --top-margin: 0.36em;
+    --total-margin: 0.6em;
+    margin-top: var(--top-margin);
+    margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
 
 /* ------------------------ SPECIFIC SECTION ------------------------ */
