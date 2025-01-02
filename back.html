@@ -310,6 +310,14 @@
         })
     }
 
+    function addLinkToContext() {
+        let contextElement = document.querySelector('.context')
+        let currentInner = contextElement.innerHTML
+        let linkElement = makePitchLinkElement(currentInner)
+
+        contextElement.replaceChildren(linkElement)
+    }
+
     function highlightErrorsInFields() {
         highlightErrorInExpression()
         highlightErrorInReading()
@@ -635,14 +643,17 @@
     }
 
     function makeDictionaryLinkElement(expression, rawContent) {
-        // let link = `https://jisho.org/search/${expression}`
-        let link = `https://jpdb.io/search?q=${expression}`
-
+        let link = `https://jisho.org/search/${expression}`
         return makeLinkElement(link, rawContent ?? expression)
     }
 
     function makeImmersionkitLinkElement(inner) {
         let link = `https://www.immersionkit.com/dictionary?keyword=${cardExpression}`
+        return makeLinkElement(link, inner)
+    }
+
+    function makePitchLinkElement(inner) {
+        let link = `https://jpdb.io/search?q=${cardExpression}&lang=japanese`
         return makeLinkElement(link, inner)
     }
 
@@ -1166,6 +1177,7 @@
         populateHint()
         markContextExpression()
         // markPitchInContextExpression()
+        // addLinkToContext()
         
         highlightErrorsInFields()
 
@@ -1189,6 +1201,7 @@
         populateHint()
         markContextExpression()
         markPitchInContextExpression()
+        addLinkToContext()
 
         highlightErrorsInFields()
 
