@@ -51,7 +51,6 @@
         riverPreviewProbabilityHandwritten = 0.01
 
         riverPreviewFontRegularOverride = null // can be null
-
         riverPreviewFontProbabilitiesOverride = [ // can be null
             ['font-hiraginosans', 0.2],
             ['font-hiraginomincho', 0.5],
@@ -89,16 +88,6 @@
         riverHolidayProbabilityHandwritten = 0.01
     }
 
-    function definePreviewVariables() {
-        riverIsPreview = riverUsePreview && getIsPreview()
-        if (!riverIsPreview) {
-            return
-        }
-
-        riverProbabilityBloodMoon = riverPreviewProbabilityBloodMoon
-        riverProbabilityHoliday = riverPreviewProbabilityHoliday
-    }
-
     function defineCardVariables() {
         // backticks to avoid single and double quotes in anki fields escaping the string literal
         cardExpression = `{{Expression}}`
@@ -129,14 +118,30 @@
         riverIsFrontOfCard = getIsFrontOfCard()
         riverIsKatakanaCard = getIsKatakanaCard(cardExpression)
         riverIsKanaCard = cardReading === cardExpression
+
+        riverIsPreview = riverUsePreview && getIsPreview()
     }
 
     function defineRandomVariables() {
-        let random = getRandom(cardContext)
-        let cardAgnosticRandom = getRandom('')
+        let seed = cardContext
+        let cardAgnosticSeed = ''
 
-        riverIsBloodMoon = cardAgnosticRandom() < riverProbabilityBloodMoon
-        riverIsHoliday = cardAgnosticRandom() < riverProbabilityHoliday
+        let probabilityBloodMoon = riverProbabilityBloodMoon
+        let probabilityHoliday = riverProbabilityHoliday
+
+        if (riverIsPreview) {
+            seed += 'river'
+            cardAgnosticSeed += 'agnostic'
+
+            probabilityBloodMoon = riverPreviewProbabilityBloodMoon
+            probabilityHoliday = riverPreviewProbabilityHoliday
+        }
+
+        let random = getRandom(seed)
+        let cardAgnosticRandom = getRandom(cardAgnosticSeed)
+
+        riverIsBloodMoon = cardAgnosticRandom() < probabilityBloodMoon
+        riverIsHoliday = cardAgnosticRandom() < probabilityHoliday
 
         riverCardFont = getTodaysFont(cardAgnosticRandom())
 
@@ -152,7 +157,6 @@
 
     function defineGlobalVariables() {
         defineConstants()
-        definePreviewVariables()
         defineCardVariables()
         defineRandomVariables()
     }
@@ -362,7 +366,7 @@
 
     // ---------------- MISC ----------------
 
-    function getRandom(context) {
+    function getRandom(stringSeed) {
         let getRandomSeed = () => {
             // different seed every day for each card
 
@@ -375,7 +379,7 @@
             let adjustedDay = Math.floor(adjustedTimeMs / oneDayMs)
 
             let numberForToday = adjustedDay % 10000
-            let cardNumber = [...context].map(c => c.charCodeAt(0)).reduce((a, b) => a + b, 0) % 10000
+            let cardNumber = [...stringSeed].map(c => c.charCodeAt(0)).reduce((a, b) => a + b, 0) % 10000
 
             return numberForToday + cardNumber
         }
