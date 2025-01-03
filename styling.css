@@ -514,12 +514,12 @@
 
 /* ------------------------ BLUR ------------------------ */
 
-.blurry {
+.container:not(:has(.image:hover, .blurry:hover)) .blurry {
     filter: blur(var(--blur-amount));
 }
 
-.blurry:hover {
-    filter: none;
+.container:not(:has(.image:hover, .blurry:hover)) .blurry:hover {
+    filter: unset;
 }
 
 /* ------------------------ FONTS ------------------------ */
