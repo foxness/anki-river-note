@@ -587,13 +587,15 @@
     right: 0em;
 
     padding: 1em;
-    width: 12em;
-    height: 7em;
+    width: 9em;
+    height: 9em;
+    border-bottom-left-radius: 80%;
+    overflow: clip;
 
     display: flex;
     flex-direction: row-reverse;
 
-    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: #3b3b3b;
     opacity: 0;
 }
 
