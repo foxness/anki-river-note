@@ -252,17 +252,9 @@
     function addLinkToReading() {
         let readingElement = document.querySelector('.reading')
         let currentInner = readingElement.innerHTML
-        let linkElement = makeImmersionkitLinkElement(currentInner)
-
-        readingElement.replaceChildren(linkElement)
-    }
-
-    function addLinkToImage() {
-        let imageElement = document.querySelector('.image')
-        let currentInner = imageElement.innerHTML
         let linkElement = makeGoogleImagesLinkElement(currentInner)
 
-        imageElement.replaceChildren(linkElement)
+        readingElement.replaceChildren(linkElement)
     }
 
     function populateContext() {
@@ -317,14 +309,6 @@
         highlightedElements.forEach((element) => {
             element.classList.add('pitch-underline', pitchType)
         })
-    }
-
-    function addLinkToContext() {
-        let contextElement = document.querySelector('.context')
-        let currentInner = contextElement.innerHTML
-        let linkElement = makePitchLinkElement(currentInner)
-
-        contextElement.replaceChildren(linkElement)
     }
 
     function highlightErrorsInFields() {
@@ -654,16 +638,6 @@
     function makeDictionaryLinkElement(expression, rawContent) {
         let link = `https://jisho.org/search/${expression}`
         return makeLinkElement(link, rawContent ?? expression)
-    }
-
-    function makeImmersionkitLinkElement(inner) {
-        let link = `https://www.immersionkit.com/dictionary?keyword=${cardExpression}`
-        return makeLinkElement(link, inner)
-    }
-
-    function makePitchLinkElement(inner) {
-        let link = `https://jpdb.io/search?q=${cardExpression}&lang=japanese`
-        return makeLinkElement(link, inner)
     }
 
     function makeGoogleImagesLinkElement(inner) {
@@ -1180,13 +1154,11 @@
         // varyReadingKana()
         // addPitchToReading()
         // addLinkToReading()
-        // addLinkToImage()
 
         // populateContext()
         populateHint()
         markContextExpression()
         // markPitchInContextExpression()
-        // addLinkToContext()
         
         highlightErrorsInFields()
 
@@ -1204,13 +1176,11 @@
         varyReadingKana()
         addPitchToReading()
         addLinkToReading()
-        addLinkToImage()
 
         populateContext()
         populateHint()
         markContextExpression()
         markPitchInContextExpression()
-        addLinkToContext()
 
         highlightErrorsInFields()
 
