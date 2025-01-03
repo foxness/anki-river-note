@@ -578,3 +578,63 @@
 :is(.hint, .meaning, .context).font-ackaisyo {
     --font-variation: -0.03em;
 }
+
+/* ------------------------ HIDDEN MENU ------------------------ */
+
+.hiddenMenu {
+    position: absolute;
+    top: 0em;
+    right: 0em;
+
+    padding: 1em;
+    width: 12em;
+    height: 7em;
+
+    display: flex;
+    flex-direction: row-reverse;
+
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    opacity: 0;
+}
+
+.hiddenMenu:hover {
+    opacity: 1;
+}
+
+.linkContainer {
+    width: 6em;
+    display: flex;
+    flex-direction: row-reverse;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.3em;
+
+    /* background-color: rgba(255, 82, 82, 0.5); */
+}
+
+.linkContainer a {
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 0.3em;
+    opacity: 0.5;
+}
+
+.linkContainer a:hover {
+    opacity: 1;
+}
+
+.jpdbLink {
+    background-color: var(--heiban);
+}
+
+.immersionkitLink {
+    background-color: yellow;
+}
+
+.googleImagesNoLangLink {
+    background-color: var(--kifuku);
+}
+
+.massifLink {
+    background-color: var(--atamadaka);
+}
