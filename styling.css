@@ -116,7 +116,7 @@
     }
 }
 
-.expression a, .reading a, .context a {
+.expression a, .reading a, .sentence a {
     color: inherit;
 }
 
@@ -185,7 +185,7 @@
     text-underline-offset: 0.25em;
 }
 
-.context b:not(.pitch-underline) {
+.sentence b:not(.pitch-underline) {
     text-decoration-color: var(--primary-accent);
 
     font-weight: inherit;
@@ -302,13 +302,13 @@
     border-radius: 1em;
 }
 
-.context {
+.sentence {
     max-width: var(--text-max-width);
     font-size: 120%;
     line-height: 1.45em;
 }
 
-.context {
+.sentence {
     --font-variation: 0em;
 
     --standard-top-margin: 0.3em;
@@ -328,7 +328,7 @@
 
 /* ------------------------ ERROR ------------------------ */
 
-.context:not(:has(b)),
+.sentence:not(:has(b)),
 .hint:not(:has(b)) {
     color: var(--error-field) !important;
 }
@@ -569,13 +569,13 @@
     line-height: 100%;
 }
 
-:is(.hint, .meaning, .context):is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
+:is(.hint, .meaning, .sentence):is(.font-hiraginosans, .font-hiraginomincho, .font-hiraginominchobold) {
     --font-variation: 0.08em;
 }
 
 /* -- ACKAISYO -- */
 
-:is(.hint, .meaning, .context).font-ackaisyo {
+:is(.hint, .meaning, .sentence).font-ackaisyo {
     --font-variation: -0.03em;
 }
 

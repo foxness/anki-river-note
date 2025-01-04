@@ -21,7 +21,7 @@
     <div class='meaning'>{{Meaning}}</div>
     <div class='notes'>{{Notes}}</div>
     <div class='image'>{{Image}}</div>
-    <div class='context contextInner'>{{Context}}</div>
+    <div class='sentence sentenceInner'>{{Sentence}}</div>
 
     <div class='divider'></div>
 
@@ -116,7 +116,7 @@
         cardTrueReading = `{{Reading}}`
         cardMeaning = `{{Meaning}}`
         cardNotes = `{{Notes}}`
-        cardTrueContext = `{{Context}}`
+        cardTrueSentence = `{{Sentence}}`
         cardPitchPosition = `{{PitchPosition}}`
 
         // additional anki fields addon
@@ -134,7 +134,7 @@
         cardIsNewOrLearning = cardIsNew || cardIsLearning
 
         cardReading = cardTrueReading === '' ? cardExpression : cardTrueReading
-        cardContext = cardTrueContext === '' ? cardExpression : cardTrueContext
+        cardSentence = cardTrueSentence === '' ? cardExpression : cardTrueSentence
 
         riverIsFrontOfCard = getIsFrontOfCard()
         riverIsKatakanaCard = getIsKatakanaCard(cardExpression)
@@ -144,7 +144,7 @@
     }
 
     function defineRandomVariables() {
-        let seed = cardContext
+        let seed = cardSentence
         let cardAgnosticSeed = ''
 
         let probabilityBloodMoon = riverProbabilityBloodMoon
@@ -257,26 +257,26 @@
         readingElement.replaceChildren(linkElement)
     }
 
-    function populateContext() {
-        let contextInnerElement = document.querySelector('.contextInner')
-        if (contextInnerElement.childNodes.length > 0) {
+    function populateSentence() {
+        let sentenceInnerElement = document.querySelector('.sentenceInner')
+        if (sentenceInnerElement.childNodes.length > 0) {
             return
         }
 
-        contextInnerElement.innerHTML = cardExpression
+        sentenceInnerElement.innerHTML = cardExpression
     }
 
     function populateHint() {
         let removeHintSymbol = '-'
-        let copyFromContextSymbol = 'c'
+        let copySentenceSymbol = 'c'
 
         let hintElement = document.querySelector('.hint')
 
         if (cardHint === removeHintSymbol) {
             hintElement.innerHTML = ''
             return
-        } else if (cardHint === copyFromContextSymbol) {
-            hintElement.innerHTML = cardContext
+        } else if (cardHint === copySentenceSymbol) {
+            hintElement.innerHTML = cardSentence
             return
         }
 
@@ -288,15 +288,15 @@
         //     return
         // }
 
-        // hintElement.innerHTML = cardContext
+        // hintElement.innerHTML = cardSentence
     }
 
-    function markContextExpression() {
+    function markExpressionInSentence() {
         markExpressionInElement('hint')
-        markExpressionInElement('context')
+        markExpressionInElement('sentence')
     }
 
-    function markPitchInContextExpression() {
+    function markPitchInSentenceExpression() {
         let pitchPositions = getPitchPositions()
         if (!pitchPositions) {
             return
@@ -305,7 +305,7 @@
         let pitchType = getPitchType(pitchPositions[0])
 
         // dont add pitch to hint to not make it easy
-        let highlightedElements = document.querySelectorAll('.context b')
+        let highlightedElements = document.querySelectorAll('.sentence b')
         highlightedElements.forEach((element) => {
             element.classList.add('pitch-underline', pitchType)
         })
@@ -316,7 +316,7 @@
         highlightErrorInReading()
         highlightErrorInMeaning()
         highlightErrorInNotes()
-        highlightErrorInContext()
+        highlightErrorInSentence()
         highlightErrorInHint()
     }
 
@@ -598,7 +598,7 @@
     }
 
     function varyCardJapaneseFont() {
-        let japaneseElementSelector = '.expression, .hint, .contextInner, .definitionExpression, .definitionReading, .japanese'
+        let japaneseElementSelector = '.expression, .hint, .sentenceInner, .definitionExpression, .definitionReading, .japanese'
         let elements = document.querySelectorAll(japaneseElementSelector)
 
         let font = getCurrentFont()
@@ -649,17 +649,17 @@
 
     // ---------------- EXPRESSION MARKING ----------------
 
-    function getUnhighlightedIndices(context, expression, specialTagStart, specialTagEnd) {
+    function getUnhighlightedIndices(sentence, expression, specialTagStart, specialTagEnd) {
         let index = 0
         let unhighlightedIndices = []
 
         while (true) {
-            let expressionIndex = context.indexOf(expression, index)
+            let expressionIndex = sentence.indexOf(expression, index)
             if (expressionIndex === -1) {
                 break
             }
 
-            let startTagIndex = context.indexOf(specialTagStart, index)
+            let startTagIndex = sentence.indexOf(specialTagStart, index)
 
             if (startTagIndex === -1 || expressionIndex < startTagIndex) {
                 unhighlightedIndices.push(expressionIndex)
@@ -668,7 +668,7 @@
             }
 
             let startTagEndIndex = startTagIndex + specialTagStart.length
-            let endTagIndex = context.indexOf(specialTagEnd, startTagEndIndex)
+            let endTagIndex = sentence.indexOf(specialTagEnd, startTagEndIndex)
             if (endTagIndex === -1) {
                 alert('Found unclosed special tag')
                 break
@@ -680,9 +680,9 @@
         return unhighlightedIndices
     }
 
-    function highlightExpression(context, expression, unhighlightedIndices, highlightTagStart, highlightTagEnd) {
+    function highlightExpression(sentence, expression, unhighlightedIndices, highlightTagStart, highlightTagEnd) {
         if (unhighlightedIndices.length === 0) {
-            return context
+            return sentence
         }
 
         let result = ''
@@ -691,9 +691,9 @@
             let middleChunkLeftIndex = unhighlightedIndices[i]
             let middleChunkRightIndex = middleChunkLeftIndex + expression.length
 
-            let leftChunk = context.substring(index, middleChunkLeftIndex)
+            let leftChunk = sentence.substring(index, middleChunkLeftIndex)
 
-            let middleChunk = context.substring(middleChunkLeftIndex, middleChunkRightIndex)
+            let middleChunk = sentence.substring(middleChunkLeftIndex, middleChunkRightIndex)
             if (middleChunk !== expression) {
                 alert('Something went wrong')
             }
@@ -701,7 +701,7 @@
             result += leftChunk + highlightTagStart + expression + highlightTagEnd
 
             if (i + 1 === unhighlightedIndices.length) {
-                let rightChunk = context.substring(middleChunkRightIndex, context.length)
+                let rightChunk = sentence.substring(middleChunkRightIndex, sentence.length)
                 result += rightChunk
             }
 
@@ -711,12 +711,12 @@
         return result
     }
 
-    function autoBoldHighlight(context, expression) {
+    function autoBoldHighlight(sentence, expression) {
         let boldTagStart = '<b>'
         let boldTagEnd = '</b>'
 
-        let unhighlightedIndices = getUnhighlightedIndices(context, expression, boldTagStart, boldTagEnd)
-        let highlighted = highlightExpression(context, expression, unhighlightedIndices, boldTagStart, boldTagEnd)
+        let unhighlightedIndices = getUnhighlightedIndices(sentence, expression, boldTagStart, boldTagEnd)
+        let highlighted = highlightExpression(sentence, expression, unhighlightedIndices, boldTagStart, boldTagEnd)
 
         return highlighted
     }
@@ -727,12 +727,12 @@
             return
         }
 
-        let context = element.innerHTML
-        if (context.length === 0 || cardExpression.length === 0) {
+        let sentence = element.innerHTML
+        if (sentence.length === 0 || cardExpression.length === 0) {
             return
         }
 
-        let expressionHighlighted = autoBoldHighlight(context, cardExpression)
+        let expressionHighlighted = autoBoldHighlight(sentence, cardExpression)
 
         let hiraganaReading = translateKana(cardReading, true)
         let katakanaReading = translateKana(cardReading, false)
@@ -828,9 +828,9 @@
         highlightAsErroredIfNeeded(hasError, targetClass)
     }
 
-    function highlightErrorInContext() {
-        let targetClass = 'context'
-        let targetString = cardTrueContext
+    function highlightErrorInSentence() {
+        let targetClass = 'sentence'
+        let targetString = cardTrueSentence
 
         let hasError = checkHasSentenceError(targetString)
         highlightAsErroredIfNeeded(hasError, targetClass)
@@ -1155,10 +1155,10 @@
         // addPitchToReading()
         // addLinkToReading()
 
-        // populateContext()
+        // populateSentence()
         populateHint()
-        markContextExpression()
-        // markPitchInContextExpression()
+        markExpressionInSentence()
+        // markPitchInSentenceExpression()
         
         highlightErrorsInFields()
 
@@ -1177,10 +1177,10 @@
         addPitchToReading()
         addLinkToReading()
 
-        populateContext()
+        populateSentence()
         populateHint()
-        markContextExpression()
-        markPitchInContextExpression()
+        markExpressionInSentence()
+        markPitchInSentenceExpression()
 
         highlightErrorsInFields()
 
