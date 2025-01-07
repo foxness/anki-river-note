@@ -582,14 +582,29 @@
 /* ------------------------ HIDDEN MENU ------------------------ */
 
 .hiddenMenu {
-    position: absolute;
-    top: 0em;
-    right: 0em;
+    --item-width: 2;
+    --item-height: 3;
 
-    padding: 1em;
-    width: 8em;
-    height: 10em;
-    border-bottom-left-radius: 80%;
+    --item-size: 2.2em;
+    --item-radius: 0.4em;
+    --gap: 0.3em;
+    --inner-padding: 1.2em;
+    --outer-padding: 1em;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    --padding-total: calc(var(--inner-padding) + var(--outer-padding));
+    --item-width-total: var(--item-size) * var(--item-width) + var(--gap) * (var(--item-width) - 1);
+    --item-height-total: var(--item-size) * var(--item-height) + var(--gap) * (var(--item-height) - 1);
+
+    padding: var(--outer-padding) var(--outer-padding) var(--inner-padding) var(--inner-padding);
+
+    width: calc(var(--padding-total) + var(--item-width-total));
+    height: calc(var(--padding-total) + var(--item-height-total));
+
+    border-bottom-left-radius: 2em;
     overflow: clip;
 
     display: flex;
@@ -604,20 +619,21 @@
 }
 
 .linkContainer {
-    width: 5.5em;
+    /* width: auto;
+    height: 8em; */
     display: flex;
     flex-direction: column;
     flex-wrap: wrap-reverse;
     align-content: flex-start;
-    gap: 0.3em;
+    gap: var(--gap);
 
     /* background-color: rgba(255, 82, 82, 0.3); */
 }
 
 .linkContainer a {
-    width: 2.3em;
-    height: 2.3em;
-    border-radius: 0.3em;
+    width: var(--item-size);
+    height: var(--item-size);
+    border-radius: var(--item-radius);
     opacity: 0.5;
 }
 
@@ -648,4 +664,9 @@
 .wikipediaLink {
     /* order: 4; */
     background-color: #ffffff;
+}
+
+.ojadLink {
+    /* order: 5; */
+    background-color: orange;
 }
