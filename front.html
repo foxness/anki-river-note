@@ -585,12 +585,21 @@
             setFont(element, font)
         })
 
+        let cycleCardFont = () => {
+            elements.forEach((element) => {
+                cycleFont(element)
+            })
+        }
+
         addEventListener('keypress', (e) => {
             if (e.key === riverCycleFontKey) {
-                elements.forEach((element) => {
-                    cycleFont(element)
-                })
+                cycleCardFont()
             }
+        })
+
+        let cycleFontButton = document.querySelector('.cycleFontButton')
+        cycleFontButton?.addEventListener('click', (e) => {
+            cycleCardFont()
         })
     }
 

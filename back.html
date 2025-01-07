@@ -4,9 +4,11 @@
             <a class='jpdbLink' href='https://jpdb.io/search?q={{Expression}}&lang=japanese'></a>
             <a class='immersionkitLink' href='https://www.immersionkit.com/dictionary?keyword={{Expression}}'></a>
             <a class='massifLink' href='https://massif.la/ja/search?q={{Expression}}'></a>
-            <a class='googleImagesNoLangLink' href='https://www.google.com/search?q={{Expression}}&udm=2'></a>
             <a class='wikipediaLink' href='https://ja.wikipedia.org/wiki/{{Expression}}'></a>
             <a class='ojadLink' href='https://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{{Expression}}'></a>
+            <a class='weblioLink' href='https://www.weblio.jp/content/{{Expression}}'></a>
+            <a class='youglishLink' href='https://youglish.com/pronounce/{{Expression}}/japanese'></a>
+            <a class='cycleFontButton'></a>
         </div>
     </div>
 
@@ -608,12 +610,21 @@
             setFont(element, font)
         })
 
+        let cycleCardFont = () => {
+            elements.forEach((element) => {
+                cycleFont(element)
+            })
+        }
+
         addEventListener('keypress', (e) => {
             if (e.key === riverCycleFontKey) {
-                elements.forEach((element) => {
-                    cycleFont(element)
-                })
+                cycleCardFont()
             }
+        })
+
+        let cycleFontButton = document.querySelector('.cycleFontButton')
+        cycleFontButton?.addEventListener('click', (e) => {
+            cycleCardFont()
         })
     }
 
