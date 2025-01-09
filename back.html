@@ -248,8 +248,7 @@
 
         let pitchList = constructPitchList(pitchPositions)
 
-        readingElement.innerHTML = ""
-        readingElement.appendChild(pitchList)
+        readingElement.replaceChildren(pitchList)
         readingElement.classList.add('pitch')
     }
 
@@ -277,7 +276,7 @@
         let hintElement = document.querySelector('.hint')
 
         if (cardHint === removeHintSymbol) {
-            hintElement.innerHTML = ''
+            hintElement.replaceChildren()
             return
         } else if (cardHint === copySentenceSymbol) {
             hintElement.innerHTML = cardSentence
@@ -324,31 +323,49 @@
         highlightErrorInHint()
     }
 
-    function highlightNoteDefinitions() {
-        let removeMainDefinitionNote = true
-
+    function highlightNotes() {
         let noteElement = document.querySelector('.notes')
         if (noteElement.childNodes.length === 0) {
             return
         }
+        
+        let noteGroups = getNoteGroups(noteElement)
+        let simpleLines = noteGroups.simpleLines
+        let definitionElements = noteGroups.definitionElements
 
-        let dividerTag = '<br>'
-        let noteRaw = noteElement.innerHTML.replaceAll('&nbsp;', ' ').trim()
-        let lines = noteRaw.split(dividerTag)
+        let simpleSectionElement = document.createElement('div')
+        simpleSectionElement.classList.add('noteSimpleSection')
 
-        let highlightedLines = lines.map(line => highlightNoteLine(line))
-        if (removeMainDefinitionNote) {
-            highlightedLines = highlightedLines.filter(line => !line.isMain)
+        simpleLines.forEach(line => {
+            simpleSectionElement.appendChild(document.createTextNode(line))
+            simpleSectionElement.appendChild(document.createElement('br'))
+        })
+
+        simpleSectionElement.lastChild?.remove() // dont need last <br>
+
+        let definitionSectionElement = document.createElement('div')
+        definitionSectionElement.classList.add('noteDefinitionSection')
+
+        definitionElements.forEach(element => {
+            definitionSectionElement.appendChild(element)
+            definitionSectionElement.appendChild(document.createElement('br'))
+        })
+
+        definitionSectionElement.lastChild?.remove() // dont need last <br>
+
+        noteElement.replaceChildren()
+        
+        if (simpleLines.length !== 0) {
+            noteElement.appendChild(simpleSectionElement)
         }
 
-        highlightedLines = highlightedLines.map(line => line.highlighted)
-        let highlightedNote = highlightedLines.join(dividerTag)
-
-        noteElement.innerHTML = highlightedNote
+        if (definitionElements.length !== 0) {
+            noteElement.appendChild(definitionSectionElement)
+        }
     }
 
     function blurEnglishText() {
-        let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        let englishElements = document.querySelectorAll('.meaning, .definitionMeaning, .noteSimpleSection')
         englishElements = Array.from(englishElements).filter(element => !getIsJapanese(element.textContent))
 
         setBlurAmount()
@@ -551,7 +568,7 @@
     function tagJapaneseText() {
         // we tag these elements because they could be either english or japanese
 
-        let elements = document.querySelectorAll('.meaning, .definitionMeaning, .simpleNoteLine')
+        let elements = document.querySelectorAll('.meaning, .definitionMeaning, .noteSimpleSection')
         let japaneseElements = Array.from(elements).filter(element => getIsJapanese(element.textContent))
 
         japaneseElements.forEach((element) => {
@@ -958,38 +975,47 @@
         meaningElement.appendChild(document.createTextNode(meaning))
 
         lineElement.appendChild(meaningElement)
-        return lineElement.outerHTML
+        return lineElement
     }
 
-    function highlightNoteLine(line) {
-        // definition examples:
-        // 持ち上げる「もちあげる」- elevate, flatter
-        // 収まる「おさまる」- fit into
+    function getNoteGroups(noteElement) {
+        let removeMainDefinitionNote = true
 
-        let definitionRegex = /^(.+?)\s*[「\[](.+)[」\]]\s*[-ー—]\s*(.+)$/
+        let noteRaw = noteElement.innerHTML.replaceAll('&nbsp;', ' ').trim()
+        let lines = noteRaw.split('<br>')
 
-        let groups = definitionRegex.exec(line)
-        if (groups === null) {
-            let noteLineElement = document.createElement('span')
-            noteLineElement.classList.add('simpleNoteLine')
-            noteLineElement.appendChild(document.createTextNode(line))
+        let simpleLines = []
+        let definitionElements = []
 
-            return {
-                isMain: false,
-                highlighted: noteLineElement.outerHTML
+        lines.forEach(line => {
+            // definition examples:
+            // 持ち上げる [もちあげる] - elevate
+            // 収まる「おさまる」- fit into
+
+            let definitionRegex = /^(.+?)\s*[「\[](.+)[」\]]\s*[-ー—]\s*(.+)$/
+
+            let groups = definitionRegex.exec(line)
+            if (groups === null) {
+                simpleLines.push(line)
+                return
             }
-        }
 
-        let expression = groups[1].trim()
-        let reading = groups[2].trim()
-        let meaning = groups[3].trim()
+            let expression = groups[1].trim()
+            let reading = groups[2].trim()
+            let meaning = groups[3].trim()
 
-        let isMainDefinition = expression == cardExpression && reading == cardReading
-        let highlightedDefinition = highlightNoteDefinition(expression, reading, meaning)
+            let isMainDefinition = expression == cardExpression && reading == cardReading
+            if (removeMainDefinitionNote && isMainDefinition) {
+                return
+            }
+
+            let highlightedDefinition = highlightNoteDefinition(expression, reading, meaning)
+            definitionElements.push(highlightedDefinition)
+        })
 
         return {
-            isMain: isMainDefinition,
-            highlighted: highlightedDefinition
+            simpleLines: simpleLines,
+            definitionElements: definitionElements
         }
     }
 
@@ -1174,8 +1200,7 @@
         // markPitchInSentenceExpression()
         
         highlightErrorsInFields()
-
-        // highlightNoteDefinitions()
+        // highlightNotes()
         // blurEnglishText()
         varyJapaneseFont()
     }
@@ -1196,8 +1221,7 @@
         markPitchInSentenceExpression()
 
         highlightErrorsInFields()
-
-        highlightNoteDefinitions()
+        highlightNotes()
         blurEnglishText()
         varyJapaneseFont()
     }

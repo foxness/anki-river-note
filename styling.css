@@ -249,14 +249,23 @@
 /* ------------------------ NOTES ------------------------ */
 
 .notes {
-    margin-top: 0;
-    margin-bottom: 0;
-    text-align: left;
-    font-size: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
 }
 
 .notes:empty {
     display: none;
+}
+
+.noteSimpleSection {
+    margin-top: 0.1em;
+    margin-bottom: 0.3em;
+    color: var(--notes-simple);
+}
+
+.noteDefinitionSection {
+    text-align: left;
 }
 
 .definitionLine {
@@ -293,11 +302,6 @@
 
 .definitionMeaning {
     color: var(--notes-definition-meaning);
-}
-
-.simpleNoteLine {
-    line-height: 240%;
-    color: var(--notes-simple);
 }
 
 /* ------------------------ IMAGE ------------------------ */
