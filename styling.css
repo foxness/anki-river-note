@@ -251,7 +251,7 @@
 .notes {
     display: flex;
     flex-direction: column;
-    gap: 0.4em;
+    gap: 0.1em;
 }
 
 .notes:empty {
@@ -265,6 +265,7 @@
 }
 
 .noteDefinitionSection {
+    margin-top: 0.3em;
     text-align: left;
 }
 
