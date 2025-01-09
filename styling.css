@@ -92,6 +92,8 @@
     text-align: center;
 }
 
+/* ------------------------ EXPRESSION ------------------------ */
+
 .expressionContainer {
     position: relative;
     font-size: 260%;
@@ -116,6 +118,8 @@
     }
 }
 
+/* ------------------------ LINK HIGHLIGHTING ------------------------ */
+
 .expression a, .reading a, .sentence a {
     color: inherit;
 }
@@ -129,6 +133,8 @@
     box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
     /* !important for minimalist anki */
 }
+
+/* ------------------------ INDICATOR ------------------------ */
 
 .indicator {
     position: absolute;
@@ -154,6 +160,8 @@
     background-color: var(--indicator-preview);
 }
 
+/* ------------------------ HINT ------------------------ */
+
 .hint {
     max-width: 30em;
     line-height: 1.45em;
@@ -175,6 +183,8 @@
     display: none;
 }
 
+/* ------------------------ EXPRESSION HIGHLIGHT ------------------------ */
+
 .hint b {
     text-decoration-color: var(--primary-accent);
 
@@ -195,6 +205,8 @@
     text-underline-offset: 0.25em;
 }
 
+/* ------------------------ HELPER ------------------------ */
+
 .divider {
     width: calc(100% - 4em);
     height: 0.12em;
@@ -203,12 +215,16 @@
     border-radius: 1em;
 }
 
+/* ------------------------ READING ------------------------ */
+
 .reading {
     margin-top: -0.1em;
     font-size: 180%;
     font-weight: 600;
     color: var(--default-reading);
 }
+
+/* ------------------------ MEANING ------------------------ */
 
 .meaning {
     max-width: var(--text-max-width);
@@ -229,6 +245,8 @@
     margin-top: var(--top-margin);
     margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
+
+/* ------------------------ NOTES ------------------------ */
 
 .notes {
     margin-top: 0;
@@ -282,6 +300,8 @@
     color: var(--notes-simple);
 }
 
+/* ------------------------ IMAGE ------------------------ */
+
 .image img {
     min-height: 6em;
     max-width: min(27em, 70vw);
@@ -301,6 +321,8 @@
     height: 0.2em;
     border-radius: 1em;
 }
+
+/* ------------------------ SENTENCE ------------------------ */
 
 .sentence {
     max-width: var(--text-max-width);
