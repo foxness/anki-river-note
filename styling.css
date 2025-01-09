@@ -580,6 +580,11 @@
     font-weight: 600;
 }
 
+.font-yumincho {
+    font-family: 'YuMincho', serif;
+    /* font-weight: 600; */
+}
+
 /* .font-banana {
     font-family: 'ArmedBanana', sans-serif;
 } */
@@ -604,6 +609,12 @@
 
 :is(.hint, .meaning, .sentence).font-ackaisyo {
     --font-variation: -0.03em;
+}
+
+/* -- YUMINCHO -- */
+
+:is(.hint, .meaning, .sentence).font-yumincho {
+    --font-variation: 0.08em;
 }
 
 /* ------------------------ HIDDEN MENU ------------------------ */

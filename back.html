@@ -57,7 +57,7 @@
 
         // --- FONTS ---
 
-        riverFonts = 'font-notosans font-hiraginosans font-hiraginomincho font-hiraginominchobold font-ackaisyo'
+        riverFonts = 'font-notosans font-hiraginosans font-yumincho font-hiraginomincho font-hiraginominchobold font-ackaisyo'
 
         riverFontRegular = 'font-notosans'
         riverFontHandwritten = 'font-ackaisyo'
@@ -67,6 +67,8 @@
             ['font-hiraginomincho', 0.24],
             ['font-hiraginominchobold', 0.01]
         ]
+
+        riverFontOverride = null
 
         // --- PREVIEW ---
 
@@ -579,6 +581,10 @@
     function getTodaysFont(random) {
         // every day has a new font cuz random is card-agnostic
 
+        if (riverFontOverride !== null) {
+            return riverFontOverride
+        }
+
         let regularFont = riverFontRegular
         let fontProbabilities = riverFontProbabilities
 
@@ -990,7 +996,7 @@
         lines.forEach(line => {
             // definition examples:
             // 持ち上げる [もちあげる] - elevate
-            // 収まる「おさまる」- fit into
+            // 収まる [おさまる] - fit
 
             let definitionRegex = /^(.+?)\s*[「\[](.+)[」\]]\s*[-ー—]\s*(.+)$/
 
