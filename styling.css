@@ -641,14 +641,14 @@
     opacity: 1;
 }
 
-.jpdbLink {
+.immersionkitLink {
     order: 0;
-    background-color: teal;
+    background-color: yellow;
 }
 
-.immersionkitLink {
+.jpdbLink {
     order: 1;
-    background-color: yellow;
+    background-color: teal;
 }
 
 .massifLink {
