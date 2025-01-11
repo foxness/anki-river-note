@@ -327,6 +327,10 @@
     border-radius: 1em;
 }
 
+.image:hover {
+    cursor: pointer;
+}
+
 /* ------------------------ SENTENCE ------------------------ */
 
 .sentence {
