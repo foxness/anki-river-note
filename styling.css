@@ -281,11 +281,11 @@
     color: var(--notes-definition-expression);
 }
 
-.definitionExpression a {
+.definitionExpression a, .definitionMeaning a {
     color: inherit;
 }
 
-.definitionExpression a:hover {
+.definitionExpression a:hover, .definitionMeaning a:hover {
     box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
     /* !important for minimalist anki */
 }

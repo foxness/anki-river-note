@@ -1044,7 +1044,8 @@
 
         let meaningElement = document.createElement('span')
         meaningElement.classList.add('definitionMeaning')
-        meaningElement.appendChild(document.createTextNode(meaning))
+        let linkElement = makeDictionaryLinkElement(expression, meaning)
+        meaningElement.appendChild(linkElement)
 
         lineElement.appendChild(meaningElement)
         return lineElement
