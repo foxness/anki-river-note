@@ -1011,7 +1011,7 @@
         return formatRecognized(recognizedGroups)
     }
 
-    function highlightNoteDefinition(expression, reading, meaning) {
+    function highlightNoteDefinition(expression, reading, meaning, line) {
         let useFurigana = true
 
         let lineElement = document.createElement('span')
@@ -1022,15 +1022,12 @@
 
         if (useFurigana) {
             let expressionWithFurigana = makeFuriganaExpression(expression, reading)
-            let linkElement = makeDictionaryLinkElement(expression, expressionWithFurigana)
-            expressionElement.appendChild(linkElement)
-
+            expressionElement.innerHTML = expressionWithFurigana
             lineElement.appendChild(expressionElement)
+
             lineElement.appendChild(document.createTextNode(' — '))
         } else {
-            let linkElement = makeDictionaryLinkElement(expression)
-            expressionElement.appendChild(linkElement)
-
+            expressionElement.innerHTML = expression
             lineElement.appendChild(expressionElement)
 
             let readingElement = document.createElement('span')
@@ -1041,6 +1038,10 @@
             lineElement.appendChild(readingElement)
             lineElement.appendChild(document.createTextNode('」— '))
         }
+
+        expressionElement.addEventListener('click', (e) => {
+            ankiSearch(line)
+        })
 
         let meaningElement = document.createElement('span')
         meaningElement.classList.add('definitionMeaning')
@@ -1082,7 +1083,7 @@
                 return
             }
 
-            let highlightedDefinition = highlightNoteDefinition(expression, reading, meaning)
+            let highlightedDefinition = highlightNoteDefinition(expression, reading, meaning, line)
             definitionElements.push(highlightedDefinition)
         })
 
