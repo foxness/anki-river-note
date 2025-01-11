@@ -211,7 +211,7 @@
         let useFurigana = false
         let expressionElement = document.querySelector('.expression')
 
-        let rawExpression = useFurigana ? makeFuriganaExpression(cardExpression, cardReading) : null
+        let rawExpression = useFurigana ? makeFuriganaExpression(cardExpression, cardReading).outerHTML : null
         let linkElement = makeDictionaryLinkElement(cardExpression, rawExpression)
 
         expressionElement.replaceChildren(linkElement)
@@ -988,16 +988,22 @@
         return kanaGroups.map(g => getIsKana(g) ? [g] : [g, recognizedReadings.shift()])
     }
 
-    function formatRecognized(recognizedGroups) {
-        let rubyInner = recognizedGroups.map(group => {
+    function formatRuby(groups) {
+        let rubyElement = document.createElement('ruby')
+
+        groups.forEach(group => {
             let element = group[0]
             let reading = group[1] ?? ''
             let switchedReading = translateKana(reading, riverIsHiraganaReading)
 
-            return `${element}<rt>${switchedReading}</rt>`
+            let rtElement = document.createElement('rt')
+            rtElement.appendChild(document.createTextNode(switchedReading))
+
+            rubyElement.appendChild(document.createTextNode(element))
+            rubyElement.appendChild(rtElement)
         })
 
-        return `<ruby>${rubyInner.join('')}</ruby>`
+        return rubyElement
     }
 
     function makeFuriganaExpression(expression, reading) {
@@ -1008,7 +1014,7 @@
         let kanaGroups = splitIntoKanaGroups(expression)
         let recognizedGroups = recognizeReading(kanaGroups, expression, reading)
 
-        return formatRecognized(recognizedGroups)
+        return formatRuby(recognizedGroups)
     }
 
     function highlightNoteDefinition(expression, reading, meaning, line) {
@@ -1022,7 +1028,7 @@
 
         if (useFurigana) {
             let expressionWithFurigana = makeFuriganaExpression(expression, reading)
-            expressionElement.innerHTML = expressionWithFurigana
+            expressionElement.appendChild(expressionWithFurigana)
             lineElement.appendChild(expressionElement)
 
             lineElement.appendChild(document.createTextNode(' — '))
