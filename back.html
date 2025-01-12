@@ -1008,7 +1008,7 @@
 
     function makeFuriganaExpression(expression, reading) {
         if (reading === expression || reading === '') {
-            return expression
+            return document.createTextNode(expression)
         }
 
         let kanaGroups = splitIntoKanaGroups(expression)
