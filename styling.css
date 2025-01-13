@@ -14,18 +14,20 @@
     --default-reading: #f8e1b5;
     --default-meaning: #bccfff; /* dodgerblue-like */
     --divider: #727272;
+    --information: #818181;
+    --background-secondary: #3b3b3b;
 
     /* cool colors: aquamarine yellow 27a6dd */
 
     /* --- ACCENT COLORS --- */
 
-    --primary-accent: #37e3b2;
-    --secondary-accent: var(--foreground);
+    --accent-primary: #37e3b2;
+    --accent-secondary: var(--foreground);
 
     /* --- INDICATOR COLORS --- */
 
     --indicator-new: #3772ff;
-    --indicator-preview: var(--primary-accent);
+    --indicator-preview: var(--accent-primary);
 
     /* --- NOTE COLORS --- */
 
@@ -33,12 +35,12 @@
     --notes-definition-expression: lightseagreen;
     --notes-definition-reading: lemonchiffon;
     --notes-definition-meaning: mediumaquamarine;
-    --notes-definition-furigana: var(--secondary-accent);
+    --notes-definition-furigana: var(--accent-secondary);
 
     /* --- ERROR COLORS --- */
 
     --error-field: red;
-    --super-error: #ff2c2c;
+    --error-super: #ff2c2c;
 
     /* --- PITCH COLORS --- */
 
@@ -114,7 +116,7 @@
 
     .expression rt {
         user-select: none;
-        color: var(--primary-accent);
+        color: var(--accent-primary);
     }
 }
 
@@ -125,12 +127,12 @@
 }
 
 :is(.expression, .reading:not(.pitch)) a:hover {
-    box-shadow: inset 0 -.5em 0 0 var(--primary-accent) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--accent-primary) !important;
     /* !important for minimalist anki */
 }
 
 .reading.pitch a:hover {
-    box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--accent-secondary) !important;
     /* !important for minimalist anki */
 }
 
@@ -186,7 +188,7 @@
 /* ------------------------ EXPRESSION HIGHLIGHT ------------------------ */
 
 .hint b {
-    text-decoration-color: var(--primary-accent);
+    text-decoration-color: var(--accent-primary);
 
     font-weight: inherit;
     text-decoration-line: underline;
@@ -196,7 +198,7 @@
 }
 
 .sentence b:not(.pitch-underline) {
-    text-decoration-color: var(--primary-accent);
+    text-decoration-color: var(--accent-primary);
 
     font-weight: inherit;
     text-decoration-line: underline;
@@ -283,7 +285,7 @@
 
 .definitionExpression:hover {
     cursor: pointer;
-    box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--accent-secondary) !important;
     /* !important for minimalist anki */
 }
 
@@ -307,7 +309,7 @@
 }
 
 .definitionMeaning a:hover {
-    box-shadow: inset 0 -.5em 0 0 var(--secondary-accent) !important;
+    box-shadow: inset 0 -.5em 0 0 var(--accent-secondary) !important;
     /* !important for minimalist anki */
 }
 
@@ -377,7 +379,7 @@
 
 .superError,
 .superError * {
-    color: var(--super-error) !important;
+    color: var(--error-super) !important;
 }
 
 /* ------------------------ PITCH ------------------------ */
@@ -639,7 +641,7 @@
     --inner-padding: 1.2em;
     --outer-padding: 1em;
 
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
 
@@ -658,7 +660,7 @@
     display: flex;
     flex-direction: row-reverse;
 
-    background-color: #3b3b3b;
+    background-color: var(--background-secondary);
     opacity: 0;
 }
 
@@ -728,4 +730,32 @@
     order: 7;
     background-color: #6cbf43;
     cursor: pointer;
+}
+
+/* ------------------------ INFORMATION ------------------------ */
+
+.container:not(:has(.hiddenMenu:hover)) .informationContainer {
+    /* hide if not hovering hidden menu */
+    display: none;
+}
+
+.informationContainer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    padding-bottom: 0.2em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    border-top-left-radius: 0.4em;
+
+    background-color: var(--background-secondary);
+}
+
+.informationContainer span {
+    color: var(--information);
+    font-size: 72%;
+
+    /* background-color: rgba(255, 0, 0, 0.1); */
 }

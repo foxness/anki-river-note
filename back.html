@@ -1,4 +1,7 @@
 <div class='container'>
+
+    <!-- ------ INVISIBLE ELEMENTS ------ -->
+
     <div class='hiddenMenu'>
         <div class='linkContainer'>
             <a class='jpdbLink' href='https://jpdb.io/search?q={{Expression}}&lang=japanese'></a>
@@ -11,6 +14,12 @@
             <a class='cycleFontButton'></a>
         </div>
     </div>
+
+    <div class='informationContainer'>
+        <span>fontNamePlaceholder</span>
+    </div>
+
+    <!-- ------ REGULAR ELEMENTS ------ -->
 
     <div class='expressionContainer'>
         <div class='indicator'></div>
@@ -58,7 +67,14 @@
 
         // --- FONTS ---
 
-        riverFonts = 'font-notosans font-hiraginosans font-hiraginomincho font-yumincho font-hiraginominchobold font-ackaisyo'
+        riverFonts = [
+            'font-notosans',
+            'font-hiraginosans',
+            'font-hiraginomincho',
+            'font-yumincho',
+            'font-hiraginominchobold',
+            'font-ackaisyo'
+        ]
 
         riverFontRegular = 'font-notosans'
         riverFontHandwritten = 'font-ackaisyo'
@@ -173,12 +189,14 @@
         riverIsBloodMoon = cardAgnosticRandom() < probabilityBloodMoon
         riverIsHoliday = cardAgnosticRandom() < probabilityHoliday
 
-        riverCardFont = getTodaysFont(cardAgnosticRandom())
+        riverTodaysFont = getTodaysFont(cardAgnosticRandom())
 
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
 
         riverVariedKanaReading = getVariedKanaReading()
+        
+        riverDefaultFont = getDefaultFont()
 
         if (riverIsBloodMoon) {
             riverIsHoliday = false
@@ -606,31 +624,46 @@
 
     // ---------------- FONT VARIATION ----------------
 
-    function getFonts() {
-        return riverFonts.split(' ')
-    }
-
-    function cycleFont(element) {
-        let fonts = getFonts()
+    function cycleFont(elements) {
+        let firstElement = elements[0]
+        if (firstElement === undefined) {
+            return
+        }
 
         let currentFont = riverFontRegular
-        for (const font of fonts) {
-            if (element.classList.contains(font)) {
+        for (const font of riverFonts) {
+            if (firstElement.classList.contains(font)) {
                 currentFont = font
                 break
             }
         }
 
-        newFont = fonts[(fonts.indexOf(currentFont) + 1) % fonts.length]
+        newFont = riverFonts[(riverFonts.indexOf(currentFont) + 1) % riverFonts.length]
 
-        element.classList.remove(currentFont)
-        element.classList.add(newFont)
+        elements.forEach(element => {
+            element.classList.replace(currentFont, newFont)
+        })
+
+        setInformationFont(newFont)
     }
 
-    function setFont(element, font) {
-        let fonts = getFonts()
-        element.classList.remove(...fonts)
-        element.classList.add(font)
+    function setFont(elements, font) {
+        elements.forEach(element => {
+            element.classList.remove(...riverFonts)
+            element.classList.add(font)
+        })
+
+        setInformationFont(font)
+    }
+
+    function setInformationFont(font) {
+        let informationElement = document.querySelector('.informationContainer span')
+        if (informationElement === null) {
+            return
+        }
+
+        let formattedFont = font.replace('font-', '')
+        informationElement.replaceChildren(document.createTextNode(formattedFont))
     }
 
     function tagJapaneseText() {
@@ -682,38 +715,29 @@
         return regularFont
     }
 
-    function getCurrentFont() {
+    function getDefaultFont() {
         if (riverIsHandwrittenCard) {
             return riverFontHandwritten
         }
         
-        return riverCardFont
+        return riverTodaysFont
     }
 
     function varyCardJapaneseFont() {
         let japaneseElementSelector = '.expression, .hint, .sentenceInner, .definitionExpression, .definitionReading, .japanese'
         let elements = document.querySelectorAll(japaneseElementSelector)
 
-        let font = getCurrentFont()
-        elements.forEach((element) => {
-            setFont(element, font)
-        })
-
-        let cycleCardFont = () => {
-            elements.forEach((element) => {
-                cycleFont(element)
-            })
-        }
+        setFont(elements, riverDefaultFont)
 
         addEventListener('keypress', (e) => {
             if (e.key === riverCycleFontKey) {
-                cycleCardFont()
+                cycleFont(elements)
             }
         })
 
         let cycleFontButton = document.querySelector('.cycleFontButton')
         cycleFontButton?.addEventListener('click', (e) => {
-            cycleCardFont()
+            cycleFont(elements)
         })
     }
 
