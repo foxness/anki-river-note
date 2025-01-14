@@ -226,7 +226,7 @@
     function addPitchToReading() {
         let readingElement = document.querySelector(".reading")
         let pitchPositions = getPitchPositions()
-        if (!pitchPositions) {
+        if (pitchPositions === null) {
             return
         }
 
@@ -297,7 +297,7 @@
 
     function markPitchInSentenceExpression() {
         let pitchPositions = getPitchPositions()
-        if (!pitchPositions) {
+        if (pitchPositions === null) {
             return
         }
 
@@ -815,7 +815,7 @@
 
     function markExpressionInElement(elementClass) {
         let element = document.querySelector('.' + elementClass)
-        if (!element) {
+        if (element === null) {
             return
         }
 
@@ -876,7 +876,7 @@
         }
 
         let targetElement = document.querySelector('.' + targetClass)
-        if (!targetElement) {
+        if (targetElement === null) {
             return
         }
 
