@@ -95,6 +95,14 @@
             ['font-hiraginominchobold', 0.01]
         ]
 
+        riverKanaFontProbabilities = [ // can be null
+            ['font-ackaisyo', 0.2],
+            ['font-hiraginosans', 0.2],
+            ['font-hiraginomincho', 0.2],
+            ['font-yumincho', 0.2],
+            ['font-hiraginominchobold', 0.2]
+        ]
+
         // --- HANDWRITTEN ---
 
         // riverProbabilityKanaCardHandwritten = 0.2
@@ -107,8 +115,6 @@
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
         riverPreviewProbabilityHandwritten = 0.01
-
-        riverPreviewFontRegularOverride = null // can be null
 
         riverPreviewDayFontProbabilitiesOverride = [ // can be null
             ['font-ackaisyo', 0.01],
@@ -179,8 +185,8 @@
         cardSentence = cardTrueSentence === '' ? cardExpression : cardTrueSentence
 
         riverIsFrontOfCard = getIsFrontOfCard()
-        riverIsKatakanaCard = getIsKatakanaCard(cardExpression)
-        riverIsKanaCard = cardReading === cardExpression
+        riverIsKatakanaCard = getIsKatakanaCard()
+        riverIsKanaCard = getIsKanaCard()
 
         riverIsPreview = riverUsePreview && getIsPreview()
     }
@@ -207,8 +213,9 @@
         riverIsHoliday = cardAgnosticRandom() < probabilityHoliday
 
         riverTodaysFont = getTodaysFont(cardAgnosticRandom())
-
         riverCardSpecificFont = getCardSpecificFont(random())
+        riverKanaFont = getKanaFont(random())
+
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
 
@@ -483,9 +490,13 @@
         return text.match(regex) !== null
     }
 
-    function getIsKatakanaCard(expression) {
+    function getIsKatakanaCard() {
         let isKatakana = w => [...w].some(c => c.charCodeAt(0) >= 12449 && c.charCodeAt(0) <= 12534)
-        return isKatakana(expression)
+        return isKatakana(cardExpression)
+    }
+
+    function getIsKanaCard() {
+        return /^[\u3040-\u30ff]+$/.test(cardExpression)
     }
 
     function lerp(value, minIn, maxIn, minOut, maxOut) {
@@ -544,6 +555,25 @@
 
         let targetKana = toHiragana ? hira : kata
         return word.map(i => typeof i === 'number' ? targetKana[i] : i).join('')
+    }
+
+    function sampleOneRandomly(random, samples) {
+        if (samples === null || samples.length === 0) {
+            return null
+        }
+
+        let value = random
+        for (let i = 0; i < samples.length; i++) {
+            let [currentSample, currentProbability] = samples[i]
+
+            if (value < currentProbability) {
+                return currentSample
+            }
+
+            value -= currentProbability
+        }
+
+        return null
     }
 
     // ---------------- ANKI CONNECT ----------------
@@ -695,43 +725,16 @@
         })
     }
 
-    function sampleOneRandomly(random, samples) {
-        if (samples === null || samples.length === 0) {
-            return null
-        }
-
-        let value = random
-        for (let i = 0; i < samples.length; i++) {
-            let [currentSample, currentProbability] = samples[i]
-
-            if (value < currentProbability) {
-                return currentSample
-            }
-
-            value -= currentProbability
-        }
-
-        return null
-    }
-
     function getTodaysFont(random) {
         // every day has a new font cuz random is card-agnostic
-
-        let regularFont = riverFontRegular
         let fontProbabilities = riverDayFontProbabilities
 
-        if (riverIsPreview) {
-            if (riverPreviewFontRegularOverride !== null) {
-                regularFont = riverPreviewFontRegularOverride
-            }
-
-            if (riverPreviewDayFontProbabilitiesOverride !== null) {
-                fontProbabilities = riverPreviewDayFontProbabilitiesOverride
-            }
+        if (riverIsPreview && riverPreviewDayFontProbabilitiesOverride !== null) {
+            fontProbabilities = riverPreviewDayFontProbabilitiesOverride
         }
 
         let randomFont = sampleOneRandomly(random, fontProbabilities)
-        return randomFont ?? regularFont
+        return randomFont ?? riverFontRegular
     }
 
     function getCardSpecificFont(random) {
@@ -744,9 +747,18 @@
         return sampleOneRandomly(random, fontProbabilities)
     }
 
+    function getKanaFont(random) {
+        let randomFont = sampleOneRandomly(random, riverKanaFontProbabilities)
+        return randomFont ?? riverFontRegular
+    }
+
     function getDefaultFont() {
         if (riverFontOverride !== null) {
             return riverFontOverride
+        }
+
+        if (riverIsKanaCard) {
+            return riverKanaFont
         }
 
         if (riverCardSpecificFont !== null) {
