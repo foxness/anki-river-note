@@ -80,14 +80,18 @@
         riverFontHandwritten = 'font-ackaisyo'
         riverFontOverride = null
 
-        riverDayFontProbabilities = [ // can be null
+        // cannot be null
+        // can be [], means use regular font
+        riverDayFontProbabilities = [
             ['font-hiraginosans', 0.5],
             ['font-hiraginomincho', 0.05],
             ['font-yumincho', 0.01],
             ['font-hiraginominchobold', 0.01]
         ]
 
-        riverSpecificCardFontProbabilities = [ // can be null
+        // cannot be null
+        // can be [], means use day font
+        riverSpecificCardFontProbabilities = [
             ['font-ackaisyo', 0.04],
             ['font-hiraginosans', 0.02],
             ['font-hiraginomincho', 0.02],
@@ -95,7 +99,9 @@
             ['font-hiraginominchobold', 0.01]
         ]
 
-        riverKanaFontProbabilities = [ // can be null
+        // cannot be null
+        // can be [], means use day or specific font
+        riverKanaFontProbabilities = [
             ['font-ackaisyo', 0.2],
             ['font-hiraginosans', 0.2],
             ['font-hiraginomincho', 0.2],
@@ -103,20 +109,15 @@
             ['font-hiraginominchobold', 0.2]
         ]
 
-        // --- HANDWRITTEN ---
-
-        // riverProbabilityKanaCardHandwritten = 0.2
-        // riverProbabilityNewKanjiCardHandwritten = 0.001
-        // riverProbabilityKanjiCardHandwritten = 0.04
-
         // --- PREVIEW ---
 
         riverUsePreview = true
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
-        riverPreviewProbabilityHandwritten = 0.01
 
-        riverPreviewDayFontProbabilitiesOverride = [ // can be null
+        // can be null, means use non-preview day font
+        // can be [], means use regular font
+        riverPreviewDayFontProbabilitiesOverride = [
             ['font-ackaisyo', 0.01],
             ['font-hiraginosans', 0.1],
             ['font-hiraginomincho', 0.4],
@@ -124,7 +125,9 @@
             ['font-hiraginominchobold', 0.2]
         ]
 
-        riverPreviewSpecificCardFontProbabilitiesOverride = [ // can be null
+        // can be null, means use non-preview specific font
+        // can be [], means use day font
+        riverPreviewSpecificCardFontProbabilitiesOverride = [
             ['font-ackaisyo', 0.02],
             ['font-hiraginosans', 0.02],
             ['font-hiraginomincho', 0.02],
@@ -146,15 +149,27 @@
         // --- BLOOD MOON ---
 
         riverProbabilityBloodMoon = 0.01
-        // riverBloodMoonProbabilityKanaCardHandwritten = 0.6
-        // riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
-        // riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
+
+        // can be null, means use non-event specific font
+        // can be [], means use day font
+        riverBloodMoonSpecificCardFontProbabilitiesOverride = [
+            ['font-ackaisyo', 0.05],
+            ['font-hiraginosans', 0.1],
+            ['font-hiraginomincho', 0.05],
+            ['font-yumincho', 0.05],
+            ['font-hiraginominchobold', 0.05]
+        ]
 
         // --- HOLIDAY ---
 
         riverProbabilityHoliday = 0.01
-        // riverHolidayProbabilityNewKanjiCardHandwritten = 0
-        // riverHolidayProbabilityHandwritten = 0.01
+
+        // can be null, means use non-event specific font
+        // can be [], means use day font
+        riverHolidaySpecificCardFontProbabilitiesOverride = [
+            ['font-notosans', 0.5],
+            ['font-hiraginosans', 0.5]
+        ]
     }
 
     function defineCardVariables() {
@@ -212,20 +227,17 @@
         riverIsBloodMoon = cardAgnosticRandom() < probabilityBloodMoon
         riverIsHoliday = cardAgnosticRandom() < probabilityHoliday
 
-        riverTodaysFont = getTodaysFont(cardAgnosticRandom())
-        riverCardSpecificFont = getCardSpecificFont(random())
-        riverKanaFont = getKanaFont(random())
-
-        riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
-        riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
-
-        riverVariedKanaReading = getVariedKanaReading()
-        
-        riverDefaultFont = getDefaultFont()
-
         if (riverIsBloodMoon) {
             riverIsHoliday = false
         }
+
+        riverTodaysFont = getTodaysFont(cardAgnosticRandom())
+        riverCardSpecificFont = getCardSpecificFont(random())
+        riverKanaFont = getKanaFont(random())
+        riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
+
+        riverVariedKanaReading = getVariedKanaReading()
+        riverDefaultFont = getDefaultFont()
     }
 
     function defineGlobalVariables() {
@@ -558,7 +570,7 @@
     }
 
     function sampleOneRandomly(random, samples) {
-        if (samples === null || samples.length === 0) {
+        if (samples.length === 0) {
             return null
         }
 
@@ -632,44 +644,6 @@
         })
     }
 
-    // ---------------- RANDOMNESS ----------------
-
-    function getProbabilityCardHandwritten() {
-        if (riverIsPreview) {
-            return riverPreviewProbabilityHandwritten
-        }
-
-        if (riverIsHoliday) {
-            if (cardIsNewOrLearning && !riverIsKanaCard) {
-                return riverHolidayProbabilityNewKanjiCardHandwritten
-            }
-            
-            return riverHolidayProbabilityHandwritten
-        }
-
-        if (riverIsKanaCard) {
-            if (riverIsBloodMoon) {
-                return riverBloodMoonProbabilityKanaCardHandwritten
-            }
-
-            return riverProbabilityKanaCardHandwritten
-        }
-        
-        if (cardIsNewOrLearning) {
-            if (riverIsBloodMoon) {
-                return riverBloodMoonProbabilityNewKanjiCardHandwritten
-            }
-
-            return riverProbabilityNewKanjiCardHandwritten
-        }
-
-        if (riverIsBloodMoon) {
-            return riverBloodMoonProbabilityKanjiCardHandwritten
-        }
-
-        return riverProbabilityKanjiCardHandwritten
-    }
-
     // ---------------- FONT VARIATION ----------------
 
     function cycleFont(elements) {
@@ -740,16 +714,19 @@
     function getCardSpecificFont(random) {
         let fontProbabilities = riverSpecificCardFontProbabilities
 
-        if (riverIsPreview && riverPreviewSpecificCardFontProbabilitiesOverride !== null) {
+        if (riverIsPreview && riverPreviewSpecificCardFontProbabilitiesOverride !== null) { // intentional
             fontProbabilities = riverPreviewSpecificCardFontProbabilitiesOverride
+        } else if (riverIsBloodMoon && riverBloodMoonSpecificCardFontProbabilitiesOverride !== null) {
+            fontProbabilities = riverBloodMoonSpecificCardFontProbabilitiesOverride
+        } else if (riverIsHoliday) {
+            fontProbabilities = riverHolidaySpecificCardFontProbabilitiesOverride
         }
 
         return sampleOneRandomly(random, fontProbabilities)
     }
 
     function getKanaFont(random) {
-        let randomFont = sampleOneRandomly(random, riverKanaFontProbabilities)
-        return randomFont ?? riverFontRegular
+        return sampleOneRandomly(random, riverKanaFontProbabilities)
     }
 
     function getDefaultFont() {
@@ -757,7 +734,7 @@
             return riverFontOverride
         }
 
-        if (riverIsKanaCard) {
+        if (riverIsKanaCard && riverKanaFont !== null) {
             return riverKanaFont
         }
 
