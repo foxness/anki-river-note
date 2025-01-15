@@ -197,7 +197,7 @@
     text-underline-offset: 0.25em;
 }
 
-.sentence b:not(.pitch-underline) {
+.container:not(:has(.pitch.reading)) .sentence b {
     text-decoration-color: var(--accent-primary);
 
     font-weight: inherit;
@@ -520,16 +520,7 @@
     color: var(--kifuku);
 }
 
-.pitch-underline {
-    font-weight: inherit;
-    
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 0.125em;
-    text-underline-offset: 0.25em;
-}
-
-/* Meaning-pitch harmony */
+/* Pitch-meaning harmony */
 
 .container:has(.pitch-item.heiban:first-child) .meaning {
     color: var(--heiban-foreground);
@@ -549,6 +540,37 @@
 
 .container:has(.pitch-item.kifuku:first-child) .meaning {
     color: var(--kifuku-foreground);
+}
+
+/* Pitch-sentence harmony */
+
+.container:has(.pitch.reading) .sentence b {
+    font-weight: inherit;
+    
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.125em;
+    text-underline-offset: 0.25em;
+}
+
+.container:has(.pitch-item.heiban:first-child) .sentence b {
+    color: var(--heiban);
+}
+
+.container:has(.pitch-item.atamadaka:first-child) .sentence b {
+    color: var(--atamadaka);
+}
+
+.container:has(.pitch-item.nakadaka:first-child) .sentence b {
+    color: var(--nakadaka);
+}
+
+.container:has(.pitch-item.odaka:first-child) .sentence b {
+    color: var(--odaka);
+}
+
+.container:has(.pitch-item.kifuku:first-child) .sentence b {
+    color: var(--kifuku);
 }
 
 /* ------------------------ BLUR ------------------------ */

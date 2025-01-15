@@ -333,21 +333,6 @@
         markExpressionInElement('sentence')
     }
 
-    function markPitchInSentenceExpression() {
-        let pitchPositions = getPitchPositions()
-        if (pitchPositions === null) {
-            return
-        }
-
-        let pitchType = getPitchType(pitchPositions[0])
-
-        // dont add pitch to hint to not make it easy
-        let highlightedElements = document.querySelectorAll('.sentence b')
-        highlightedElements.forEach((element) => {
-            element.classList.add('pitch-underline', pitchType)
-        })
-    }
-
     function highlightErrorsInFields() {
         highlightErrorInExpression()
         highlightErrorInReading()
@@ -1318,7 +1303,6 @@
         // populateSentence()
         populateHint()
         markExpressionInSentence()
-        // markPitchInSentenceExpression()
         
         highlightErrorsInFields()
         // highlightNotes()
@@ -1340,7 +1324,6 @@
         populateSentence()
         populateHint()
         markExpressionInSentence()
-        markPitchInSentenceExpression()
 
         highlightErrorsInFields()
         highlightNotes()
