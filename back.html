@@ -66,45 +66,45 @@
         // --- FONTS ---
 
         riverFonts = [
-            'font-notosans',
-            'font-hiraginosans',
-            'font-hiraginomincho',
-            'font-yumincho',
-            'font-hiraginominchobold',
-            'font-ackaisyo'
+            'notosans',
+            'hiraginosans',
+            'hiraginomincho',
+            'yumincho',
+            'hiraginominchobold',
+            'ackaisyo'
         ]
 
-        riverFontRegular = 'font-notosans'
-        riverFontHandwritten = 'font-ackaisyo'
+        riverFontRegular = 'notosans'
+        riverFontHandwritten = 'ackaisyo'
         riverFontOverride = null
 
         // cannot be null
         // can be [], means use regular font
         riverDayFontProbabilities = [
-            ['font-hiraginosans', 0.5],
-            ['font-hiraginomincho', 0.05],
-            ['font-yumincho', 0.01],
-            ['font-hiraginominchobold', 0.01]
+            ['hiraginosans', 0.5],
+            ['hiraginomincho', 0.05],
+            ['yumincho', 0.01],
+            ['hiraginominchobold', 0.01]
         ]
 
         // cannot be null
         // can be [], means use day font
         riverSpecificCardFontProbabilities = [
-            ['font-ackaisyo', 0.04],
-            ['font-hiraginosans', 0.02],
-            ['font-hiraginomincho', 0.02],
-            ['font-yumincho', 0.01],
-            ['font-hiraginominchobold', 0.01]
+            ['ackaisyo', 0.04],
+            ['hiraginosans', 0.02],
+            ['hiraginomincho', 0.02],
+            ['yumincho', 0.01],
+            ['hiraginominchobold', 0.01]
         ]
 
         // cannot be null
         // can be [], means use day or specific font
         riverKanaFontProbabilities = [
-            ['font-ackaisyo', 0.2],
-            ['font-hiraginosans', 0.2],
-            ['font-hiraginomincho', 0.2],
-            ['font-yumincho', 0.2],
-            ['font-hiraginominchobold', 0.2]
+            ['ackaisyo', 0.2],
+            ['hiraginosans', 0.2],
+            ['hiraginomincho', 0.2],
+            ['yumincho', 0.2],
+            ['hiraginominchobold', 0.2]
         ]
 
         // --- PREVIEW ---
@@ -116,21 +116,21 @@
         // can be null, means use non-preview day font
         // can be [], means use regular font
         riverPreviewDayFontProbabilitiesOverride = [
-            ['font-ackaisyo', 0.01],
-            ['font-hiraginosans', 0.1],
-            ['font-hiraginomincho', 0.4],
-            ['font-yumincho', 0.2],
-            ['font-hiraginominchobold', 0.2]
+            ['ackaisyo', 0.01],
+            ['hiraginosans', 0.1],
+            ['hiraginomincho', 0.4],
+            ['yumincho', 0.2],
+            ['hiraginominchobold', 0.2]
         ]
 
         // can be null, means use non-preview specific font
         // can be [], means use day font
         riverPreviewSpecificCardFontProbabilitiesOverride = [
-            ['font-ackaisyo', 0.02],
-            ['font-hiraginosans', 0.02],
-            ['font-hiraginomincho', 0.02],
-            ['font-yumincho', 0.02],
-            ['font-hiraginominchobold', 0.02]
+            ['ackaisyo', 0.02],
+            ['hiraginosans', 0.02],
+            ['hiraginomincho', 0.02],
+            ['yumincho', 0.02],
+            ['hiraginominchobold', 0.02]
         ]
 
         // --- READING KANA ---
@@ -151,11 +151,11 @@
         // can be null, means use non-event specific font
         // can be [], means use day font
         riverBloodMoonSpecificCardFontProbabilitiesOverride = [
-            ['font-ackaisyo', 0.05],
-            ['font-hiraginosans', 0.1],
-            ['font-hiraginomincho', 0.05],
-            ['font-yumincho', 0.05],
-            ['font-hiraginominchobold', 0.05]
+            ['ackaisyo', 0.05],
+            ['hiraginosans', 0.1],
+            ['hiraginomincho', 0.05],
+            ['yumincho', 0.05],
+            ['hiraginominchobold', 0.05]
         ]
 
         // --- HOLIDAY ---
@@ -165,8 +165,8 @@
         // can be null, means use non-event specific font
         // can be [], means use day font
         riverHolidaySpecificCardFontProbabilitiesOverride = [
-            ['font-notosans', 0.5],
-            ['font-hiraginosans', 0.5]
+            ['notosans', 0.5],
+            ['hiraginosans', 0.5]
         ]
     }
 
@@ -643,27 +643,29 @@
             currentEvent = 'Holiday'
         }
 
-        let formattedFont = riverCurrentFont.replace('font-', '')
-
         // --- element building ---
 
         informationContainerElement.replaceChildren()
 
         if (currentEvent !== null) {
             let eventElement = document.createElement('div')
-            
             eventElement.replaceChildren(document.createTextNode(currentEvent))
             eventElement.classList.add(`event-${currentEvent.toLowerCase()}`)
+
             informationContainerElement.appendChild(eventElement)
         }
 
         let fontElement = document.createElement('div')
-        fontElement.replaceChildren(document.createTextNode(formattedFont))
+        fontElement.replaceChildren(document.createTextNode(riverCurrentFont))
 
         informationContainerElement.appendChild(fontElement)
     }
 
     // ---------------- FONT VARIATION ----------------
+
+    function getFontClass(font) {
+        return `font-${font}`
+    }
 
     function cycleFont(elements) {
         let firstElement = elements[0]
@@ -673,16 +675,17 @@
 
         let currentFont = riverFontRegular
         for (const font of riverFonts) {
-            if (firstElement.classList.contains(font)) {
+            if (firstElement.classList.contains(getFontClass(font))) {
                 currentFont = font
                 break
             }
         }
 
-        newFont = riverFonts[(riverFonts.indexOf(currentFont) + 1) % riverFonts.length]
+        let nextIndex = (riverFonts.indexOf(currentFont) + 1) % riverFonts.length
+        newFont = riverFonts[nextIndex]
 
         elements.forEach(element => {
-            element.classList.replace(currentFont, newFont)
+            element.classList.replace(getFontClass(currentFont), getFontClass(newFont))
         })
 
         riverCurrentFont = newFont
@@ -691,8 +694,8 @@
 
     function setFont(elements, font) {
         elements.forEach(element => {
-            element.classList.remove(...riverFonts)
-            element.classList.add(font)
+            element.classList.remove(...(riverFonts.map(a => getFontClass(a))))
+            element.classList.add(getFontClass(font))
         })
 
         riverCurrentFont = font
