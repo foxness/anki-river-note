@@ -15,9 +15,7 @@
         </div>
     </div>
 
-    <div class='informationContainer'>
-        <span>fontNamePlaceholder</span>
-    </div>
+    <div class='informationContainer'></div>
 
     <!-- ------ REGULAR ELEMENTS ------ -->
 
@@ -238,6 +236,7 @@
 
         riverVariedKanaReading = getVariedKanaReading()
         riverDefaultFont = getDefaultFont()
+        riverCurrentFont = null
     }
 
     function defineGlobalVariables() {
@@ -644,6 +643,41 @@
         })
     }
 
+    // ---------------- INFORMATION SECTION ----------------
+
+    function updateInformationSection() {
+        let informationContainerElement = document.querySelector('.informationContainer')
+        if (informationContainerElement === null) {
+            return
+        }
+
+        let currentEvent = null
+        if (riverIsBloodMoon) {
+            currentEvent = 'BloodMoon'
+        } else if (riverIsHoliday) {
+            currentEvent = 'Holiday'
+        }
+
+        let formattedFont = riverCurrentFont.replace('font-', '')
+
+        // --- element building ---
+
+        informationContainerElement.replaceChildren()
+
+        if (currentEvent !== null) {
+            let eventElement = document.createElement('div')
+            
+            eventElement.replaceChildren(document.createTextNode(currentEvent))
+            eventElement.classList.add(`event-${currentEvent.toLowerCase()}`)
+            informationContainerElement.appendChild(eventElement)
+        }
+
+        let fontElement = document.createElement('div')
+        fontElement.replaceChildren(document.createTextNode(formattedFont))
+
+        informationContainerElement.appendChild(fontElement)
+    }
+
     // ---------------- FONT VARIATION ----------------
 
     function cycleFont(elements) {
@@ -666,7 +700,8 @@
             element.classList.replace(currentFont, newFont)
         })
 
-        setInformationFont(newFont)
+        riverCurrentFont = newFont
+        updateInformationSection()
     }
 
     function setFont(elements, font) {
@@ -675,17 +710,8 @@
             element.classList.add(font)
         })
 
-        setInformationFont(font)
-    }
-
-    function setInformationFont(font) {
-        let informationElement = document.querySelector('.informationContainer span')
-        if (informationElement === null) {
-            return
-        }
-
-        let formattedFont = font.replace('font-', '')
-        informationElement.replaceChildren(document.createTextNode(formattedFont))
+        riverCurrentFont = font
+        updateInformationSection()
     }
 
     function tagJapaneseText() {
