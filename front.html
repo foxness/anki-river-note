@@ -44,15 +44,28 @@
 
         riverFontRegular = 'font-notosans'
         riverFontHandwritten = 'font-ackaisyo'
+        riverFontOverride = null
 
-        riverFontProbabilities = [
-            ['font-hiraginosans', 0.35],
-            ['font-hiraginomincho', 0.25],
-            ['font-yumincho', 0.04],
+        riverDayFontProbabilities = [ // can be null
+            ['font-hiraginosans', 0.5],
+            ['font-hiraginomincho', 0.05],
+            ['font-yumincho', 0.01],
             ['font-hiraginominchobold', 0.01]
         ]
 
-        riverFontOverride = null
+        riverSpecificCardFontProbabilities = [ // can be null
+            ['font-ackaisyo', 0.04],
+            ['font-hiraginosans', 0.02],
+            ['font-hiraginomincho', 0.02],
+            ['font-yumincho', 0.01],
+            ['font-hiraginominchobold', 0.01]
+        ]
+
+        // --- HANDWRITTEN ---
+
+        // riverProbabilityKanaCardHandwritten = 0.2
+        // riverProbabilityNewKanjiCardHandwritten = 0.001
+        // riverProbabilityKanjiCardHandwritten = 0.04
 
         // --- PREVIEW ---
 
@@ -62,11 +75,21 @@
         riverPreviewProbabilityHandwritten = 0.01
 
         riverPreviewFontRegularOverride = null // can be null
-        riverPreviewFontProbabilitiesOverride = [ // can be null
-            ['font-hiraginosans', 0.2],
+
+        riverPreviewDayFontProbabilitiesOverride = [ // can be null
+            ['font-ackaisyo', 0.01],
+            ['font-hiraginosans', 0.1],
             ['font-hiraginomincho', 0.4],
-            ['font-yumincho', 0.1],
-            ['font-hiraginominchobold', 0.1]
+            ['font-yumincho', 0.2],
+            ['font-hiraginominchobold', 0.2]
+        ]
+
+        riverPreviewSpecificCardFontProbabilitiesOverride = [ // can be null
+            ['font-ackaisyo', 0.02],
+            ['font-hiraginosans', 0.02],
+            ['font-hiraginomincho', 0.02],
+            ['font-yumincho', 0.02],
+            ['font-hiraginominchobold', 0.02]
         ]
 
         // --- READING KANA ---
@@ -80,24 +103,18 @@
         riverBlurMinBlur = 0 // em
         riverBlurMaxBlur = 0.12 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
 
-        // --- HANDWRITTEN ---
-
-        riverProbabilityKanaCardHandwritten = 0.2
-        riverProbabilityNewKanjiCardHandwritten = 0.001
-        riverProbabilityKanjiCardHandwritten = 0.04
-
         // --- BLOOD MOON ---
 
         riverProbabilityBloodMoon = 0.01
-        riverBloodMoonProbabilityKanaCardHandwritten = 0.6
-        riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
-        riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
+        // riverBloodMoonProbabilityKanaCardHandwritten = 0.6
+        // riverBloodMoonProbabilityNewKanjiCardHandwritten = 0.01
+        // riverBloodMoonProbabilityKanjiCardHandwritten = riverProbabilityKanjiCardHandwritten * 2
 
         // --- HOLIDAY ---
 
         riverProbabilityHoliday = 0.01
-        riverHolidayProbabilityNewKanjiCardHandwritten = 0
-        riverHolidayProbabilityHandwritten = 0.01
+        // riverHolidayProbabilityNewKanjiCardHandwritten = 0
+        // riverHolidayProbabilityHandwritten = 0.01
     }
 
     function defineCardVariables() {
@@ -157,6 +174,7 @@
 
         riverTodaysFont = getTodaysFont(cardAgnosticRandom())
 
+        riverCardSpecificFont = getCardSpecificFont(random())
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
         riverIsHandwrittenCard = random() < getProbabilityCardHandwritten()
 
@@ -643,47 +661,62 @@
         })
     }
 
+    function sampleOneRandomly(random, samples) {
+        if (samples === null || samples.length === 0) {
+            return null
+        }
+
+        let value = random
+        for (let i = 0; i < samples.length; i++) {
+            let [currentSample, currentProbability] = samples[i]
+
+            if (value < currentProbability) {
+                return currentSample
+            }
+
+            value -= currentProbability
+        }
+
+        return null
+    }
+
     function getTodaysFont(random) {
         // every day has a new font cuz random is card-agnostic
 
-        if (riverFontOverride !== null) {
-            return riverFontOverride
-        }
-
         let regularFont = riverFontRegular
-        let fontProbabilities = riverFontProbabilities
+        let fontProbabilities = riverDayFontProbabilities
 
         if (riverIsPreview) {
             if (riverPreviewFontRegularOverride !== null) {
                 regularFont = riverPreviewFontRegularOverride
             }
 
-            if (riverPreviewFontProbabilitiesOverride !== null) {
-                fontProbabilities = riverPreviewFontProbabilitiesOverride
+            if (riverPreviewDayFontProbabilitiesOverride !== null) {
+                fontProbabilities = riverPreviewDayFontProbabilitiesOverride
             }
         }
 
-        if (fontProbabilities.length === 0) {
-            return regularFont
+        let randomFont = sampleOneRandomly(random, fontProbabilities)
+        return randomFont ?? regularFont
+    }
+
+    function getCardSpecificFont(random) {
+        let fontProbabilities = riverSpecificCardFontProbabilities
+
+        if (riverIsPreview && riverPreviewSpecificCardFontProbabilitiesOverride !== null) {
+            fontProbabilities = riverPreviewSpecificCardFontProbabilitiesOverride
         }
 
-        let value = random
-        for (let i = 0; i < fontProbabilities.length; i++) {
-            let [currentFont, currentProbability] = fontProbabilities[i]
-
-            if (value < currentProbability) {
-                return currentFont
-            }
-
-            value -= currentProbability
-        }
-
-        return regularFont
+        return sampleOneRandomly(random, fontProbabilities)
     }
 
     function getDefaultFont() {
-        if (riverIsHandwrittenCard) {
-            return riverFontHandwritten
+        if (riverFontOverride !== null) {
+            return riverFontOverride
+        }
+
+        if (riverCardSpecificFont !== null) {
+            return riverCardSpecificFont
         }
         
         return riverTodaysFont
