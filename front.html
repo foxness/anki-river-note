@@ -127,20 +127,20 @@
 
         // can be null, means use non-preview day font
         // can be [], means use regular font
-        riverPreviewDayFontProbabilitiesOverride = [
-            ['hiraginosans', 0.1],
-            ['hiraginomincho', 0.4],
-            ['hiraginominchobold', 0.2],
-            ['yumincho', 0.2],
+        riverPreviewDayFontProbabilities = [
+            ['hiraginosans', 0.3],
+            ['hiraginomincho', 0.3],
+            ['hiraginominchobold', 0.1],
+            ['yumincho', 0.1],
             ['ackaisyo', 0.01]
         ]
 
         // can be null, means use non-preview specific font
         // can be [], means use day font
-        riverPreviewSpecificCardFontProbabilitiesOverride = [
-            ['notosans', 0.02],
-            ['hiraginosans', 0.02],
-            ['hiraginomincho', 0.02],
+        riverPreviewSpecificCardFontProbabilities = [
+            ['notosans', 0.05],
+            ['hiraginosans', 0.05],
+            ['hiraginomincho', 0.05],
             ['hiraginominchobold', 0.02],
             ['yumincho', 0.02],
             ['ackaisyo', 0.02]
@@ -152,9 +152,9 @@
 
         // can be null, means use non-event specific font
         // can be [], means use day font
-        riverBloodMoonSpecificCardFontProbabilitiesOverride = [
-            ['notosans', 0.02],
-            ['hiraginosans', 0.1],
+        riverBloodMoonSpecificCardFontProbabilities = [
+            ['notosans', 0.05],
+            ['hiraginosans', 0.05],
             ['hiraginomincho', 0.05],
             ['hiraginominchobold', 0.05],
             ['yumincho', 0.05],
@@ -168,7 +168,7 @@
         // can be null, means use non-event specific font
         // can be [], means use day font
         // recommended to have this add up to 100%
-        riverHolidaySpecificCardFontProbabilitiesOverride = [
+        riverHolidaySpecificCardFontProbabilities = [
             ['notosans', 0.5],
             ['hiraginosans', 0.5]
         ]
@@ -727,8 +727,8 @@
         // every day has a new font cuz random is card-agnostic
         let fontProbabilities = riverDayFontProbabilities
 
-        if (riverIsPreview && riverPreviewDayFontProbabilitiesOverride !== null) {
-            fontProbabilities = riverPreviewDayFontProbabilitiesOverride
+        if (riverIsPreview && riverPreviewDayFontProbabilities !== null) {
+            fontProbabilities = riverPreviewDayFontProbabilities
         }
 
         let randomFont = sampleOneRandomly(random, fontProbabilities)
@@ -738,12 +738,12 @@
     function getCardSpecificFont(random) {
         let fontProbabilities = riverSpecificCardFontProbabilities
 
-        if (riverIsPreview && riverPreviewSpecificCardFontProbabilitiesOverride !== null) { // intentional
-            fontProbabilities = riverPreviewSpecificCardFontProbabilitiesOverride
-        } else if (riverIsBloodMoon && riverBloodMoonSpecificCardFontProbabilitiesOverride !== null) {
-            fontProbabilities = riverBloodMoonSpecificCardFontProbabilitiesOverride
-        } else if (riverIsHoliday && riverHolidaySpecificCardFontProbabilitiesOverride !== null) {
-            fontProbabilities = riverHolidaySpecificCardFontProbabilitiesOverride
+        if (riverIsPreview && riverPreviewSpecificCardFontProbabilities !== null) { // intentional
+            fontProbabilities = riverPreviewSpecificCardFontProbabilities
+        } else if (riverIsBloodMoon && riverBloodMoonSpecificCardFontProbabilities !== null) {
+            fontProbabilities = riverBloodMoonSpecificCardFontProbabilities
+        } else if (riverIsHoliday && riverHolidaySpecificCardFontProbabilities !== null) {
+            fontProbabilities = riverHolidaySpecificCardFontProbabilities
         }
 
         return sampleOneRandomly(random, fontProbabilities)
