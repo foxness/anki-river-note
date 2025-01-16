@@ -55,6 +55,9 @@
     // ---------------- GLOBAL ----------------
 
     function defineConstants() {
+
+        // --- GENERAL ---
+
         riverAnkiNextDayHour = 9
         riverAnkiConnectAddress = 'http://127.0.0.1:8765'
 
@@ -63,7 +66,25 @@
         riverToggleBlurKey = 'h'
         riverCycleFontKey = 'j'
 
+        // --- ENGLISH TEXT BLUR ---
+
+        riverBlurMinInterval = 0 // days
+        riverBlurMaxInterval = 50
+        riverBlurMinBlur = 0 // em
+        riverBlurMaxBlur = 0.12 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
+
+        // --- READING KANA ---
+
+        riverProbabilityReadingHiragana = 1/3
+
         // --- FONTS ---
+
+        defineFontConstants()
+    }
+
+    function defineFontConstants() {
+
+        // --- GENERAL FONTS ---
 
         riverFonts = [
             'notosans',
@@ -131,17 +152,6 @@
             ['yumincho', 0.02],
             ['hiraginominchobold', 0.02]
         ]
-
-        // --- READING KANA ---
-
-        riverProbabilityReadingHiragana = 1/3
-
-        // --- ENGLISH TEXT BLUR ---
-
-        riverBlurMinInterval = 0 // days
-        riverBlurMaxInterval = 50
-        riverBlurMinBlur = 0 // em
-        riverBlurMaxBlur = 0.12 // 0.1 = readable, 0.14 = barely readable, 0.2 = unreadable
 
         // --- BLOOD MOON ---
 
@@ -757,7 +767,9 @@
             return riverKanaFont
         }
 
-        if (!cardIsNewOrLearning && riverCardSpecificFont !== null) {
+        // if it is preview, new cards can be a specific font
+        // if it's not preview, new cards cannot be a specific font
+        if ((!cardIsNewOrLearning || riverIsPreview) && riverCardSpecificFont !== null) {
             return riverCardSpecificFont
         }
         
