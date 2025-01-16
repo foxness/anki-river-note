@@ -1,4 +1,24 @@
 <div class='container'>
+
+    <!-- ------ INVISIBLE ELEMENTS ------ -->
+
+    <div class='hiddenMenu'>
+        <div class='linkContainer'>
+            <a class='jpdbLink' href='https://jpdb.io/search?q={{Expression}}&lang=japanese'></a>
+            <a class='immersionkitLink' href='https://www.immersionkit.com/dictionary?keyword={{Expression}}'></a>
+            <a class='massifLink' href='https://massif.la/ja/search?q={{Expression}}'></a>
+            <a class='wikipediaLink' href='https://ja.wikipedia.org/wiki/{{Expression}}'></a>
+            <a class='ojadLink' href='https://www.gavo.t.u-tokyo.ac.jp/ojad/search/index/word:{{Expression}}'></a>
+            <a class='weblioLink' href='https://www.weblio.jp/content/{{Expression}}'></a>
+            <a class='youglishLink' href='https://youglish.com/pronounce/{{Expression}}/japanese'></a>
+            <a class='cycleFontButton'></a>
+        </div>
+    </div>
+
+    <div class='informationContainer'></div>
+
+    <!-- ------ REGULAR ELEMENTS ------ -->
+
     <div class='expressionContainer'>
         <div class='indicator'></div>
         <span class='expression'>{{Expression}}</span>
@@ -746,7 +766,7 @@
         })
 
         let cycleFontButton = document.querySelector('.cycleFontButton')
-        cycleFontButton?.addEventListener('click', (e) => {
+        cycleFontButton.addEventListener('click', (e) => {
             cycleFont(elements)
         })
     }
