@@ -78,8 +78,8 @@
             'notosans',
             'hiraginosans',
             'hiraginomincho',
-            'yumincho',
             'hiraginominchobold',
+            'yumincho',
             'ackaisyo'
         ]
 
@@ -91,28 +91,32 @@
         riverDayFontProbabilities = [
             ['hiraginosans', 0.5],
             ['hiraginomincho', 0.05],
+            ['hiraginominchobold', 0.01],
             ['yumincho', 0.01],
-            ['hiraginominchobold', 0.01]
+            ['ackaisyo', 0.0001] // 1 in 10000
         ]
 
         // cannot be null
         // can be [], means use day font
         riverSpecificCardFontProbabilities = [
-            ['ackaisyo', 0.04],
+            ['notosans', 0.04],
             ['hiraginosans', 0.02],
             ['hiraginomincho', 0.02],
-            ['yumincho', 0.01],
-            ['hiraginominchobold', 0.01]
+            ['hiraginominchobold', 0.02],
+            ['yumincho', 0.02],
+            ['ackaisyo', 0.04]
         ]
 
         // cannot be null
         // can be [], means use day or specific font
+        // recommended to have this add up to 100%
         riverKanaFontProbabilities = [
-            ['ackaisyo', 0.2],
-            ['hiraginosans', 0.2],
-            ['hiraginomincho', 0.2],
-            ['yumincho', 0.2],
-            ['hiraginominchobold', 0.2]
+            ['notosans', 0.01],
+            ['hiraginosans', 0.198],
+            ['hiraginomincho', 0.198],
+            ['hiraginominchobold', 0.198],
+            ['yumincho', 0.198],
+            ['ackaisyo', 0.198]
         ]
 
         // --- PREVIEW ---
@@ -124,21 +128,22 @@
         // can be null, means use non-preview day font
         // can be [], means use regular font
         riverPreviewDayFontProbabilitiesOverride = [
-            ['ackaisyo', 0.01],
             ['hiraginosans', 0.1],
             ['hiraginomincho', 0.4],
+            ['hiraginominchobold', 0.2],
             ['yumincho', 0.2],
-            ['hiraginominchobold', 0.2]
+            ['ackaisyo', 0.01]
         ]
 
         // can be null, means use non-preview specific font
         // can be [], means use day font
         riverPreviewSpecificCardFontProbabilitiesOverride = [
-            ['ackaisyo', 0.02],
+            ['notosans', 0.02],
             ['hiraginosans', 0.02],
             ['hiraginomincho', 0.02],
+            ['hiraginominchobold', 0.02],
             ['yumincho', 0.02],
-            ['hiraginominchobold', 0.02]
+            ['ackaisyo', 0.02]
         ]
 
         // --- BLOOD MOON ---
@@ -148,11 +153,12 @@
         // can be null, means use non-event specific font
         // can be [], means use day font
         riverBloodMoonSpecificCardFontProbabilitiesOverride = [
-            ['ackaisyo', 0.05],
+            ['notosans', 0.02],
             ['hiraginosans', 0.1],
             ['hiraginomincho', 0.05],
+            ['hiraginominchobold', 0.05],
             ['yumincho', 0.05],
-            ['hiraginominchobold', 0.05]
+            ['ackaisyo', 0.05]
         ]
 
         // --- HOLIDAY ---
@@ -161,6 +167,7 @@
 
         // can be null, means use non-event specific font
         // can be [], means use day font
+        // recommended to have this add up to 100%
         riverHolidaySpecificCardFontProbabilitiesOverride = [
             ['notosans', 0.5],
             ['hiraginosans', 0.5]
