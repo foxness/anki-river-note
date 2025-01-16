@@ -321,8 +321,14 @@
 
     function addLinkToImage() {
         let imageElement = document.querySelector('.image')
-        imageElement.addEventListener('click', (e) => {
+
+        imageElement.addEventListener('click', (e) => { // left click
             ankiSearch(`expression:${cardExpression}`)
+        })
+
+        imageElement.addEventListener('contextmenu', (e) => { // right click
+            e.preventDefault()
+            ankiSearch(`${cardExpression} [${cardReading}]`) // note definition without meaning
         })
     }
 
