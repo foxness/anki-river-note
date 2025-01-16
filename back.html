@@ -75,7 +75,6 @@
         ]
 
         riverFontRegular = 'notosans'
-        riverFontHandwritten = 'ackaisyo'
         riverFontOverride = null
 
         // cannot be null
@@ -758,7 +757,7 @@
             return riverKanaFont
         }
 
-        if (riverCardSpecificFont !== null) {
+        if (!cardIsNewOrLearning && riverCardSpecificFont !== null) {
             return riverCardSpecificFont
         }
         
