@@ -153,12 +153,12 @@
         // can be null, means use non-event specific font
         // can be [], means use day font
         riverBloodMoonSpecificCardFontProbabilities = [
-            ['notosans', 0.05],
-            ['hiraginosans', 0.05],
-            ['hiraginomincho', 0.05],
-            ['hiraginominchobold', 0.05],
-            ['yumincho', 0.05],
-            ['ackaisyo', 0.05]
+            ['notosans', 0.04],
+            ['hiraginosans', 0.04],
+            ['hiraginomincho', 0.04],
+            ['hiraginominchobold', 0.04],
+            ['yumincho', 0.04],
+            ['ackaisyo', 0.04]
         ]
 
         // --- HOLIDAY ---
@@ -233,7 +233,7 @@
             riverIsHoliday = false
         }
 
-        riverTodaysFont = getTodaysFont(cardAgnosticRandom())
+        riverTodayFont = getTodaysFont(cardAgnosticRandom())
         riverCardSpecificFont = getCardSpecificFont(random())
         riverKanaFont = getKanaFont(random())
         riverIsHiraganaReading = random() < riverProbabilityReadingHiragana
@@ -669,6 +669,11 @@
         fontElement.replaceChildren(document.createTextNode(riverCurrentFont))
 
         informationContainerElement.appendChild(fontElement)
+
+        let todayFontElement = document.createElement('div')
+        todayFontElement.replaceChildren(document.createTextNode(`today: ${riverTodayFont}`))
+
+        informationContainerElement.appendChild(todayFontElement)
     }
 
     // ---------------- FONT VARIATION ----------------
@@ -768,7 +773,7 @@
             return riverCardSpecificFont
         }
         
-        return riverTodaysFont
+        return riverTodayFont
     }
 
     function varyCardJapaneseFont() {
