@@ -86,6 +86,8 @@
         riverFontRegular = 'notosans'
         riverFontOverride = null
 
+        riverFontsDifficult = ['hiraginomincho', 'hiraginominchobold', 'yumincho', 'ackaisyo']
+
         // cannot be null
         // can be [], means use regular font
         riverDayFontProbabilities = [
@@ -770,7 +772,13 @@
         // if it is preview, new cards can be a specific font
         // if it's not preview, new cards cannot be a specific font
         if ((!cardIsNewOrLearning || riverIsPreview) && riverCardSpecificFont !== null) {
-            return riverCardSpecificFont
+            let difficultToday = riverFontsDifficult.includes(riverTodayFont)
+            let difficultSpecific = riverFontsDifficult.includes(riverCardSpecificFont)
+
+            // if the day is already difficult, dont give other difficult fonts
+            if (!(difficultToday && difficultSpecific) || riverIsPreview) {
+                return riverCardSpecificFont
+            }
         }
         
         return riverTodayFont
