@@ -1008,6 +1008,15 @@
         let targetClass = 'notes'
         let targetString = cardNotes
 
+        let needsEditing = targetString.startsWith('<div') // = is autofilled yomitan dict entry
+        if (needsEditing && !riverIsFrontOfCard) {
+            let noteElement = document.querySelector('.notes')
+            noteElement.replaceChildren(document.createTextNode('[[ NEEDS EDITING ]]'))
+
+            highlightAsErroredIfNeeded(true, targetClass)
+            return
+        }
+
         let hasWhitespaceAtEdges = targetString !== targetString.trim()
         let hasNonNbspEntity = /\&(?!nbsp)[a-z]+;/.test(targetString) // &nbsp; is ok
         let hasNonBrTag = /<\/?(?!br)[a-z][\s\S]*>/i.test(targetString) // all tags except <br>
