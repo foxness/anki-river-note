@@ -379,6 +379,11 @@
 
     function highlightErrorsInFields() {
         highlightErrorInExpression()
+
+        if (riverIsFrontOfCard) {
+            return
+        }
+
         highlightErrorInReading()
         highlightErrorInMeaning()
         highlightErrorInNotes()
@@ -1009,7 +1014,7 @@
         let targetString = cardNotes
 
         let needsEditing = targetString.startsWith('<div') // = is autofilled yomitan dict entry
-        if (needsEditing && !riverIsFrontOfCard) {
+        if (needsEditing) {
             let noteElement = document.querySelector('.notes')
             noteElement.replaceChildren(document.createTextNode('[[ NEEDS EDITING ]]'))
 
