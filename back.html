@@ -104,34 +104,36 @@
         // can be [], means use regular font
         riverDayFontProbabilities = [
             ['hiraginosans', 0.5],
-            ['hiraginomincho', 0.02], // 1 in 50
-            ['hiraginominchobold', 0.005], // 1 in 200
-            ['yumincho', 0.005], // 1 in 200
-            ['ackaisyo', 0.0001] // 1 in 10000
+            ['hiraginomincho', 0], // 0.02
+            ['hiraginominchobold', 0], // 0.005
+            ['yumincho', 0], // 0.005
+            ['ackaisyo', 0] // 0.0001
         ]
 
         // cannot be null
         // can be [], means use day font
-        riverSpecificCardFontProbabilities = [
-            ['notosans', 0.05],
-            ['hiraginosans', 0.05],
-            ['hiraginomincho', 0.02], // 1 in 50
-            ['hiraginominchobold', 0.005], // 1 in 200
-            ['yumincho', 0.005], // 1 in 200
-            ['ackaisyo', 0.005] // 1 in 200
-        ]
+        riverSpecificCardFontProbabilities = []
+        // riverSpecificCardFontProbabilities = [
+        //     ['notosans', 0.05],
+        //     ['hiraginosans', 0.05],
+        //     ['hiraginomincho', 0.02], // 1 in 50
+        //     ['hiraginominchobold', 0.005], // 1 in 200
+        //     ['yumincho', 0.005], // 1 in 200
+        //     ['ackaisyo', 0.005] // 1 in 200
+        // ]
 
         // cannot be null
         // can be [], means use day or specific font
         // recommended to have this add up to 100%
-        riverKanaFontProbabilities = [
-            ['notosans', 0.1],
-            ['hiraginosans', 0.1],
-            ['hiraginomincho', 0.2],
-            ['hiraginominchobold', 0.2],
-            ['yumincho', 0.2],
-            ['ackaisyo', 0.2]
-        ]
+        riverKanaFontProbabilities = []
+        // riverKanaFontProbabilities = [
+        //     ['notosans', 0.1],
+        //     ['hiraginosans', 0.1],
+        //     ['hiraginomincho', 0.2],
+        //     ['hiraginominchobold', 0.2],
+        //     ['yumincho', 0.2],
+        //     ['ackaisyo', 0.2]
+        // ]
 
         // --- PREVIEW ---
 
@@ -141,51 +143,55 @@
 
         // can be null, means use non-preview day font
         // can be [], means use regular font
-        riverPreviewDayFontProbabilities = [
-            ['hiraginosans', 0.4],
-            ['hiraginomincho', 0.2],
-            ['hiraginominchobold', 0.05],
-            ['yumincho', 0.05],
-            ['ackaisyo', 0.01]
-        ]
+        riverPreviewDayFontProbabilities = null
+        // riverPreviewDayFontProbabilities = [
+        //     ['hiraginosans', 0.4],
+        //     ['hiraginomincho', 0.2],
+        //     ['hiraginominchobold', 0.05],
+        //     ['yumincho', 0.05],
+        //     ['ackaisyo', 0.01]
+        // ]
 
         // can be null, means use non-preview specific font
         // can be [], means use day font
-        riverPreviewSpecificCardFontProbabilities = [
-            ['notosans', 0.05],
-            ['hiraginosans', 0.05],
-            ['hiraginomincho', 0.05],
-            ['hiraginominchobold', 0.02],
-            ['yumincho', 0.02],
-            ['ackaisyo', 0.02]
-        ]
+        riverPreviewSpecificCardFontProbabilities = null
+        // riverPreviewSpecificCardFontProbabilities = [
+        //     ['notosans', 0.05],
+        //     ['hiraginosans', 0.05],
+        //     ['hiraginomincho', 0.05],
+        //     ['hiraginominchobold', 0.02],
+        //     ['yumincho', 0.02],
+        //     ['ackaisyo', 0.02]
+        // ]
 
         // --- BLOOD MOON ---
 
-        riverProbabilityBloodMoon = 0.01
+        riverProbabilityBloodMoon = 0.001 // 0.01
 
         // can be null, means use non-event specific font
         // can be [], means use day font
-        riverBloodMoonSpecificCardFontProbabilities = [
-            ['notosans', 0.03],
-            ['hiraginosans', 0.03],
-            ['hiraginomincho', 0.03],
-            ['hiraginominchobold', 0.03],
-            ['yumincho', 0.03],
-            ['ackaisyo', 0.03]
-        ]
+        riverBloodMoonSpecificCardFontProbabilities = null
+        // riverBloodMoonSpecificCardFontProbabilities = [
+        //     ['notosans', 0.03],
+        //     ['hiraginosans', 0.03],
+        //     ['hiraginomincho', 0.03],
+        //     ['hiraginominchobold', 0.03],
+        //     ['yumincho', 0.03],
+        //     ['ackaisyo', 0.03]
+        // ]
 
         // --- HOLIDAY ---
 
-        riverProbabilityHoliday = 0.05
+        riverProbabilityHoliday = 0.001 // 0.05
 
         // can be null, means use non-event specific font
         // can be [], means use day font
         // recommended to have this add up to 100%
-        riverHolidaySpecificCardFontProbabilities = [
-            ['notosans', 0.5],
-            ['hiraginosans', 0.5]
-        ]
+        riverHolidaySpecificCardFontProbabilities = null
+        // riverHolidaySpecificCardFontProbabilities = [
+        //     ['notosans', 0.5],
+        //     ['hiraginosans', 0.5]
+        // ]
     }
 
     function defineCardVariables() {
