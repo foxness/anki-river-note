@@ -139,6 +139,7 @@
         // --- PREVIEW ---
 
         riverUsePreview = true
+        riverIsPreviewIndistinguishable = true
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
 
@@ -236,7 +237,7 @@
         let probabilityBloodMoon = riverProbabilityBloodMoon
         let probabilityHoliday = riverProbabilityHoliday
 
-        if (riverIsPreview) {
+        if (riverIsPreview && !riverIsPreviewIndistinguishable) {
             seed += 'river'
             cardAgnosticSeed += 'agnostic'
 
