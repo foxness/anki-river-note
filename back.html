@@ -97,6 +97,7 @@
 
         riverFontRegular = 'notosans'
         riverFontOverride = null
+        riverSpecificFontAllowedOnNew = true
 
         riverFontsDifficult = ['hiraginomincho', 'hiraginominchobold', 'yumincho', 'ackaisyo']
 
@@ -792,9 +793,8 @@
             return riverKanaFont
         }
 
-        // if it is preview, new cards can be a specific font
-        // if it's not preview, new cards cannot be a specific font
-        if ((!cardIsNewOrLearning || riverIsPreview) && riverCardSpecificFont !== null) {
+        let isSpecificFontAllowed = riverIsPreview || (riverSpecificFontAllowedOnNew || !cardIsNewOrLearning)
+        if (isSpecificFontAllowed && riverCardSpecificFont !== null) {
             let isDifficultToday = riverFontsDifficult.includes(riverTodayFont)
             let isDifficultSpecific = riverFontsDifficult.includes(riverCardSpecificFont)
             let isDoubleDifficult = isDifficultToday && isDifficultSpecific
