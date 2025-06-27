@@ -189,6 +189,7 @@
 
 .hint b {
     text-decoration-color: var(--accent-primary);
+    color: var(--accent-primary);
 
     font-weight: inherit;
     text-decoration-line: underline;
@@ -199,6 +200,7 @@
 
 .container:not(:has(.pitch.reading)) .sentence b {
     text-decoration-color: var(--accent-primary);
+    color: var(--accent-primary);
 
     font-weight: inherit;
     text-decoration-line: underline;
