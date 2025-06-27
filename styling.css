@@ -126,12 +126,12 @@
     color: inherit;
 }
 
-:is(.expression, .reading:not(.pitch)) a:hover {
+.expression a:hover {
     box-shadow: inset 0 -.5em 0 0 var(--accent-primary) !important;
     /* !important for minimalist anki */
 }
 
-.reading.pitch a:hover {
+.reading a:hover {
     box-shadow: inset 0 -.5em 0 0 var(--accent-secondary) !important;
     /* !important for minimalist anki */
 }
