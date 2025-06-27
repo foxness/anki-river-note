@@ -11,8 +11,8 @@
     /* --- GENERAL COLORS --- */
 
     --foreground: #fcfcfc;
-    --default-reading: #f8e1b5;
-    --default-meaning: #bccfff; /* dodgerblue-like */
+    --default-reading: #37e3b2;
+    --default-meaning: #3772ff; /* dodgerblue-like */
     --divider: #727272;
     --information: #818181;
     --background-secondary: #3b3b3b;
@@ -248,6 +248,10 @@
 
     margin-top: var(--top-margin);
     margin-bottom: calc(var(--total-margin) - var(--top-margin));
+}
+
+.container:not(:has(.pitch.reading)) .meaning {
+    font-weight: 500;
 }
 
 /* ------------------------ NOTES ------------------------ */
