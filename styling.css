@@ -5,6 +5,7 @@
 
     /* --- GENERAL --- */
 
+    --master-size: 26px;
     --text-max-width: 25em;
     --blur-amount: 0.3em;
 
@@ -87,7 +88,7 @@
     align-items: center;
 
     font-family: "Noto Sans JP", "Hiragino Sans", "Kosugi Maru", "Meiryo", "Hiragino Kaku Gothic Pro", sans-serif;
-    font-size: 22px;
+    font-size: var(--master-size);
     color: var(--foreground);
 
     /* centers wrapped text in long fields, dont remove */
