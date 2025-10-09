@@ -314,6 +314,7 @@
 
 .definitionMeaning a {
     color: inherit;
+    text-decoration: none;
 }
 
 .definitionMeaning a:hover {
