@@ -125,6 +125,7 @@
 
 .expression a, .reading a, .sentence a {
     color: inherit;
+    text-decoration: none;
 }
 
 .expression a:hover {
@@ -177,7 +178,7 @@
     --total-margin: 0.4em;
 
     --top-margin: calc(var(--standard-top-margin) + var(--font-variation));
-    
+
     margin-top: var(--top-margin);
     margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
@@ -361,7 +362,7 @@
     --total-margin: 0.6em;
 
     --top-margin: calc(var(--standard-top-margin) + var(--font-variation));
-    
+
     margin-top: var(--top-margin);
     margin-bottom: calc(var(--total-margin) - var(--top-margin));
 }
@@ -553,7 +554,7 @@
 
 .container:has(.pitch.reading) .sentence b {
     font-weight: inherit;
-    
+
     text-decoration-line: underline;
     text-decoration-style: solid;
     text-decoration-thickness: 0.125em;
