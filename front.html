@@ -128,6 +128,7 @@
 
         riverUsePreview = true
         riverIsPreviewIndistinguishable = true
+        riverPreviewHasIndicator = true
         riverPreviewProbabilityBloodMoon = 0
         riverPreviewProbabilityHoliday = 0
 
@@ -263,13 +264,13 @@
     // ---------------- GENERAL ----------------
 
     function indicateCard() {
-        if (riverIsMobile) {
+        if (riverIsMobile || (riverIsPreview && !riverPreviewHasIndicator)) {
             return
         }
 
         let indicatorElement = document.querySelector('.indicator')
 
-        if (riverIsPreview) {
+        if (riverIsPreview && !riverIsPreviewIndistinguishable) {
             indicatorElement.classList.add('visibleIndicator', 'indicatorPreview')
             return
         }
