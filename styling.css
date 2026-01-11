@@ -12,7 +12,7 @@
     /* --- GENERAL COLORS --- */
 
     --foreground: #fcfcfc;
-    --default-reading: #37e3b2;
+    --default-reading: #bbbbbb; /* #37e3b2 */
     --default-meaning: #3772ff; /* dodgerblue-like */
     --divider: #727272;
     --information: #818181;
