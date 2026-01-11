@@ -281,6 +281,15 @@
         }
     }
 
+    function handleMobile() {
+        if (!riverIsMobile) {
+            return
+        }
+
+        let containerElement = document.querySelector('.container')
+        containerElement.classList.add('mobile')
+    }
+
     function addLinkToExpression() {
         let useFurigana = false
         let expressionElement = document.querySelector('.expression')
@@ -1386,6 +1395,7 @@
 
     function mainFront() {
         indicateCard()
+        handleMobile()
         addLinkToExpression()
         fixCopypaste()
 
@@ -1407,6 +1417,7 @@
 
     function mainBack() {
         indicateCard()
+        handleMobile()
         addLinkToExpression()
         fixCopypaste()
 

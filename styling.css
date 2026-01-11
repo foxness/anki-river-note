@@ -698,6 +698,10 @@
     opacity: 1;
 }
 
+.container.mobile .hiddenMenu {
+    display: none;
+}
+
 .linkContainer {
     /* width: auto;
     height: 8em; */
